@@ -56,7 +56,7 @@ export default function Navbar() {
                     </div>
                 </SheetContent>
             </Sheet>
-            <Link href='/' className='mr-6 hidden lg:flex' prefetch={false}>
+            <Link href='/' className='mr-6 hidden lg:flex items-center' prefetch={false}>
                 <Image
                     src='/logo.png'
                     alt='TEDxTelkom University logo'
@@ -64,6 +64,7 @@ export default function Navbar() {
                     height={43}
                     quality={100}
                 />
+                <p className='font-[raleway] ml-2'>(Staging test)</p>
                 <span className='sr-only'>TEDxTelkom University</span>
             </Link>
             <nav className='ml-auto hidden lg:flex gap-6'>
