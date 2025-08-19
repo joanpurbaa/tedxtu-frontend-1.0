@@ -56,7 +56,7 @@ export default function Navbar() {
                     </div>
                 </SheetContent>
             </Sheet>
-            <Link href='/' className='mr-6 hidden lg:flex' prefetch={false}>
+            <Link href='/' className='mr-6 hidden lg:flex items-center' prefetch={false}>
                 <Image
                     src='/logo.png'
                     alt='TEDxTelkom University logo'

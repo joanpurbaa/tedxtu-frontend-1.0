@@ -162,13 +162,13 @@ export function AboutSection() {
 
                 {/* Two-column grid layout for additional accordions */}
                 <motion.div
-                    className='grid grid-cols-1 md:grid-cols-2 gap-6 w-full mt-6'
+                    className='grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 w-full mt-4 sm:mt-6'
                     variants={staggerContainer}
                     initial="hidden"
                     animate={mainInView ? "visible" : "hidden"} /*  */
                 >
                     {/* Left Column */}
-                    <div className='flex flex-col space-y-6'>
+                    <div className='flex flex-col space-y-4 sm:space-y-6'>
                         <motion.div
                             variants={fadeInUp}
                             className="transform transition-all duration-500 hover:scale-[1.02] hover:shadow-xl"
@@ -183,29 +183,6 @@ export function AboutSection() {
                             >
                                 <p className="mb-4">
                                     Licensee is responsible for obtaining and maintaining the TEDx licensee, leading event planning, managing the team, curating speakers, ensuring content quality, and fostering a lasting community. All while complying with TED guidelines to deliver an impactful experience.
-                                </p>
-                            </ImageAccordion>
-                        </motion.div>
-
-                        <motion.div
-                            variants={fadeInUp}
-                            className="transform transition-all duration-500 hover:scale-[1.02] hover:shadow-xl"
-                            ref={accordionRefs.marketing.ref}
-                        >
-                            <ImageAccordion
-                                title="VCL"
-                                closedHeaderImage={staffClosedBg.src}
-                                openHeaderImage={staffOpenBg.src}
-                                contentImage={contentBg.src}
-                                className="accordion-animate"
-                            >
-                                <h3 className="text-xl font-semibold mb-2">Venue & Consumption</h3>
-                                <p className="mb-4">
-                                    Research and assess venues for suitability, accessibility, and technical needs. Set up and test audio-visual equipment, coordinate with security, oversee setup, manage clean-up, and ensure timely food distribution with selected catering vendors.
-                                </p>
-                                <h3 className="text-xl font-semibold mb-2">Logistic</h3>
-                                <p className="mb-4">
-                                    Develop a logistics plan covering timing, location, and event requirements. Identify and rent or purchase necessary equipment, assign vehicles for specific tasks, and oversee logistics execution during the event. Handle post-event logistics by collecting, packing, and storing resources.
                                 </p>
                             </ImageAccordion>
                         </motion.div>
@@ -233,12 +210,21 @@ export function AboutSection() {
                                     Handle payment processes for vendors and sponsors, track and record ticket sales and associated costs, and organize invoices, receipts, and other necessary financial records.
                                 </p>
 
+                                <h3 className="text-xl font-semibold mb-2">Venue & Consumption</h3>
+                                <p className="mb-4">
+                                    Research and assess venues for suitability, accessibility, and technical needs. Set up and test audio-visual equipment, coordinate with security, oversee setup, manage clean-up, and ensure timely food distribution with selected catering vendors.
+                                </p>
+                                <h3 className="text-xl font-semibold mb-2">Logistic</h3>
+                                <p className="mb-4">
+                                    Develop a logistics plan covering timing, location, and event requirements. Identify and rent or purchase necessary equipment, assign vehicles for specific tasks, and oversee logistics execution during the event. Handle post-event logistics by collecting, packing, and storing resources.
+                                </p>
+
                             </ImageAccordion>
                         </motion.div>
                     </div>
 
                     {/* Right Column */}
-                    <div className='flex flex-col space-y-6'>
+                    <div className='flex flex-col space-y-4 sm:space-y-6'>
 
 
                         <motion.div
