@@ -60,6 +60,7 @@ export function ClientHomePage() {
     }, []);
 
     return (
+
         <div className="min-h-screen bg-[#000000] bg-cover bg-top bg-no-repeat relative overflow-x-hidden">
             {/* <div
                 ref={countdownRef}
