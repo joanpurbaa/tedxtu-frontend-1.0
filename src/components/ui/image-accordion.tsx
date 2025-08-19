@@ -26,10 +26,12 @@ const ImageAccordion = ({
 }: ImageAccordionProps) => {
   const [open, setOpen] = React.useState(false);
   const [imageWidth, setImageWidth] = React.useState(0);
+  const [showScrollIndicator, setShowScrollIndicator] = React.useState(false);
   const imageRef = React.useRef<HTMLDivElement>(null);
   const contentRef = React.useRef<HTMLDivElement>(null);
   const iconRef = React.useRef<HTMLDivElement>(null);
   const headerImageRef = React.useRef<HTMLDivElement>(null);
+  const scrollContainerRef = React.useRef<HTMLDivElement>(null);
 
   // Track image width to make content the same width
   React.useEffect(() => {
@@ -48,6 +50,33 @@ const ImageAccordion = ({
       return () => window.removeEventListener('resize', updateWidth);
     }
   }, []);
+
+  // Check if content is scrollable when accordion opens
+  React.useEffect(() => {
+    if (open && scrollContainerRef.current) {
+      const container = scrollContainerRef.current;
+      const checkScrollable = () => {
+        const isScrollable = container.scrollHeight > container.clientHeight;
+        setShowScrollIndicator(isScrollable);
+      };
+
+      // Check after content is rendered
+      setTimeout(checkScrollable, 100);
+
+      const handleScroll = () => {
+        const { scrollTop, scrollHeight, clientHeight } = container;
+        const isAtBottom = scrollTop + clientHeight >= scrollHeight - 5;
+        if (isAtBottom) {
+          setShowScrollIndicator(false);
+        } else {
+          setShowScrollIndicator(container.scrollHeight > container.clientHeight);
+        }
+      };
+
+      container.addEventListener('scroll', handleScroll);
+      return () => container.removeEventListener('scroll', handleScroll);
+    }
+  }, [open, children]);
 
   // GSAP animations
   React.useEffect(() => {
@@ -141,14 +170,14 @@ const ImageAccordion = ({
               </div>
 
               {/* Header Content Overlay */}
-              <div className="absolute inset-0 flex items-center justify-between px-20 pointer-events-none">
-                <h2 className="text-5xl font-bold text-white uppercase z-50 font-cinzel">
+              <div className="absolute inset-0 flex items-center justify-between px-4 sm:px-8 md:px-12 lg:px-20 pointer-events-none">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white uppercase z-50 font-cinzel">
                   {title}
                 </h2>
 
                 <div
                   ref={iconRef}
-                  className="flex items-center justify-center w-10 h-10 text-5xl rounded-full pointer-events-auto z-50"
+                  className="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 text-3xl sm:text-4xl md:text-5xl rounded-full pointer-events-auto z-50"
                 >
                   {open ? (
                     <span className="">⊖</span>
@@ -163,7 +192,7 @@ const ImageAccordion = ({
 
         {/* Accordion Content - with same width as the image */}
         <AccordionPrimitive.Content
-          className="overflow-hidden transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down -mt-52"
+          className="overflow-hidden transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down -mt-32 sm:-mt-40 md:-mt-48 lg:-mt-52"
           style={{ width: imageWidth > 0 ? `${imageWidth}px` : '100%' }}
         >
           <div className="relative">
@@ -185,12 +214,26 @@ const ImageAccordion = ({
 
 
               {/* Content Overlay */}
-              <div className="absolute inset-0 p-6 mt-32">
-                <div
-                  ref={contentRef}
-                  className="text-white text-justify font-[family-name:var(--font-raleway)]"
-                >
-                  {children}
+              <div className="absolute inset-0 p-4 sm:p-6 md:p-8 mt-16 sm:mt-20 md:mt-24 lg:mt-32">
+                {/* Scrollable content area */}
+                <div className="h-full overflow-hidden">
+                  <div
+                    ref={(el) => {
+                      contentRef.current = el;
+                      scrollContainerRef.current = el;
+                    }}
+                    className="text-white text-justify font-[family-name:var(--font-raleway)] text-sm sm:text-base h-full overflow-y-auto pr-2 custom-scrollbar"
+                  >
+                    {children}
+                  </div>
+                  {/* Dynamic scroll fade indicator */}
+                  {showScrollIndicator && (
+                    <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-black/70 via-black/30 to-transparent pointer-events-none">
+                      <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 text-white/60 text-xs animate-bounce">
+                        Scroll for more
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
