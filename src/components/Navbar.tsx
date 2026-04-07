@@ -49,7 +49,7 @@ export default function Navbar() {
                             />
                         </Link>
                         <Link href='/' className='w-full py-2 text-lg font-semibold text-white hover:text-red-500 transition-colors'>Home</Link>
-                        <Link href='/#about' className='w-full py-2 text-lg font-semibold text-white hover:text-red-500 transition-colors'>About Us</Link>
+                        <Link href='/about' className='w-full py-2 text-lg font-semibold text-white hover:text-red-500 transition-colors'>About Us</Link>
                         <Link href='/event' className='w-full py-2 text-lg font-semibold text-white hover:text-red-500 transition-colors' prefetch={false}>Event</Link>
                         <Link href='/recruitment' className='w-full py-2 text-lg font-semibold text-white hover:text-red-500 transition-colors' prefetch={false}>Recruitment</Link>
                         <Link href='/merch' className='w-full py-2 text-lg font-semibold text-white hover:text-red-500 transition-colors' prefetch={false}>Merch</Link>
@@ -74,7 +74,7 @@ export default function Navbar() {
                     Home
                 </Link>
                 <Link
-                    href={"/#about"}
+                    href={"/about"}
                     className='group inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 text-lg font-bold text-white transition-colors hover:text-red-500 focus:text-red-500 focus:outline-none disabled:pointer-events-none disabled:opacity-50'
                 >
                     About Us
