@@ -14,6 +14,7 @@ export default {
                 cinzel: ['var(--font-cinzel)', 'serif'],
                 playfair: ['var(--font-playfair-display)', 'serif'],
                 raleway: ['var(--font-raleway)', 'sans-serif'],
+                westmeath: ['var(--font-westmeath)'],
             },
             colors: {
                 background: 'hsl(var(--background))',
@@ -64,21 +65,22 @@ export default {
             },
 
             animation: {
-                'float': 'float 10s ease-in-out infinite',
-                'pulse-slow': 'pulse-slow 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-              },
-              keyframes: {
+                float: 'float 10s ease-in-out infinite',
+                'pulse-slow':
+                    'pulse-slow 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            },
+            keyframes: {
                 float: {
-                  '0%, 100%': { transform: 'translateY(0) rotate(0deg)' },
-                  '25%': { transform: 'translateY(-10px) rotate(5deg)' },
-                  '50%': { transform: 'translateY(0) rotate(0deg)' },
-                  '75%': { transform: 'translateY(10px) rotate(-5deg)' },
+                    '0%, 100%': { transform: 'translateY(0) rotate(0deg)' },
+                    '25%': { transform: 'translateY(-10px) rotate(5deg)' },
+                    '50%': { transform: 'translateY(0) rotate(0deg)' },
+                    '75%': { transform: 'translateY(10px) rotate(-5deg)' },
                 },
                 'pulse-slow': {
-                  '0%, 100%': { transform: 'scale(1) rotate(0deg)' },
-                  '50%': { transform: 'scale(1.05) rotate(3deg)' },
+                    '0%, 100%': { transform: 'scale(1) rotate(0deg)' },
+                    '50%': { transform: 'scale(1.05) rotate(3deg)' },
                 },
-              },
+            },
         },
     },
     plugins: [require('tailwindcss-animate')],
