@@ -48,11 +48,11 @@ export default function Navbar() {
                                 quality={100}
                             />
                         </Link>
-                        <Link href='/' className='w-full py-2 text-lg font-semibold text-white hover:text-red-500 transition-colors'>Home</Link>
-                        <Link href='/about' className='w-full py-2 text-lg font-semibold text-white hover:text-red-500 transition-colors'>About Us</Link>
-                        <Link href='/event' className='w-full py-2 text-lg font-semibold text-white hover:text-red-500 transition-colors' prefetch={false}>Event</Link>
-                        <Link href='/recruitment' className='w-full py-2 text-lg font-semibold text-white hover:text-red-500 transition-colors' prefetch={false}>Recruitment</Link>
-                        <Link href='/merch' className='w-full py-2 text-lg font-semibold text-white hover:text-red-500 transition-colors' prefetch={false}>Merch</Link>
+                        <Link href='/' className='w-full py-2 text-lg font-westmeath text-white hover:text-red-500 transition-colors'>Home</Link>
+                        <Link href='/about' className='w-full py-2 text-lg font-westmeath text-white hover:text-red-500 transition-colors'>About Us</Link>
+                        <Link href='/event' className='w-full py-2 text-lg font-westmeath text-white hover:text-red-500 transition-colors' prefetch={false}>Event</Link>
+                        <Link href='/recruitment' className='w-full py-2 text-lg font-westmeath text-white hover:text-red-500 transition-colors' prefetch={false}>Recruitment</Link>
+                        <Link href='/merch' className='w-full py-2 text-lg font-westmeath text-white hover:text-red-500 transition-colors' prefetch={false}>Merch</Link>
                     </div>
                 </SheetContent>
             </Sheet>
@@ -69,33 +69,33 @@ export default function Navbar() {
             <nav className='ml-auto hidden lg:flex gap-6'>
                 <Link
                     href={"/"}
-                    className='group inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 text-lg font-bold text-white transition-colors hover:text-red-500 focus:text-red-500 focus:outline-none disabled:pointer-events-none disabled:opacity-50'
+                    className='group inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 text-lg font-westmeath text-white transition-colors hover:text-red-500 focus:text-red-500 focus:outline-none disabled:pointer-events-none disabled:opacity-50'
                 >
                     Home
                 </Link>
                 <Link
                     href={"/about"}
-                    className='group inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 text-lg font-bold text-white transition-colors hover:text-red-500 focus:text-red-500 focus:outline-none disabled:pointer-events-none disabled:opacity-50'
+                    className='group inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 text-lg font-westmeath text-white transition-colors hover:text-red-500 focus:text-red-500 focus:outline-none disabled:pointer-events-none disabled:opacity-50'
                 >
                     About Us
                 </Link>
                 <Link
                     href='/event'
-                    className='group inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 text-lg font-bold text-white transition-colors hover:text-red-500 focus:text-red-500 focus:outline-none disabled:pointer-events-none disabled:opacity-50'
+                    className='group inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 text-lg font-westmeath text-white transition-colors hover:text-red-500 focus:text-red-500 focus:outline-none disabled:pointer-events-none disabled:opacity-50'
                     prefetch={false}
                 >
                     Event
                 </Link>
                 <Link
                     href='/recruitment'
-                    className='group inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 text-lg font-bold text-white transition-colors hover:text-red-500 focus:text-red-500 focus:outline-none disabled:pointer-events-none disabled:opacity-50'
+                    className='group inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 text-lg font-westmeath text-white transition-colors hover:text-red-500 focus:text-red-500 focus:outline-none disabled:pointer-events-none disabled:opacity-50'
                     prefetch={false}
                 >
                     Recruitment
                 </Link>
                 <Link
                     href='/merch'
-                    className='group inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 text-lg font-bold text-white transition-colors hover:text-red-500 focus:text-red-500 focus:outline-none disabled:pointer-events-none disabled:opacity-50'
+                    className='group inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 text-lg font-westmeath text-white transition-colors hover:text-red-500 focus:text-red-500 focus:outline-none disabled:pointer-events-none disabled:opacity-50'
                     prefetch={false}
                 >
                     Merch
