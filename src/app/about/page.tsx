@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 import Image from 'next/image';
 
 export default function About() {
@@ -24,41 +25,40 @@ export default function About() {
 
     useEffect(() => {
         const total = baseConductorCards.length;
-        const firstIndex = total;  // 6 - start of middle block
-        const lastIndex = total * 2 - 1;  // 11 - end of middle block
+        const firstIndex = total;
+        const lastIndex = total * 2 - 1;
 
         if (activeCard > lastIndex) {
+            // Infinite scroll ke depan: jump ke position pertama tanpa animasi setelah transition selesai
             const timeout = setTimeout(() => {
                 setIsAnimating(false);
-                setActiveCard(firstIndex);  // Reset to first card
-                requestAnimationFrame(() => {
-                    setIsAnimating(true);
-                });
+                setActiveCard(firstIndex + (activeCard - (lastIndex + 1)));
+                setTimeout(() => setIsAnimating(true), 50);
             }, 500);
 
             return () => clearTimeout(timeout);
         } else if (activeCard < firstIndex) {
+            // Infinite scroll ke belakang: jump ke position terakhir tanpa animasi setelah transition selesai
             const timeout = setTimeout(() => {
                 setIsAnimating(false);
-                setActiveCard(lastIndex);  // Reset to last card
-                requestAnimationFrame(() => {
-                    setIsAnimating(true);
-                });
+                setActiveCard(lastIndex - (firstIndex - activeCard - 1));
+                setTimeout(() => setIsAnimating(true), 50);
             }, 500);
 
             return () => clearTimeout(timeout);
         }
-    }, [activeCard]);
+    }, [activeCard, baseConductorCards.length]);
 
     const navigateCard = (delta: number) => {
         if (isTransitioningRef.current) return;
 
         isTransitioningRef.current = true;
+        setIsAnimating(true);
         setActiveCard((prev) => prev + delta);
 
         setTimeout(() => {
             isTransitioningRef.current = false;
-        }, 500);
+        }, 600); // Slightly longer to match transition duration + buffer
     };
 
     const handleDragStart = (e: React.MouseEvent | React.TouchEvent) => {
@@ -222,7 +222,7 @@ export default function About() {
                     <div className='space-y-4 sm:space-y-5 md:space-y-6'>
                         <div className='relative w-full overflow-hidden'>
                             <Image
-                                src='/about/long-red-card.webp'
+                                src='/about/long-red-card.png'
                                 alt='Vision card background'
                                 width={1200}
                                 height={280}
@@ -241,7 +241,7 @@ export default function About() {
 
                         <div className='relative w-full overflow-hidden'>
                             <Image
-                                src='/about/long-yellow-card.webp'
+                                src='/about/long-yellow-card.png'
                                 alt='Mission card background'
                                 width={1200}
                                 height={280}
@@ -317,7 +317,16 @@ export default function About() {
                                         key={`${card}-${index}`}
                                         type='button'
                                         onClick={() => {
-                                            const delta = index - activeCard;
+                                            const total = baseConductorCards.length;
+                                            const normalizedIndex = index % total;
+                                            const targetIndex = normalizedIndex + total;
+
+                                            let delta = targetIndex - activeCard;
+
+                                            // Shortest path logic
+                                            if (delta > total / 2) delta -= total;
+                                            if (delta < -total / 2) delta += total;
+
                                             if (delta !== 0) navigateCard(delta);
                                         }}
                                         className={`relative h-[470px] w-[340px] shrink-0 overflow-hidden rounded-3xl cursor-pointer select-none ${
@@ -357,6 +366,7 @@ export default function About() {
                 </div>
             </section>
             </main>
+            <Footer />
         </>
     );
 }
