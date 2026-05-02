@@ -79,7 +79,6 @@ export function ClientHomePage() {
                 <AboutUsSection />
                 <EventSection />
                 <MerchSection />
-                <VisionSection />
                 <FaqSection />
                 <Footer />
                 <BackToTopButton />

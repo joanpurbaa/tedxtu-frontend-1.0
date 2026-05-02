@@ -1,114 +1,93 @@
-import Link from 'next/link';
+'use client';
+
 import Image from 'next/image';
-import { Facebook, Instagram, Twitter, Linkedin, Mail, MapPin } from 'lucide-react';
+import Link from 'next/link';
+import { Instagram, Linkedin, MapPin, Mail } from 'lucide-react';
 
 export default function Footer() {
     return (
-        <footer className="bg-black border-t border-gray-800">
-            <div className="max-w-7xl mx-auto px-4 md:px-14 py-12 md:py-16">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-                    {/* Logo and Description */}
-                    <div className="md:col-span-1">
-                        <Link href="/" className="inline-block mb-4">
+        <footer className='relative w-full bg-black text-white px-4 sm:px-6 md:px-14 py-12 sm:py-16 md:py-20'>
+            <div className='max-w-7xl mx-auto'>
+                <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 md:gap-12'>
+                    {/* Logo & Tagline */}
+                    <div className='flex flex-col items-start gap-6'>
+                        <div className='w-48 h-auto'>
                             <Image
-                                src="/logo.png"
-                                alt="TEDxTelkom University logo"
-                                width={150}
-                                height={38}
+                                src='/logo.png'
+                                alt='TEDxTelkom University logo'
+                                width={172}
+                                height={43}
                                 quality={100}
+                                className='w-full h-auto'
                             />
-                        </Link>
-                        <p className="text-gray-400 text-sm font-[family-name:var(--font-raleway)]">
-                            Ideas change people.
-                            <br />
-                            People change the world.
+                        </div>
+                        <p className='font-raleway text-sm sm:text-base leading-relaxed text-white/90'>
+                            Ideas change people<br />
+                            People change the world
                         </p>
                     </div>
 
                     {/* Quick Links */}
-                    <div className="md:col-span-1">
-                        <h3 className="text-white font-bold text-lg mb-4">Quick Links</h3>
-                        <ul className="space-y-2">
-                            <li>
-                                <Link href="/" className="text-gray-400 hover:text-red-500 transition-colors font-[family-name:var(--font-raleway)]">
-                                    Home
-                                </Link>
-                            </li>
-                            <li>
-                                <Link href="/#about" className="text-gray-400 hover:text-red-500 transition-colors font-[family-name:var(--font-raleway)]">
-                                    About Us
-                                </Link>
-                            </li>
-                            <li>
-                                <Link href="/event" className="text-gray-400 hover:text-red-500 transition-colors font-[family-name:var(--font-raleway)]">
-                                    Event
-                                </Link>
-                            </li>
-                            <li>
-                                <Link href="/recruitment" className="text-gray-400 hover:text-red-500 transition-colors font-[family-name:var(--font-raleway)]">
-                                    Recruitment
-                                </Link>
-                            </li>
-                            <li>
-                                <Link href="/merch" className="text-gray-400 hover:text-red-500 transition-colors font-[family-name:var(--font-raleway)]">
-                                    Merch
-                                </Link>
-                            </li>
-                        </ul>
+                    <div className='flex flex-col gap-6'>
+                        <h3 className='font-westmeath text-xl sm:text-2xl font-bold'>QUICK LINKS</h3>
+                        <nav className='flex flex-col gap-3'>
+                            <Link href='/' className='font-raleway text-sm sm:text-base text-white/80 hover:text-red-500 transition-colors'>
+                                Home
+                            </Link>
+                            <Link href='/about' className='font-raleway text-sm sm:text-base text-white/80 hover:text-red-500 transition-colors'>
+                                About Us
+                            </Link>
+                            <Link href='/event' className='font-raleway text-sm sm:text-base text-white/80 hover:text-red-500 transition-colors'>
+                                Event
+                            </Link>
+                            <Link href='/recruitment' className='font-raleway text-sm sm:text-base text-white/80 hover:text-red-500 transition-colors'>
+                                Recruitment
+                            </Link>
+                            <Link href='/merch' className='font-raleway text-sm sm:text-base text-white/80 hover:text-red-500 transition-colors'>
+                                Merch
+                            </Link>
+                        </nav>
                     </div>
 
-                    {/* Contact Info */}
-                    <div className="md:col-span-1">
-                        <h3 className="text-white font-bold text-lg mb-4">Contact</h3>
-                        <div className="space-y-3">
-                            <div className="flex items-start gap-3">
-                                <MapPin className="h-5 w-5 text-red-500 flex-shrink-0 mt-0.5" />
-                                <p className="text-gray-400 text-sm font-[family-name:var(--font-raleway)]">
-                                    Telkom University<br />
-                                    Bandung, Indonesia
-                                </p>
+                    {/* Contact */}
+                    <div className='flex flex-col gap-6'>
+                        <h3 className='font-westmeath text-xl sm:text-2xl font-bold'>CONTACT</h3>
+                        <div className='flex flex-col gap-4'>
+                            <div className='flex items-start gap-3'>
+                                <div className='text-red-500 mt-1 flex-shrink-0'>
+                                    <MapPin className='w-5 h-5' />
+                                </div>
+                                <div className='flex flex-col'>
+                                    <p className='font-raleway text-sm sm:text-base text-white/90'>
+                                        Telkom University
+                                    </p>
+                                    <p className='font-raleway text-sm sm:text-base text-white/80'>
+                                        Bandung, Indonesia
+                                    </p>
+                                </div>
                             </div>
-                            <a href="mailto:tedxtelkomuniversity@gmail.com" className="flex items-start gap-3 hover:underline">
-                                <Mail className="h-5 w-5 text-red-500 flex-shrink-0 mt-0.5" />
-                                <p className="text-gray-400 text-sm font-[family-name:var(--font-raleway)]">
+                            <a href='mailto:tedxtelkomuniversity@gmail.com' className='flex items-start gap-3 hover:opacity-80 transition-opacity'>
+                                <div className='text-red-500 mt-1 flex-shrink-0'>
+                                    <Mail className='w-5 h-5' />
+                                </div>
+                                <p className='font-raleway text-sm sm:text-base text-white/90 break-all'>
                                     tedxtelkomuniversity@gmail.com
                                 </p>
                             </a>
                         </div>
                     </div>
 
-                    {/* Social Media */}
-                    <div className="md:col-span-1">
-                        <h3 className="text-white font-bold text-lg mb-4">Follow Us</h3>
-                        <div className="flex gap-4">
-                            <a
-                                href="https://instagram.com/tedxtelkomuniversity"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-gray-400 hover:text-red-500 transition-colors"
-                                aria-label="Instagram"
-                            >
-                                <Instagram className="h-6 w-6" />
+                    {/* Follow Us */}
+                    <div className='flex flex-col gap-6'>
+                        <h3 className='font-westmeath text-xl sm:text-2xl font-bold'>FOLLOW US</h3>
+                        <div className='flex gap-4'>
+                            <a href='https://www.instagram.com/tedxtelkomuniversity' target='_blank' rel='noopener noreferrer' className='text-white hover:text-red-500 transition-colors'>
+                                <Instagram className='w-7 h-7' />
                             </a>
-                            <a
-                                href="https://www.linkedin.com/company/tedxtelkom-university"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-gray-400 hover:text-red-500 transition-colors"
-                                aria-label="LinkedIn"
-                            >
-                                <Linkedin className="h-6 w-6" />
+                            <a href='https://www.linkedin.com/company/tedxtelkom-university/' target='_blank' rel='noopener noreferrer' className='text-white hover:text-red-500 transition-colors'>
+                                <Linkedin className='w-7 h-7' />
                             </a>
                         </div>
-                    </div>
-                </div>
-
-                {/* Bottom Bar */}
-                <div className="mt-12 pt-8 border-t border-gray-800">
-                    <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-                        <p className="text-gray-400 text-sm text-center md:text-left font-[family-name:var(--font-raleway)]">
-                            © {new Date().getFullYear()} TEDxTelkom University.
-                        </p>
                     </div>
                 </div>
             </div>
