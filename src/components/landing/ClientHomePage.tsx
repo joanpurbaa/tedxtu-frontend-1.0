@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { HeroSection, FaqSection, VisionSection, AboutSection, EventSection } from '@/components/landing';
+import { HeroSection, FaqSection, VisionSection, AboutUsSection, EventSection, MerchSection } from '@/components/landing';
 import Countdown from '@/components/CountDown';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
@@ -76,8 +76,10 @@ export function ClientHomePage() {
                 />
 
                 <HeroSection />
+                <AboutUsSection />
+                <EventSection />
+                <MerchSection />
                 <VisionSection />
-                <AboutSection />
                 <FaqSection />
                 <Footer />
                 <BackToTopButton />
