@@ -25,10 +25,10 @@ export default function Navbar() {
     }, []);
 
     return (
-        <header className={cn(
-            'fixed top-0 left-0 right-0 z-50 flex h-20 w-full shrink-0 items-center px-4 md:px-14 transition-all duration-300',
-            isScrolled ? 'bg-black/95 backdrop-blur-md shadow-lg' : 'bg-transparent'
-        )}>
+            <header className={cn(
+                'fixed top-0 left-0 right-0 z-[9999] isolate flex h-20 w-full shrink-0 items-center px-4 md:px-14 transition-all duration-300',
+                isScrolled ? 'bg-black/95 backdrop-blur-md shadow-lg' : 'bg-transparent'
+            )}>
             <Sheet>
                 <SheetTrigger asChild>
                     <Button variant='outline' size='icon' className='lg:hidden'>
