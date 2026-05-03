@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion, Variants } from 'framer-motion';
@@ -9,8 +9,8 @@ const fadeInUp: Variants = {
     visible: {
         opacity: 1,
         y: 0,
-        transition: { duration: 0.8, ease: "easeOut" }
-    }
+        transition: { duration: 0.8, ease: 'easeOut' },
+    },
 };
 
 const staggerContainer: Variants = {
@@ -19,22 +19,22 @@ const staggerContainer: Variants = {
         opacity: 1,
         transition: {
             staggerChildren: 0.2,
-            delayChildren: 0.3
-        }
-    }
+            delayChildren: 0.3,
+        },
+    },
 };
 
 export function AboutUsSection() {
     const { ref, inView } = useInView({
         triggerOnce: true,
-        threshold: 0.1
+        threshold: 0.1,
     });
 
     const ellipseConfig = {
-        size: "2000px",      
-        topOffset: "-108%",  
-        opacity: 0.85,       
-        blur: "radial-gradient(circle, black 30%, transparent 75%)" 
+        size: '2000px',
+        topOffset: '-108%',
+        opacity: 0.85,
+        blur: 'radial-gradient(circle, black 30%, transparent 75%)',
     };
 
     return (
@@ -45,12 +45,12 @@ export function AboutUsSection() {
         >
             {/* z-[2] agar ellipse render di atas vignette hero yang z-[1] */}
             <div className='absolute inset-0 z-[2] pointer-events-none flex justify-center'>
-                <div 
+                <div
                     className='relative flex-shrink-0'
-                    style={{ 
-                        width: ellipseConfig.size, 
+                    style={{
+                        width: ellipseConfig.size,
                         height: ellipseConfig.size,
-                        top: ellipseConfig.topOffset 
+                        top: ellipseConfig.topOffset,
                     }}
                 >
                     <Image
@@ -61,7 +61,7 @@ export function AboutUsSection() {
                         style={{
                             opacity: ellipseConfig.opacity,
                             maskImage: ellipseConfig.blur,
-                            WebkitMaskImage: ellipseConfig.blur
+                            WebkitMaskImage: ellipseConfig.blur,
                         }}
                         quality={100}
                         priority
@@ -73,8 +73,8 @@ export function AboutUsSection() {
             <motion.div
                 className='relative z-[3] max-w-4xl w-full flex flex-col items-center justify-center text-center'
                 variants={staggerContainer}
-                initial="hidden"
-                animate={inView ? "visible" : "hidden"}
+                initial='hidden'
+                animate={inView ? 'visible' : 'hidden'}
             >
                 <motion.h2
                     variants={fadeInUp}
@@ -87,12 +87,16 @@ export function AboutUsSection() {
                     variants={fadeInUp}
                     className='font-raleway text-base md:text-xl text-gray-300 mb-10 leading-relaxed max-w-3xl'
                 >
-                    Lorem ipsum dolor sit amet consectetur adipiscing elit. Adipiscing elit quisque faucibus ex sapien vitae pellentesque. Vitae pellentesque sem placerat in id cursus mi.
+                    Every great symphony begins with a single note — and so do
+                    we. TEDxTelkom University is a stage where bold ideas find
+                    their voice, where thinkers, dreamers, and doers come
+                    together to spark conversations that matter. We don't just
+                    spread ideas. We orchestrate them.
                 </motion.p>
 
                 <motion.div variants={fadeInUp}>
-                    <Link 
-                        href='/about' 
+                    <Link
+                        href='/about'
                         className='relative group flex items-center justify-center w-[220px] h-[65px] md:w-[320px] md:h-[62px] transition-transform hover:scale-105 active:scale-95'
                     >
                         <Image

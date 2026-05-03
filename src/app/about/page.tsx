@@ -5,15 +5,34 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Image from 'next/image';
 import Countdown from '@/components/CountDown';
+import BackToTopButton from '@/components/BackToTopButton';
 
 export default function About() {
     const baseConductorCards = [
-        'IA',
-        'LICENSEE & CO-LICENSEE',
-        'PNE',
-        'LNO',
-        'PNE',
-        'MNE',
+        {
+            title: 'IA',
+            desc: 'The backbone of our organization. Keeping the team grounded, the spirit alive, and every document in order.',
+        },
+        {
+            title: 'LICENSEE & CO-LICENSEE',
+            desc: 'The conductors of it all. Leading the symphony from the front, steering every note toward one shared vision.',
+        },
+        {
+            title: 'PNE',
+            desc: 'The architects behind every external event. From planning to execution, they craft experiences worth remembering.',
+        },
+        {
+            title: 'LNO',
+            desc: 'No spotlight without a stage. LnO ensures every venue, every item, and every detail is exactly where it needs to be.',
+        },
+        {
+            title: 'PNE',
+            desc: 'Building bridges beyond the stage. They manage our finances, secure our sponsors, and strengthen our community ties.',
+        },
+        {
+            title: 'MNE',
+            desc: "Our digital front row. From the website to every post you've seen — MnE shapes how the world sees us.",
+        },
     ];
 
     const conductorCards = [
@@ -407,14 +426,10 @@ export default function About() {
                                             />
                                             <div className='relative z-10 flex h-full flex-col items-start justify-start px-8 pt-8'>
                                                 <span className='text-left font-westmeath text-6xl md:text-7xl font-bold text-white leading-tight'>
-                                                    {card}
+                                                    {card.title}
                                                 </span>
                                                 <p className='mt-8 max-w-[280px] text-left font-raleway text-2xl leading-9 text-white/90'>
-                                                    Lorem ipsum dolor sit amet
-                                                    consectetur adipiscing elit.
-                                                    Dolor sit amet consectetur
-                                                    adipiscing elit quisque
-                                                    faucibus.
+                                                    {card.desc}
                                                 </p>
                                             </div>
                                         </button>
@@ -426,6 +441,7 @@ export default function About() {
                 </section>
             </main>
             <Footer />
+            <BackToTopButton />
         </>
     );
 }

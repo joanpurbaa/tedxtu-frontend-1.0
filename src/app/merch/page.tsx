@@ -4,6 +4,7 @@ import Navbar from '@/components/Navbar';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import Footer from '@/components/Footer';
+import BackToTopButton from '@/components/BackToTopButton';
 
 const merch = Array.from({ length: 10 }, (_, i) => ({
     name: 'Merch Name',
@@ -61,7 +62,13 @@ export default function Merch() {
                             quality={100}
                         />
                     </div>
-                    <div className='absolute bottom-1/4 right-1/4 translate-x-1/2 translate-y-1/2' style={{ transform: 'translateX(50%) translateY(50%) rotate(20deg)' }}>
+                    <div
+                        className='absolute bottom-1/4 right-1/4 translate-x-1/2 translate-y-1/2'
+                        style={{
+                            transform:
+                                'translateX(50%) translateY(50%) rotate(20deg)',
+                        }}
+                    >
                         <Image
                             src='/about/crown.webp'
                             alt='Crown decoration'
@@ -73,9 +80,14 @@ export default function Merch() {
                     </div>
 
                     <div className='relative z-10 text-center'>
-                        <h1 className='font-westmeath text-6xl md:text-7xl text-white font-bold mb-6'>OUR MERCHANDISE</h1>
+                        <h1 className='font-westmeath text-6xl md:text-7xl text-white font-bold mb-6'>
+                            OUR MERCHANDISE
+                        </h1>
                         <p className='font-raleway text-lg md:text-xl text-white/80 max-w-2xl mx-auto'>
-                            Lorem ipsum dolor sit amet consectetur adipiscing elit. Adipiscing elit quisque faucibus ex sapien vitae pellentesque.
+                            Take a piece of the symphony home with you.
+                            TEDxTelkom University merchandise is more than just
+                            a souvenir — it's a statement. Wear the story, carry
+                            the idea.
                         </p>
                     </div>
                 </section>
@@ -99,7 +111,10 @@ export default function Merch() {
                         <div className='flex flex-col'>
                             <div className='grid justify-center grid-cols-[repeat(auto-fit,_minmax(256px,_0fr))] gap-x-4 gap-y-12 md:gap-y-16'>
                                 {merch.slice(0, 8).map((item, index) => (
-                                    <div key={index} className='flex flex-col items-start'>
+                                    <div
+                                        key={index}
+                                        className='flex flex-col items-start'
+                                    >
                                         <div className='relative w-64 h-64 rounded-3xl overflow-hidden mb-3'>
                                             <Image
                                                 src='/about/small-yellow-card.webp'
@@ -109,12 +124,15 @@ export default function Merch() {
                                                 className='object-cover object-bottom'
                                             />
                                         </div>
-                                        
+
                                         <div className='text-left'>
                                             <h3 className='font-westmeath text-2xl text-white font-bold'>
                                                 {item.name}
                                             </h3>
-                                            <p className='font-westmeath text-xl mt-2' style={{ color: '#DCA23E' }}>
+                                            <p
+                                                className='font-westmeath text-xl mt-2'
+                                                style={{ color: '#DCA23E' }}
+                                            >
                                                 {item.price}
                                             </p>
                                         </div>
@@ -124,7 +142,10 @@ export default function Merch() {
 
                             <div className='flex justify-center gap-x-4 mt-12 md:mt-16'>
                                 {merch.slice(8).map((item, index) => (
-                                    <div key={8 + index} className='flex flex-col items-start'>
+                                    <div
+                                        key={8 + index}
+                                        className='flex flex-col items-start'
+                                    >
                                         <div className='relative w-64 h-64 rounded-3xl overflow-hidden mb-3'>
                                             <Image
                                                 src='/about/small-yellow-card.webp'
@@ -134,12 +155,15 @@ export default function Merch() {
                                                 className='object-cover object-bottom'
                                             />
                                         </div>
-                                        
+
                                         <div className='text-left'>
                                             <h3 className='font-westmeath text-2xl text-white font-bold'>
                                                 {item.name}
                                             </h3>
-                                            <p className='font-westmeath text-xl mt-2' style={{ color: '#DCA23E' }}>
+                                            <p
+                                                className='font-westmeath text-xl mt-2'
+                                                style={{ color: '#DCA23E' }}
+                                            >
                                                 {item.price}
                                             </p>
                                         </div>
@@ -151,6 +175,7 @@ export default function Merch() {
                 </section>
             </main>
             <Footer />
+            <BackToTopButton />
         </>
     );
 }

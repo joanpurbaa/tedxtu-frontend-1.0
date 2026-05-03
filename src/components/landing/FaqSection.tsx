@@ -91,7 +91,7 @@ const FaqCard = ({ faq, index, isOpen, onToggle }: {
                     }}
                 >
                     <div className="pt-6 mt-4 border-t border-white/20">
-                        <p className="text-white text-sm md:text-base leading-relaxed font-normal font-raleway">
+                        <p className="text-white text-sm md:text-lg leading-relaxed font-normal font-raleway">
                             {faq.answer}
                         </p>
                     </div>
