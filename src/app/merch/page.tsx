@@ -6,17 +6,27 @@ import Image from 'next/image';
 import Footer from '@/components/Footer';
 import BackToTopButton from '@/components/BackToTopButton';
 
-const merch = Array.from({ length: 10 }, (_, i) => ({
-    name: 'Merch Name',
-    price: 'Rp100.000',
-}));
+const merch = [
+    { name: 'T-Shirt', price: 100000, img: '/merch/tshirt.png' },
+    { name: 'Shirt 2026', price: 100000, img: '/merch/shirt-2026.png' },
+    { name: 'Baseball Cap', price: 100000, img: '/merch/baseballCap.png' },
+    { name: 'Hat 2026', price: 100000, img: '/merch/hat-2026.png' },
+    { name: 'Keychain', price: 100000, img: '/merch/keychain.png' },
+    { name: 'Keychain 2026', price: 100000, img: '/merch/keychain-2026.png' },
+    { name: 'Lanyard 2026', price: 100000, img: '/merch/lanyard-2026.png' },
+    { name: 'Hand Fan', price: 100000, img: '/merch/handfan.png' },
+    { name: 'Sticker Pack', price: 100000, img: '/merch/stickerPack.png' },
+    { name: 'Bobbins Kit', price: 100000, img: '/merch/bobbinskit.png' },
+    { name: 'Fabric Kit', price: 100000, img: '/merch/fabricKit.png' },
+    { name: 'Stitches Kit', price: 100000, img: '/merch/stitchesKit.png' },
+    { name: 'Tapestry Kit', price: 100000, img: '/merch/tapestryKit.png' },
+];
 
 export default function Merch() {
     return (
-        <>
+        <section className='merchBackground'>
             <Navbar />
-
-            <main className='relative overflow-x-hidden overflow-y-clip bg-black'>
+            <main className='relative overflow-x-hidden overflow-y-clip'>
                 <div className='pointer-events-none absolute left-1/2 top-[45vh] z-0 -translate-x-1/2 -translate-y-1/2'>
                     <div className='w-[100vw] max-w-none'>
                         <Image
@@ -80,10 +90,26 @@ export default function Merch() {
                     </div>
 
                     <div className='relative z-10 text-center'>
-                        <h1 className='font-westmeath text-6xl md:text-7xl text-white font-bold mb-6'>
-                            OUR MERCHANDISE
-                        </h1>
-                        <p className='font-raleway text-lg md:text-xl text-white/80 max-w-2xl mx-auto'>
+                        <div className='relative z-10 text-center'>
+                            <div className='flex items-center justify-center gap-8'>
+                                <span className='font-westmeath text-6xl md:text-7xl text-white font-bold'>
+                                    OUR
+                                </span>
+                                <Image
+                                    src='/about/music-note.webp'
+                                    alt='Music note'
+                                    width={30}
+                                    height={30}
+                                    priority
+                                    quality={100}
+                                    style={{ transform: 'rotate(18deg)' }}
+                                />
+                                <span className='font-westmeath text-6xl md:text-7xl text-white font-bold'>
+                                    MERCHANDISE
+                                </span>
+                            </div>
+                        </div>
+                        <p className='font-raleway text-lg md:text-xl text-white/80 max-w-2xl mx-auto mt-5'>
                             Take a piece of the symphony home with you.
                             TEDxTelkom University merchandise is more than just
                             a souvenir — it's a statement. Wear the story, carry
@@ -93,7 +119,7 @@ export default function Merch() {
                 </section>
 
                 <section className='relative z-10 w-full bg-transparent text-white px-4 sm:px-6 md:px-14 py-20'>
-                    <div className='pointer-events-none absolute right-0 top-1/2 z-0 -translate-y-1/2 translate-x-[55%]'>
+                    {/* <div className='pointer-events-none absolute right-0 top-1/2 z-0 -translate-y-1/2 translate-x-[55%]'>
                         <div className='w-[120vw] max-w-none'>
                             <Image
                                 src='/about/red-ellipse.webp'
@@ -105,77 +131,66 @@ export default function Merch() {
                                 className='w-full h-auto'
                             />
                         </div>
-                    </div>
+                    </div> */}
 
-                    <div className='max-w-7xl mx-auto relative z-10'>
-                        <div className='flex flex-col'>
-                            <div className='grid justify-center grid-cols-[repeat(auto-fit,_minmax(256px,_0fr))] gap-x-4 gap-y-12 md:gap-y-16'>
-                                {merch.slice(0, 8).map((item, index) => (
-                                    <div
-                                        key={index}
-                                        className='flex flex-col items-start'
-                                    >
-                                        <div className='relative w-64 h-64 rounded-3xl overflow-hidden mb-3'>
-                                            <Image
-                                                src='/about/small-yellow-card.webp'
-                                                alt={item.name}
-                                                fill
-                                                quality={100}
-                                                className='object-cover object-bottom'
-                                            />
-                                        </div>
-
-                                        <div className='text-left'>
-                                            <h3 className='font-westmeath text-2xl text-white font-bold'>
-                                                {item.name}
-                                            </h3>
-                                            <p
-                                                className='font-westmeath text-xl mt-2'
-                                                style={{ color: '#DCA23E' }}
-                                            >
-                                                {item.price}
-                                            </p>
-                                        </div>
+                    <div className='mx-auto relative z-10'>
+                        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-12 md:gap-y-16 place-items-center'>
+                            {merch.map((item, index) => (
+                                <div
+                                    key={index}
+                                    className='flex flex-col items-start w-60'
+                                >
+                                    <div className='relative w-60 h-60 flex justify-center items-center rounded-3xl overflow-hidden mb-3'>
+                                        <Image
+                                            src={item.img}
+                                            alt={item.name}
+                                            fill
+                                            quality={100}
+                                            className='object-cover object-center'
+                                        />
                                     </div>
-                                ))}
-                            </div>
-
-                            <div className='flex justify-center gap-x-4 mt-12 md:mt-16'>
-                                {merch.slice(8).map((item, index) => (
-                                    <div
-                                        key={8 + index}
-                                        className='flex flex-col items-start'
-                                    >
-                                        <div className='relative w-64 h-64 rounded-3xl overflow-hidden mb-3'>
-                                            <Image
-                                                src='/about/small-yellow-card.webp'
-                                                alt={item.name}
-                                                fill
-                                                quality={100}
-                                                className='object-cover object-bottom'
-                                            />
-                                        </div>
-
-                                        <div className='text-left'>
-                                            <h3 className='font-westmeath text-2xl text-white font-bold'>
-                                                {item.name}
-                                            </h3>
-                                            <p
-                                                className='font-westmeath text-xl mt-2'
-                                                style={{ color: '#DCA23E' }}
-                                            >
-                                                {item.price}
-                                            </p>
-                                        </div>
+                                    <div className='text-left'>
+                                        <h3 className='font-westmeath text-2xl text-white font-bold'>
+                                            {item.name}
+                                        </h3>
+                                        <p
+                                            className='font-westmeath text-xl mt-2'
+                                            style={{ color: '#DCA23E' }}
+                                        >
+                                            Rp
+                                            {item.price.toLocaleString('id-ID')}
+                                        </p>
                                     </div>
-                                ))}
-                            </div>
+                                </div>
+                            ))}
                         </div>
+                    </div>
+                    <div className='pointer-events-none absolute -left-[450] bottom-0 z-[5] overflow-hidden blur-md'>
+                        <Image
+                            src='/about/Mist.webp'
+                            alt='Mist decoration'
+                            width={1200}
+                            height={800}
+                            priority={false}
+                            quality={100}
+                            className='w-[85vw] max-w-[1020px] h-auto'
+                        />
+                    </div>
+                    <div className='pointer-events-none absolute -right-[350px] bottom-0 z-[5] overflow-hidden blur-md'>
+                        <Image
+                            src='/about/Mist.webp'
+                            alt='Mist decoration'
+                            width={1200}
+                            height={800}
+                            priority={false}
+                            quality={100}
+                            className='w-[85vw] max-w-[1020px] h-auto'
+                        />
                     </div>
                 </section>
             </main>
             <Footer />
             <BackToTopButton />
-        </>
+        </section>
     );
 }
