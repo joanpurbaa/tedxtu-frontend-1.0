@@ -130,27 +130,27 @@ export default function About() {
     const baseConductorCards = [
         {
             title: 'IA',
-            desc: 'Lorem ipsum dolor sit amet consectetur adipiscing elit. Dolor sit amet consectetur adipiscing elit quisque faucibus.',
+            desc: 'The backbone of our organization. Keeping the team grounded, the spirit alive, and every document in order.',
         },
         {
             title: 'LICENSEE &\nCO-LICENSEE',
-            desc: 'Lorem ipsum dolor sit amet consectetur adipiscing elit. Dolor sit amet consectetur adipiscing elit quisque faucibus.',
+            desc: 'The conductors of it all. Leading the symphony from the front, steering every note toward one shared vision.',
         },
         {
             title: 'PNE',
-            desc: 'Lorem ipsum dolor sit amet consectetur adipiscing elit. Dolor sit amet consectetur adipiscing elit quisque faucibus.',
+            desc: 'The architects behind every external event. From planning to execution, they craft experiences worth remembering.',
         },
         {
             title: 'LNO',
-            desc: 'Lorem ipsum dolor sit amet consectetur adipiscing elit. Dolor sit amet consectetur adipiscing elit quisque faucibus.',
+            desc: 'No spotlight without a stage. LnO ensures every venue, every item, and every detail is exactly where it needs to be.',
         },
         {
-            title: 'PNE',
-            desc: 'Lorem ipsum dolor sit amet consectetur adipiscing elit. Dolor sit amet consectetur adipiscing elit quisque faucibus.',
+            title: 'PNF',
+            desc: 'Building bridges beyond the stage. They manage our finances, secure our sponsors, and strengthen our community ties.',
         },
         {
             title: 'MNE',
-            desc: 'Lorem ipsum dolor sit amet consectetur adipiscing elit. Dolor sit amet consectetur adipiscing elit quisque faucibus.',
+            desc: "Our digital front row. From the website to every post you've seen — MnE shapes how the world sees us.",
         },
     ];
 
@@ -476,7 +476,7 @@ export default function About() {
                                 whileInView='visible'
                                 viewport={{ once: true, amount: 0.35 }}
                             >
-                                "LOREM IPSUM DOLOR SIT AMET"
+                                "Creating the Symphony"
                             </motion.h3>
                             <motion.p
                                 className='font-raleway text-base md:text-xl leading-9 text-white/80'
@@ -490,14 +490,13 @@ export default function About() {
                                     delay: 0.12,
                                 }}
                             >
-                                Lorem ipsum dolor sit amet consectetur
-                                adipiscing elit. Adipiscing elit quisque
-                                faucibus ex sapien vitae pellentesque. Vitae
-                                pellentesque sem placerat in id cursus mi.
-                                Cursus mi pretium tellus duis convallis tempus
-                                leo. Tempus leo eu aenean sed diam urna tempor.
-                                Urna tempor pulvinar vivamus fringilla lacus nec
-                                metus.
+                                A symphony is never born from a single hand. It
+                                takes every note, every instrument, every voice
+                                — working in harmony toward something greater
+                                than itself. Creating the Symphony is our
+                                reminder that ideas, like music, are most
+                                powerful when they're built together. This is
+                                where it all begins.
                             </motion.p>
                         </div>
                     </div>

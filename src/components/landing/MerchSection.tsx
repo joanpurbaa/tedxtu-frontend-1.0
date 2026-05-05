@@ -153,7 +153,7 @@ export function MerchSection() {
 
            {/* 4. SEE MORE BUTTON */}
             <motion.div 
-                className='absolute bottom-6 right-8 md:bottom-10 md:right-20 z-[50]'
+                className='absolute bottom-6 right-8 md:bottom-10 md:right-20'
                 initial={{ opacity: 0, y: 20 }}
                 animate={inView ? { opacity: 1, y: 0 } : {}}
                 transition={{ delay: 0.8, duration: 0.5 }}
