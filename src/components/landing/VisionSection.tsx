@@ -90,7 +90,7 @@ export function VisionSection() {
                         `} />
                     </span>
                     <span className='flex items-center font-[family-name:var(--font-playfair-display)] lg:text-3xl italic font-normal mx-4 lg:mx-4 inline-block animate-pulse-slow'>
-                        And
+                        &
                     </span>
                     <span className="relative">
                         Mission

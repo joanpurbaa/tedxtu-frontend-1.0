@@ -6,6 +6,7 @@ import {
     Cinzel_Decorative,
     Playfair_Display,
     Raleway,
+    Great_Vibes,
 } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from '@/components/theme-provider';
@@ -40,6 +41,11 @@ const cinzelDecorative = Cinzel_Decorative({
     weight: ['400', '700', '900'],
 });
 
+const greatVibes = Great_Vibes({
+    variable: '--font-great-vibes',
+    subsets: ['latin'],
+    weight: ['400'],
+});
 
 const cinzelNormal = Cinzel({
     variable: '--font-cinzel',
@@ -62,7 +68,7 @@ export default function RootLayout({
         <html lang='en' suppressHydrationWarning>
             <body
                 suppressHydrationWarning
-                className={`${geistSans.variable} ${raleway.variable} ${cinzelNormal.variable} ${playfairDisplay.variable} ${geistMono.variable} ${cinzelDecorative.className}  antialiased`}
+                className={`${geistSans.variable} ${raleway.variable} ${cinzelNormal.variable} ${playfairDisplay.variable} ${geistMono.variable} ${cinzelDecorative.className} ${greatVibes.variable} antialiased`}
             >
                 <ThemeProvider
                     attribute='class'
