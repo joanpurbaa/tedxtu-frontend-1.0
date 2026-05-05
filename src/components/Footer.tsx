@@ -13,7 +13,7 @@ export default function Footer() {
                     <div className='flex flex-col items-start gap-6'>
                         <div className='w-48 h-auto'>
                             <Image
-                                src='/logo.png'
+                                src='/logo.webp'
                                 alt='TEDxTelkom University logo'
                                 width={172}
                                 height={43}

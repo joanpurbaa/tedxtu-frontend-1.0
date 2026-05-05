@@ -10,8 +10,8 @@ const buttonVariants = cva(
   {
     variants: {
         variant: {
-          red: "bg-[url('/buttons/red-theme.png')] bg-cover text-white",
-          gold: "bg-[url('/buttons/green-theme.png')] bg-[length:100%_100%] text-[#A66D03] bg-no-repeat bg-center hover:brightness-110 bg-clip-padding",
+          red: "bg-[url('/buttons/red-theme.webp')] bg-cover text-white",
+          gold: "bg-[url('/buttons/green-theme.webp')] bg-[length:100%_100%] text-[#A66D03] bg-no-repeat bg-center hover:brightness-110 bg-clip-padding",
         },
         size: {
           default: 'h-12 px-6 text-sm',

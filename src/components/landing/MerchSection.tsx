@@ -31,10 +31,10 @@ export function MerchSection() {
     });
 
     const merchItems = [
-        '/merch/keychain-2026.png',
-        '/merch/shirt-2026.png',
-        '/merch/hat-2026.png',
-        '/merch/lanyard-2026.png',
+        '/merch/keychain-2026.webp',
+        '/merch/shirt-2026.webp',
+        '/merch/hat-2026.webp',
+        '/merch/lanyard-2026.webp',
     ];
 
     const duplicatedItems = [...merchItems, ...merchItems];
@@ -160,7 +160,7 @@ export function MerchSection() {
             >
                 <Link href="/merch" className="relative group flex items-center justify-center w-[220px] h-[65px] md:w-[320px] md:h-[62px] transition-transform hover:scale-105 active:scale-95">
                     <Image 
-                        src="/about/get-ticket-button.png"
+                        src="/about/get-ticket-button.webp"
                         alt="See More Button"
                         fill
                         className="object-contain"

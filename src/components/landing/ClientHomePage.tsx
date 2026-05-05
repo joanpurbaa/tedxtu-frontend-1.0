@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { HeroSection, FaqSection, VisionSection, AboutUsSection, EventSection, MerchSection } from '@/components/landing';
+import { HeroSection, FaqSection, AboutUsSection, EventSection, MerchSection } from '@/components/landing';
 import Countdown from '@/components/CountDown';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';

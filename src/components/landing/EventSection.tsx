@@ -71,7 +71,7 @@ export function EventSection() {
             {/* LAYER 1: Background (z-0) */}
             <div className='absolute inset-0 z-0 overflow-hidden'>
                 <Image
-                    src='/gallery/gallery-12.png'
+                    src='/gallery/gallery-12.webp'
                     alt='Event Background'
                     fill
                     className='object-cover opacity-60'
@@ -120,7 +120,7 @@ export function EventSection() {
             <div className='absolute inset-0 z-[20] pointer-events-none'>
                 <div className='absolute top-[18%] left-[12%] md:top-[22%] md:left-[25%] -translate-x-1/2 -translate-y-1/2'>
                     <Image
-                        src='/gallery/gallery-10.png'
+                        src='/gallery/gallery-10.webp'
                         alt=''
                         width={smallGallerySize}
                         height={smallGallerySize}
@@ -129,7 +129,7 @@ export function EventSection() {
                 </div>
                 <div className='absolute top-[18%] right-[12%] md:top-[22%] md:right-[25%] translate-x-1/2 -translate-y-1/2'>
                     <Image
-                        src='/gallery/gallery-8.jpg'
+                        src='/gallery/gallery-8.webp'
                         alt=''
                         width={largeGallerySize}
                         height={largeGallerySize}
@@ -138,7 +138,7 @@ export function EventSection() {
                 </div>
                 <div className='absolute bottom-[18%] left-[12%] md:bottom-[22%] md:left-[25%] -translate-x-1/2 translate-y-1/2'>
                     <Image
-                        src='/gallery/gallery-9.jpg'
+                        src='/gallery/gallery-9.webp'
                         alt=''
                         width={largeGallerySize}
                         height={largeGallerySize}
@@ -147,7 +147,7 @@ export function EventSection() {
                 </div>
                 <div className='absolute bottom-[18%] right-[12%] md:bottom-[22%] md:right-[25%] translate-x-1/2 translate-y-1/2'>
                     <Image
-                        src='/gallery/gallery-11.png'
+                        src='/gallery/gallery-11.webp'
                         alt=''
                         width={smallGallerySize}
                         height={smallGallerySize}
@@ -189,7 +189,7 @@ export function EventSection() {
                         className='relative group flex items-center justify-center w-[220px] h-[60px] md:w-[320px] md:h-[65px] transition-transform hover:scale-105 active:scale-95 mx-auto'
                     >
                         <Image
-                            src='/about/get-ticket-button.png'
+                            src='/about/get-ticket-button.webp'
                             alt=''
                             fill
                             className='object-contain'

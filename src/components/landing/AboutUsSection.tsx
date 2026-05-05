@@ -100,7 +100,7 @@ export function AboutUsSection() {
                         className='relative group flex items-center justify-center w-[220px] h-[65px] md:w-[320px] md:h-[62px] transition-transform hover:scale-105 active:scale-95'
                     >
                         <Image
-                            src='/about/get-ticket-button.png'
+                            src='/about/get-ticket-button.webp'
                             alt='Get to know us'
                             fill
                             className='object-contain'

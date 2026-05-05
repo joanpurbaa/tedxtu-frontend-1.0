@@ -1,12 +1,14 @@
-import type { NextConfig } from "next";
+import bundleAnalyzer from '@next/bundle-analyzer';
+import type { NextConfig } from 'next';
+
+const withBundleAnalyzer = bundleAnalyzer({
+    enabled: process.env.ANALYZE === 'true',
+});
 
 const nextConfig: NextConfig = {
-  /* config options here */
-  eslint: {
-    // Warning: This allows production builds to successfully complete even if
-    // your project has ESLint errors.
-    ignoreDuringBuilds: true,
-  },
+    eslint: {
+        ignoreDuringBuilds: true,
+    },
 };
 
-export default nextConfig;
+export default withBundleAnalyzer(nextConfig);

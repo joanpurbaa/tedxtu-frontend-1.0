@@ -41,7 +41,7 @@ export default function Navbar() {
                     <div className='flex flex-col items-start gap-6 py-6'>
                         <Link href='/' className='flex items-center gap-2' prefetch={false}>
                             <Image
-                                src='/logo.png'
+                                src='/logo.webp'
                                 alt='TEDxTelkom University logo'
                                 width={120}
                                 height={30}
@@ -58,7 +58,7 @@ export default function Navbar() {
             </Sheet>
             <Link href='/' className='mr-6 hidden lg:flex items-center' prefetch={false}>
                 <Image
-                    src='/logo.png'
+                    src='/logo.webp'
                     alt='TEDxTelkom University logo'
                     width={172}
                     height={43}

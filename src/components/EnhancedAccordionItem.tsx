@@ -19,8 +19,8 @@ export default function EnhancedAccordionItem({ faq, index, isExpanded, setExpan
         ? 'bg-gradient-to-r from-[#951900] to-[#CE2406]'
         : 'bg-gradient-to-r from-[#2E2E2E] to-[#8E8E8E]';
     const bgImage = isEven
-        ? '/faq/gold.png'
-        : '/faq/red.png';
+        ? '/faq/gold.webp'
+        : '/faq/red.webp';
     const textColor = isEven ? 'text-black' : 'text-white';
     
     const itemRef = useRef(null);

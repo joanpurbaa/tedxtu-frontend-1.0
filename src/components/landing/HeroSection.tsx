@@ -190,7 +190,7 @@ export function HeroSection() {
                         <span className='font-westmeath text-5xl md:text-6xl lg:text-7xl text-white font-normal'>
                             own
                         </span>
-                        <Image src='/about/single-golden-note.png' alt='Golden note' width={30} height={30} priority quality={100} />
+                        <Image src='/about/single-golden-note.webp' alt='Golden note' width={30} height={30} priority quality={100} />
                         <span className='font-westmeath text-5xl md:text-6xl lg:text-7xl text-white font-normal'>
                             tapestry
                         </span>
@@ -204,7 +204,7 @@ export function HeroSection() {
                 <div className='flex flex-col sm:flex-row justify-center items-center gap-2 px-4 mt-4'>
                     <Link href="/event" className='relative group flex items-center justify-center w-[220px] h-[65px] md:w-[320px] md:h-[62px] transition-transform hover:scale-105 active:scale-95'>
                         <Image
-                            src='/about/get-ticket-button.png'
+                            src='/about/get-ticket-button.webp'
                             alt='Get your ticket now'
                             fill
                             className='object-contain'
@@ -217,7 +217,7 @@ export function HeroSection() {
 
                     <Link href="/merch" className='relative group flex items-center justify-center w-[180px] h-[60px] md:w-[220px] md:h-[62px] transition-transform hover:scale-105 active:scale-95'>
                         <Image
-                            src='/about/merch-button.png'
+                            src='/about/merch-button.webp'
                             alt='Our merch'
                             fill
                             className='object-contain'

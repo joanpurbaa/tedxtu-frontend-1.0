@@ -487,7 +487,7 @@ export default function About() {
                         <div className='space-y-4 sm:space-y-5 md:space-y-6'>
                             <div className='relative w-full overflow-hidden'>
                                 <Image
-                                    src='/about/long-red-card.png'
+                                    src='/about/long-red-card.webp'
                                     alt='Vision card background'
                                     width={1200}
                                     height={280}
@@ -511,7 +511,7 @@ export default function About() {
 
                             <div className='relative w-full overflow-hidden'>
                                 <Image
-                                    src='/about/long-yellow-card.png'
+                                    src='/about/long-yellow-card.webp'
                                     alt='Mission card background'
                                     width={1200}
                                     height={280}

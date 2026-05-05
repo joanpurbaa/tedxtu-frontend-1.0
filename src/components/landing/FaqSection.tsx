@@ -44,7 +44,7 @@ const FaqCard = ({ faq, index, isOpen, onToggle }: {
     faq: FaqItem, index: number, isOpen: boolean, onToggle: () => void 
 }) => {
     const isEven = index % 2 === 0;
-    const bgImage = isEven ? "/faq/faq-yellow-card.png" : "/faq/faq-red-card.png";
+    const bgImage = isEven ? "/faq/faq-yellow-card.webp" : "/faq/faq-red-card.webp";
     const borderColor = isEven ? "border-[#8A0E04]" : "border-[#DCA23E]";
     const bgFallback = isEven ? "#D4930F" : "#7A0A04";
 
@@ -164,7 +164,7 @@ export function FaqSection() {
                 >
                      <div className="relative w-full h-full">
                         <Image
-                            src='/faq/giant-golden-note.png'
+                            src='/faq/giant-golden-note.webp'
                             alt='Music note decoration'
                             fill
                             className='object-contain'

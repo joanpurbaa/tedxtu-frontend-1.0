@@ -7,19 +7,19 @@ import Footer from '@/components/Footer';
 import BackToTopButton from '@/components/BackToTopButton';
 
 const merch = [
-    { name: 'T-Shirt', price: 100000, img: '/merch/tshirt.png' },
-    { name: 'Shirt 2026', price: 100000, img: '/merch/shirt-2026.png' },
-    { name: 'Baseball Cap', price: 100000, img: '/merch/baseballCap.png' },
-    { name: 'Hat 2026', price: 100000, img: '/merch/hat-2026.png' },
-    { name: 'Keychain', price: 100000, img: '/merch/keychain.png' },
-    { name: 'Keychain 2026', price: 100000, img: '/merch/keychain-2026.png' },
-    { name: 'Lanyard 2026', price: 100000, img: '/merch/lanyard-2026.png' },
-    { name: 'Hand Fan', price: 100000, img: '/merch/handfan.png' },
-    { name: 'Sticker Pack', price: 100000, img: '/merch/stickerPack.png' },
-    { name: 'Bobbins Kit', price: 100000, img: '/merch/bobbinskit.png' },
-    { name: 'Fabric Kit', price: 100000, img: '/merch/fabricKit.png' },
-    { name: 'Stitches Kit', price: 100000, img: '/merch/stitchesKit.png' },
-    { name: 'Tapestry Kit', price: 100000, img: '/merch/tapestryKit.png' },
+    { name: 'T-Shirt', price: 100000, img: '/merch/tshirt.webp' },
+    { name: 'Shirt 2026', price: 100000, img: '/merch/shirt-2026.webp' },
+    { name: 'Baseball Cap', price: 100000, img: '/merch/baseballCap.webp' },
+    { name: 'Hat 2026', price: 100000, img: '/merch/hat-2026.webp' },
+    { name: 'Keychain', price: 100000, img: '/merch/keychain.webp' },
+    { name: 'Keychain 2026', price: 100000, img: '/merch/keychain-2026.webp' },
+    { name: 'Lanyard 2026', price: 100000, img: '/merch/lanyard-2026.webp' },
+    { name: 'Hand Fan', price: 100000, img: '/merch/handfan.webp' },
+    { name: 'Sticker Pack', price: 100000, img: '/merch/stickerPack.webp' },
+    { name: 'Bobbins Kit', price: 100000, img: '/merch/bobbinskit.webp' },
+    { name: 'Fabric Kit', price: 100000, img: '/merch/fabricKit.webp' },
+    { name: 'Stitches Kit', price: 100000, img: '/merch/stitchesKit.webp' },
+    { name: 'Tapestry Kit', price: 100000, img: '/merch/tapestryKit.webp' },
 ];
 
 export default function Merch() {
@@ -133,12 +133,12 @@ export default function Merch() {
                         </div>
                     </div> */}
 
-                    <div className='mx-auto relative z-10'>
+                    <div className='mx-60 relative z-10'>
                         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-12 md:gap-y-16 place-items-center'>
                             {merch.map((item, index) => (
                                 <div
                                     key={index}
-                                    className='flex flex-col items-start w-60'
+                                    className='flex flex-col items-center bg-[#7e5d5d31] px-5 py-5 rounded-xl border border-[#FFB41E] backdrop-blur-xs'
                                 >
                                     <div className='relative w-60 h-60 flex justify-center items-center rounded-3xl overflow-hidden mb-3'>
                                         <Image
@@ -149,8 +149,8 @@ export default function Merch() {
                                             className='object-cover object-center'
                                         />
                                     </div>
-                                    <div className='text-left'>
-                                        <h3 className='font-westmeath text-2xl text-white font-bold'>
+                                    <div className='text-center'>
+                                        <h3 className='font-westmeath text-2xl text-white'>
                                             {item.name}
                                         </h3>
                                         <p

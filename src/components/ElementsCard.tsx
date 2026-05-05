@@ -8,8 +8,8 @@ const cardVariants = cva(
   {
     variants: {
       variant: {
-        red: "bg-[url('/card/bg-card-vision.png')] bg-cover text-white",
-        black: "bg-[url('/card/bg-card-mission.png')] bg-cover text-white",
+        red: "bg-[url('/card/bg-card-vision.webp')] bg-cover text-white",
+        black: "bg-[url('/card/bg-card-mission.webp')] bg-cover text-white",
       },
       size: {
         default: 'p-6',
