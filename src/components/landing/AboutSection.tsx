@@ -158,11 +158,23 @@ export function AboutSection() {
                     </span>
                 </motion.h2>
 
+                <motion.p
+                    className='mt-8 max-w-5xl text-center font-raleway text-2xl font-medium leading-relaxed text-white/90'
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={mainInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                    transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+                >
+                    Every great symphony begins with a single note — and so do we.
+                    TEDxTelkom University is a stage where bold ideas find their voice,
+                    where thinkers, dreamers, and doers come together to spark conversations
+                    that matter. We don&apos;t just spread ideas. We orchestrate them.
+                </motion.p>
+
                 {/* Full width accordion at the top with staggered animation */}
 
                 {/* Two-column grid layout for additional accordions */}
                 <motion.div
-                    className='grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 w-full mt-4 sm:mt-6'
+                    className='grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 w-full mt-10 sm:mt-12'
                     variants={staggerContainer}
                     initial="hidden"
                     animate={mainInView ? "visible" : "hidden"} /*  */
