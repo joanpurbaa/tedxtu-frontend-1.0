@@ -185,3 +185,10 @@ body {
       -ms-overflow-style: none;  /* IE and Edge */
       scrollbar-width: none;  /* Firefox */
   }
+
+  .merchBackground {
+    background-image: url('/merch/background.webp');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+  }

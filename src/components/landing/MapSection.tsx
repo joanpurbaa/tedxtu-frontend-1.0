@@ -1,7 +1,7 @@
 'use client'
 import React, { useState, useEffect } from 'react';
 import { MapPin, Calendar, Clock, ArrowRight, MapIcon, Navigation, ExternalLink } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 
 interface MapSectionProps {
   title?: string;
@@ -28,7 +28,7 @@ export function MapSection({
     ];
 
     // Animation variants
-    const containerVariants = {
+    const containerVariants: Variants = {
         hidden: { opacity: 0 },
         visible: { 
             opacity: 1,
@@ -39,38 +39,38 @@ export function MapSection({
         }
     };
 
-    const itemVariants = {
+    const itemVariants: Variants = {
         hidden: { y: 20, opacity: 0 },
         visible: { 
             y: 0, 
             opacity: 1,
-            transition: { duration: 0.6, ease: "easeOut" }
+            transition: { duration: 0.6, ease: "easeOut" as const }
         }
     };
 
-    const floatVariants = {
+    const floatVariants: Variants = {
         float: {
             y: [0, -10, 0],
             transition: {
                 duration: 4,
                 repeat: Infinity,
-                ease: "easeInOut"
+                ease: "easeInOut" as const
             }
         }
     };
 
-    const pulseVariants = {
+    const pulseVariants: Variants = {
         pulse: {
             scale: [1, 1.05, 1],
             transition: {
                 duration: 3,
                 repeat: Infinity,
-                ease: "easeInOut"
+                ease: "easeInOut" as const
             }
         }
     };
 
-    const fadeInVariants = {
+    const fadeInVariants: Variants = {
         hidden: { opacity: 0, scale: 0.9 },
         visible: { 
             opacity: 1, 

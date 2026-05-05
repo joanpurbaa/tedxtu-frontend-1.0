@@ -1,335 +1,219 @@
 'use client'
-import React, { useEffect, useRef } from "react";
-import {
-    Accordion,
-    AccordionContent,
-    AccordionItem,
-    AccordionTrigger,
-} from '@/components/ui/accordion';
-import { motion, useAnimation, useInView } from "framer-motion";
+import React, { useState } from "react";
+import Image from 'next/image';
+import { motion } from "framer-motion";
 
-// Decorative elements to float around the section
-const decorElements = [
-    { src: "/faq/vector-1.png", top: "5%", left: "2%", size: "w-16 h-16" },
-    { src: "/faq/vector-2.png", top: "15%", right: "5%", size: "w-20 h-20" },
-    { src: "/faq/vector-1.png", bottom: "20%", left: "8%", size: "w-14 h-14" },
-    { src: "/faq/vector-2.png", bottom: "20%", right: "5%", size: "w-16 h-16" },
-];
-
-const faqData = [
-    {
-        question: 'Apa itu TEDx Telkom University?',
-        answer: 'TeDx Telkom University adalah sebuah organisasi yang didirikan oleh mahasiswa Telkom University untuk berbagi ide-ide inovatif dan inspiratif melalui format TEDx.',
-    },
-    {
-        question: 'Kapan Acara Ini Dilaksanakan?',
-        answer: 'Main event TEDx Telkom University akan dilaksanakan pada tanggal 4 Mei 2024. Acara ini akan dimulai pukul 12.00 WIB.',
-    },
-    {
-        question: 'Siapa Saja yang Bisa Mengikuti Acara Ini?',
-        answer: 'Acara ini terbuka untuk umum, baik mahasiswa Telkom University maupun masyarakat umum yang tertarik dengan tema yang diangkat.',
-    },
-    {
-        question: 'Bagaimana Cara Mendaftar?',
-        answer: 'Untuk mendaftar, kunjungi situs form resmi kami di yang tercnatum pada instagram tedxtelkomuniversity dan ikuti petunjuk pendaftaran yang tersedia.',
-    },
-    {
-        question: 'Apa Manfaat Mengikuti Acara Ini?',
-        answer: 'Mengikuti acara ini akan memberikan kesempatan untuk mendengarkan pembicara inspiratif, memperluas wawasan, dan berinteraksi dengan komunitas yang memiliki minat yang sama.',
-    },
-];
-
-// Animated decorative element component
-interface FloatingElementProps {
-    src: string;
-    style: React.CSSProperties;
-    size: string;
-    delay?: number;
-}
-
-const FloatingElement = ({ src, style, size, delay = 0 }: FloatingElementProps) => {
-    return (
-        <motion.img
-            src={src}
-            alt="Decorative element"
-            className={`absolute ${size} z-10 hidden md:block`}
-            style={style}
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{
-                opacity: 1,
-                scale: 1,
-                y: [0, -15, 0],
-                rotate: [0, delay % 2 === 0 ? 10 : -10, 0]
-            }}
-            transition={{
-                opacity: { duration: 0.5, delay: delay * 0.2 },
-                scale: { duration: 0.5, delay: delay * 0.2 },
-                y: {
-                    repeat: Infinity,
-                    duration: 5 + delay,
-                    ease: "easeInOut"
-                },
-                rotate: {
-                    repeat: Infinity,
-                    duration: 7 + delay,
-                    ease: "easeInOut"
-                }
-            }}
-        />
-    );
-};
-
-// Animated section heading
-const AnimatedHeading = () => {
-    const controls = useAnimation();
-    const ref = useRef(null);
-    const isInView = useInView(ref, { once: true, amount: 0.3 });
-
-    useEffect(() => {
-        if (isInView) {
-            controls.start("visible");
-        }
-    }, [controls, isInView]);
-
-    return (
-        <motion.h2
-            ref={ref}
-            className="text-center mb-12 relative"
-            initial="hidden"
-            animate={controls}
-            variants={{
-                hidden: {},
-                visible: {
-                    transition: {
-                        staggerChildren: 0.2
-                    }
-                }
-            }}
-        >
-            <motion.span
-                className="text-white text-4xl md:text-5xl font-bold block"
-                variants={{
-                    hidden: { opacity: 0, y: 20 },
-                    visible: {
-                        opacity: 1,
-                        y: 0,
-                        transition: { duration: 0.5 }
-                    }
-                }}
-            >
-                Frequently
-            </motion.span>
-            <motion.span
-                className="text-white text-4xl md:text-5xl font-bold block"
-                variants={{
-                    hidden: { opacity: 0, y: 20 },
-                    visible: {
-                        opacity: 1,
-                        y: 0,
-                        transition: { duration: 0.5, delay: 0.2 }
-                    }
-                }}
-            >
-                <span className="font-[family-name:var(--font-playfair-display)] italic font-normal">
-                    Asked
-                </span>{' '}
-                Question
-            </motion.span>
-
-            {/* Animated underline */}
-            <motion.div
-                className="h-1 w-24 bg-gradient-to-r from-[#951900] to-[#CE2406] mx-auto mt-4"
-                initial={{ width: 0 }}
-                animate={{ width: "6rem" }}
-                transition={{ delay: 0.8, duration: 0.8 }}
-            />
-        </motion.h2>
-    );
-};
-
-// Enhanced FAQ Item component
-// Define the FAQ type
-interface Faq {
+interface FaqItem {
     question: string;
     answer: string;
 }
 
-const EnhancedAccordionItem = ({ faq, index, isExpanded, setExpanded }: { faq: Faq; index: number; isExpanded: string | undefined; setExpanded: React.Dispatch<React.SetStateAction<string | undefined>> }) => {
+const faqData: FaqItem[] = [
+    {
+        question: 'APA ITU TEDX TELKOM UNIVERSITY?',
+        answer: 'TeDx Telkom University adalah sebuah organisasi yang didirikan oleh mahasiswa Telkom University untuk berbagi ide-ide inovatif dan inspiratif melalui format TEDx.',
+    },
+    {
+        question: 'BAGAIMANA CARA MENDAFTAR?',
+        answer: 'Pendaftaran biasanya dibuka melalui kanal resmi kami. Pastikan kamu memantau Instagram @tedxtelkomuniversity untuk informasi terbaru mengenai pendaftaran speaker maupun volunteer.',
+    },
+    {
+        question: 'APA MANFAAT MENGIKUTI ACARA INI?',
+        answer: 'Kamu akan mendapatkan wawasan baru dari berbagai perspektif speaker, memperluas jejaring profesional, dan menjadi bagian dari komunitas global yang berfokus pada penyebaran ide-ide berharga.',
+    },
+];
+
+const MorphingIcon = ({ isOpen }: { isOpen: boolean }) => {
+    return (
+        <div className="relative w-10 h-10 flex items-center justify-center border-2 border-white rounded-full">
+            <div className="absolute w-5 h-[2px] bg-white rounded-full" />
+            <motion.div
+                initial={false}
+                animate={{ 
+                    rotate: isOpen ? 90 : 0,
+                    opacity: isOpen ? 0 : 1 
+                }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+                className="absolute w-[2px] h-5 bg-white rounded-full"
+            />
+        </div>
+    );
+};
+
+const FaqCard = ({ faq, index, isOpen, onToggle }: { 
+    faq: FaqItem, index: number, isOpen: boolean, onToggle: () => void 
+}) => {
     const isEven = index % 2 === 0;
-    const gradient = isEven
-        ? 'bg-gradient-to-r from-[#951900] to-[#CE2406]'
-        : 'bg-gradient-to-r from-[#2E2E2E] to-[#8E8E8E]';
-    const bgImage = isEven
-        ? '/faq/gold.png'
-        : '/faq/red.png';
-    const textColor = isEven ? 'text-black' : 'text-white';
-
-    const itemRef = useRef(null);
-    const isInView = useInView(itemRef, { once: true, amount: 0.3 });
-    const controls = useAnimation();
-
-    useEffect(() => {
-        if (isInView) {
-            controls.start("visible");
-        }
-    }, [controls, isInView]);
+    const bgImage = isEven ? "/faq/faq-yellow-card.webp" : "/faq/faq-red-card.webp";
+    const borderColor = isEven ? "border-[#8A0E04]" : "border-[#DCA23E]";
+    const bgFallback = isEven ? "#D4930F" : "#7A0A04";
 
     return (
-        <motion.div
-            ref={itemRef}
-            initial="hidden"
-            animate={controls}
-            variants={{
-                hidden: { opacity: 0, x: index % 2 === 0 ? -50 : 50 },
-                visible: {
-                    opacity: 1,
-                    x: 0,
-                    transition: {
-                        duration: 0.6,
-                        delay: index * 0.1,
-                        ease: "easeOut"
-                    }
-                }
+        <div
+            onClick={onToggle}
+            className={`relative mb-6 cursor-pointer border-[4px] ${borderColor} overflow-hidden w-full hover:scale-[1.01] active:scale-[0.99] transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]`}
+            style={{ 
+                backgroundColor: bgFallback,
+                // FIX: Gunakan radius yang lebih kecil saat terbuka agar tidak terlihat aneh/goofy
+                borderRadius: isOpen ? '48px' : '100px', 
             }}
-            whileHover={{ scale: 1.02 }}
-            transition={{ duration: 0.3 }}
         >
-            <AccordionItem
-                value={`item-${index}`}
-                className="relative rounded-[30px] sm:rounded-[40px] md:rounded-[48px] lg:rounded-[60px] overflow-hidden mb-6"
-            >
-                <motion.div
-                    className={`p-[3px] rounded-[30px] sm:rounded-[40px] md:rounded-[48px] lg:rounded-[60px] `}
-                    whileHover={{
-                        boxShadow: isEven
-                            ? "0 0 15px rgba(255, 193, 7, 0.5)"
-                            : "0 0 15px rgba(220, 53, 69, 0.5)"
+            {/* Background Texture Overlay */}
+            <div
+                className="absolute z-0"
+                style={{
+                    inset: '-15px',
+                    backgroundImage: `url(${bgImage})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    backgroundRepeat: 'no-repeat',
+                }}
+            />
+
+            <div className={`relative z-10 px-8 md:px-12 lg:px-16 transition-all duration-500 ${isOpen ? 'py-10' : 'py-5'}`}>
+                <div className="flex items-center justify-between gap-6">
+                    <h3 className="text-lg md:text-xl font-normal text-white uppercase tracking-wider leading-tight font-westmeath">
+                        {faq.question}
+                    </h3>
+                    <div className="flex-shrink-0">
+                        <MorphingIcon isOpen={isOpen} />
+                    </div>
+                </div>
+
+                <div
+                    style={{
+                        maxHeight: isOpen ? '500px' : '0px',
+                        opacity: isOpen ? 1 : 0,
+                        overflow: 'hidden',
+                        transition: isOpen
+                            ? 'max-height 0.6s cubic-bezier(0.4,0,0.2,1), opacity 0.4s ease-in 0.1s'
+                            : 'max-height 0.4s cubic-bezier(0.4,0,0.2,1), opacity 0.2s ease-out',
                     }}
                 >
-                    <motion.div
-                        className={`rounded-[30px] sm:rounded-[40px] md:rounded-[48px] lg:rounded-[60px] px-6 py-2 lg:px-16 lg:py-6 transition-all duration-200 shadow-[0_4px_13.1px_rgba(0,0,0,0.6)] ${textColor}`}
-                        style={{
-                            backgroundImage: `url(${bgImage})`,
-                            backgroundSize: 'cover',
-                            backgroundRepeat: 'no-repeat',
-                        }}
-                        animate={{
-                            boxShadow: isExpanded === `item-${index}`
-                                ? "0 10px 25px rgba(0, 0, 0, 0.8)"
-                                : "0 4px 13.1px rgba(0, 0, 0, 0.6)"
-                        }}
-                    >
-                        <AccordionTrigger
-                            className="px-6 py-4 hover:no-underline group"
-                            isDark={!isEven}
-                        >
-                            <span className={`text-sm md:text-2xl font-black block ${textColor} transition-all duration-300 group-hover:translate-x-2`}>
-                                {faq.question}
-                            </span>
-                        </AccordionTrigger>
-                        <AccordionContent className={`font-[raleway] px-6 pb-4 ${textColor}`}>
-                            <motion.div
-                                initial={{ opacity: 0, y: -10 }}
-                                animate={{
-                                    opacity: isExpanded === `item-${index}` ? 1 : 0,
-                                    y: isExpanded === `item-${index}` ? 0 : -10
-                                }}
-                                transition={{ duration: 0.3, delay: 0.1 }}
-                            >
-                                {faq.answer}
-                            </motion.div>
-                        </AccordionContent>
-                    </motion.div>
-                </motion.div>
-            </AccordionItem>
-        </motion.div>
+                    <div className="pt-6 mt-4 border-t border-white/20">
+                        <p className="text-white text-sm md:text-lg leading-relaxed font-normal font-raleway">
+                            {faq.answer}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
     );
 };
 
 export function FaqSection() {
-    const containerRef = useRef(null);
-    const [expanded, setExpanded] = React.useState<string | undefined>(undefined);
+    const [openIndices, setOpenIndices] = useState<number[]>([0]);
+
+    const toggleFaq = (index: number) => {
+        setOpenIndices((prev) =>
+            prev.includes(index)
+                ? prev.filter((i) => i !== index)
+                : [...prev, index]
+        );
+    };
+
+    const bgConfig = {
+        ellipseSize: "1700px", 
+        noteSize: "550px",
+    };
 
     return (
-        <motion.section
-            className="min-h-screen flex justify-center items-center px-4 md:px-6 lg:px-8 py-24 relative overflow-hidden"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1 }}
-            ref={containerRef}
-        >
-            {/* Background particles */}
-            <div className="absolute inset-0 z-0">
-                <motion.div
-                    className="absolute top-0 left-0 w-full h-full"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 0.5 }}
-                    transition={{ duration: 1, delay: 0.5 }}
+        <section className="relative min-h-screen bg-black flex flex-col justify-center items-center px-4 py-24 overflow-visible z-10">
+            <style dangerouslySetInnerHTML={{ __html: `
+                @font-face {
+                    font-family: 'Great Vibes';
+                    src: url('/font/GreatVibes-Regular.ttf') format('truetype');
+                    font-weight: normal; font-style: normal; font-display: swap;
+                }
+                @font-face {
+                    font-family: 'Westmeath';
+                    src: url('/font/Westmeath.ttf') format('truetype');
+                    font-weight: normal; font-style: normal; font-display: swap;
+                }
+            `}} />
+
+            {/* --- BACKGROUND LAYER (Z-0) --- */}
+            <div className="absolute inset-0 z-0 pointer-events-none">
+                <div 
+                    className="absolute -left-[1%] md:-left-[55%]"
+                    style={{ 
+                        width: bgConfig.ellipseSize, 
+                        height: bgConfig.ellipseSize,
+                        top: "-104%", 
+                    }}
                 >
-                    {Array.from({ length: 20 }).map((_, i) => (
-                        <motion.div
-                            key={i}
-                            className="absolute rounded-full bg-white opacity-20"
-                            style={{
-                                top: `${Math.random() * 100}%`,
-                                left: `${Math.random() * 100}%`,
-                                width: `${Math.random() * 10 + 5}px`,
-                                height: `${Math.random() * 10 + 5}px`,
+                    <div className="relative w-full h-full">
+                        <Image
+                            src='/about/red-ellipse.webp'
+                            alt='Red ellipse decoration'
+                            fill
+                            className='object-contain'
+                            quality={100}
+                            priority
+                        />
+                    </div>
+                </div>
+
+                <div 
+                    className="absolute -left-[100%] md:left-[-16%]"
+                    style={{
+                        width: bgConfig.noteSize,
+                        height: bgConfig.noteSize,
+                        top: "-25%", 
+                    }}
+                >
+                     <div className="relative w-full h-full">
+                        <Image
+                            src='/faq/giant-golden-note.webp'
+                            alt='Music note decoration'
+                            fill
+                            className='object-contain'
+                            quality={100}
+                        />
+                    </div>
+                </div>
+
+                <div className="absolute bottom-0 left-0 w-full h-[75vh] z-2 bg-gradient-to-t from-[#8A0E04]/90 via-[#8A0E04]/5 to-transparent" />
+            </div>
+
+            {/* --- CONTENT LAYER (Z-10) --- */}
+            <div className="w-full max-w-4xl mx-auto relative z-10 mt-20">
+                <div className="text-center mb-20 select-none flex flex-col items-center">
+                    <h2 className="font-westmeath text-4xl md:text-5xl lg:text-7xl text-white tracking-wider uppercase font-normal leading-[0.8]">
+                        FREQUENTLY
+                    </h2>
+                    
+                    <div className="flex items-baseline justify-center gap-3 md:gap-5 mt-4">
+                        <span
+                            className="text-5xl md:text-7xl lg:text-8xl text-white lowercase"
+                            style={{ 
+                                fontFamily: "'Great Vibes', cursive",
+                                filter: 'drop-shadow(0 0 10px rgba(255,255,255,0.8)) drop-shadow(0 0 25px rgba(255,255,255,0.4))',
+                                transform: 'rotate(-5deg) translateY(5px)'
                             }}
-                            animate={{
-                                y: [0, Math.random() * -100 - 50],
-                                opacity: [0.2, 0]
-                            }}
-                            transition={{
-                                duration: Math.random() * 10 + 15,
-                                repeat: Infinity,
-                                ease: "linear",
-                                delay: Math.random() * 5
-                            }}
+                        >
+                            asked
+                        </span>
+                        <h2 className="font-westmeath text-4xl md:text-5xl lg:text-7xl text-white tracking-wider uppercase font-normal leading-none">
+                            QUESTIONS
+                        </h2>
+                    </div>
+                </div>
+
+                <div className="flex flex-col w-full">
+                    {faqData.map((faq, index) => (
+                        <FaqCard
+                            key={index}
+                            faq={faq}
+                            index={index}
+                            isOpen={openIndices.includes(index)}
+                            onToggle={() => toggleFaq(index)}
                         />
                     ))}
-                </motion.div>
-            </div>
-
-            {/* Floating decorative elements */}
-            {decorElements.map((elem, index) => (
-                <FloatingElement
-                    key={index}
-                    src={elem.src}
-                    style={{
-                        top: elem.top || "auto",
-                        left: elem.left || "auto",
-                        right: elem.right || "auto",
-                        bottom: elem.bottom || "auto"
-                    }}
-                    size={elem.size}
-                    delay={index}
-                />
-            ))}
-
-            <div className="container relative z-20">
-                {/* Animated heading */}
-                <AnimatedHeading />
-
-                <div className="w-full mx-auto">
-                    <Accordion
-                        type="single"
-                        collapsible
-                        value={expanded || undefined}
-                        onValueChange={setExpanded}
-                    >
-                        {faqData.map((faq, index) => (
-                            <EnhancedAccordionItem
-                                key={index}
-                                faq={faq}
-                                index={index}
-                                isExpanded={expanded}
-                                setExpanded={setExpanded}
-                            />
-                        ))}
-                    </Accordion>
                 </div>
             </div>
-        </motion.section>
+        </section>
     );
 }
+
+export default FaqSection;
