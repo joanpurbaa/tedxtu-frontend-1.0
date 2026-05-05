@@ -8,7 +8,6 @@ import {
     Raleway,
 } from 'next/font/google';
 import { ThemeProvider } from '@/components/theme-provider';
-import Countdown from '@/components/countdown';
 import localFont from 'next/font/local';
 import './globals.css';
 
@@ -87,7 +86,6 @@ export default function RootLayout({
                     enableSystem
                     disableTransitionOnChange
                 >
-                    <Countdown />
                     <div className='pt-12 sm:pt-[77px]'>
                         {children}
                     </div>
