@@ -1,11 +1,52 @@
 "use client";
 import { useRef } from 'react';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import { motion, useScroll, useTransform, useSpring, type Variants } from 'framer-motion';
+
+const heroReveal: Variants = {
+    initial: { opacity: 0 },
+    animate: {
+        opacity: 1,
+        transition: {
+            staggerChildren: 0.12,
+            delayChildren: 0.15,
+        },
+    },
+};
+
+const bgReveal: Variants = {
+    initial: { opacity: 0, scale: 1.08 },
+    animate: {
+        opacity: 1,
+        scale: 1,
+        transition: { duration: 1.1, ease: 'easeOut' },
+    },
+};
+
+const decorReveal: Variants = {
+    initial: { opacity: 0, y: 24, scale: 0.96 },
+    animate: {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        transition: { duration: 0.9, ease: 'easeOut' },
+    },
+};
+
+const contentReveal: Variants = {
+    initial: { opacity: 0, y: 28 },
+    animate: {
+        opacity: 1,
+        y: 0,
+        transition: { duration: 0.95, ease: 'easeOut' },
+    },
+};
 
 export function HeroSection() {
     const containerRef = useRef<HTMLDivElement>(null);
+    const pathname = usePathname();
     
     const { scrollYProgress } = useScroll({
         target: containerRef,
@@ -53,13 +94,18 @@ export function HeroSection() {
     const bottomRightRot = useSpring(rawBottomRightRot, springConfig);
 
     return (
-        <main 
-            id='hero' 
+        <motion.main
+            key={pathname}
+            id='hero'
             ref={containerRef}
+            variants={heroReveal}
+            initial='initial'
+            animate='animate'
             className='relative w-full min-h-[100dvh] flex flex-col items-center justify-center bg-black overflow-hidden'
         >
             {/* Layer 1 — Background */}
-            <motion.div 
+            <motion.div
+                variants={bgReveal}
                 style={{ y: bgY }}
                 // scale-150 memberi cukup ruang gerak agar tidak ada gap/kepotong saat scroll
                 className='absolute inset-0 z-0 scale-150'
@@ -90,6 +136,7 @@ export function HeroSection() {
 
             {/* Layer 2 — Decorative elements */}
             <motion.div
+                variants={decorReveal}
                 style={{ y: topLeftY, x: topLeftX, rotate: topLeftRot }}
                 className='absolute top-[20%] left-[15%] md:top-1/4 md:left-1/4 -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none'
             >
@@ -97,6 +144,8 @@ export function HeroSection() {
             </motion.div>
 
             <motion.div
+                variants={decorReveal}
+                transition={{ delay: 0.08 }}
                 style={{ y: topRightY, x: topRightX, rotate: topRightRot }}
                 className='absolute top-[20%] right-[15%] md:top-1/4 md:right-1/4 translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none'
             >
@@ -104,6 +153,8 @@ export function HeroSection() {
             </motion.div>
 
             <motion.div
+                variants={decorReveal}
+                transition={{ delay: 0.16 }}
                 style={{ y: bottomLeftY, x: bottomLeftX, rotate: bottomLeftRot }}
                 className='absolute bottom-[20%] left-[15%] md:bottom-1/4 md:left-1/4 -translate-x-1/2 translate-y-1/2 z-10 pointer-events-none'
             >
@@ -111,6 +162,8 @@ export function HeroSection() {
             </motion.div>
 
             <motion.div
+                variants={decorReveal}
+                transition={{ delay: 0.24 }}
                 style={{ y: bottomRightY, x: bottomRightX, rotate: bottomRightRot }}
                 className='absolute bottom-[20%] right-[15%] md:bottom-1/4 md:right-1/4 translate-x-1/2 translate-y-1/2 z-10 pointer-events-none'
             >
@@ -119,6 +172,7 @@ export function HeroSection() {
 
             {/* Layer 3 — Content */}
             <motion.div 
+                variants={contentReveal}
                 style={{ y: contentY, opacity: contentOpacity }}
                 className='relative z-20 flex flex-col items-center justify-center gap-8'
             >
@@ -175,6 +229,6 @@ export function HeroSection() {
                     </Link>
                 </div>
             </motion.div>
-        </main>
+        </motion.main>
     );
 }

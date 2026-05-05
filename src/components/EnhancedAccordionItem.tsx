@@ -46,7 +46,7 @@ export default function EnhancedAccordionItem({ faq, index, isExpanded, setExpan
                     transition: { 
                         duration: 0.6, 
                         delay: index * 0.1,
-                        ease: "easeOut"
+                        ease: "easeOut" as const
                     }
                 }
             }}
