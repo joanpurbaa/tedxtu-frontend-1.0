@@ -19,7 +19,7 @@ const raleway = Raleway({
     variable: '--font-raleway',
     subsets: ['latin'],
     style: ['italic', 'normal'],
-    weight: ['400', '700', '900'],
+    weight: ['400', '500', '700', '900'],
 });
 
 const geistMono = Geist_Mono({
