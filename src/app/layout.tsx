@@ -9,6 +9,7 @@ import {
 } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from '@/components/theme-provider';
+import Countdown from '@/components/countdown';
 
 const geistSans = Geist({
     variable: '--font-geist-sans',
@@ -70,7 +71,10 @@ export default function RootLayout({
                     enableSystem
                     disableTransitionOnChange
                 >
-                    {children}
+                    <Countdown />
+                    <div className='pt-12 sm:pt-[77px]'>
+                        {children}
+                    </div>
                 </ThemeProvider>
             </body>
         </html>

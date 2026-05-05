@@ -1,46 +1,44 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
-type CountdownTimeLeft = {
-    days?: number;
-    hours?: number;
-    minutes?: number;
-    seconds?: number;
+export type CountdownTimeLeft = {
+    totalHours: number;
+    minutes: number;
+    seconds: number;
+    isFinished: boolean;
 };
 
-export default function useCountdown(deadline: Date) {
+function getTimeLeft(targetTime: number): CountdownTimeLeft {
+    const difference = Math.max(targetTime - Date.now(), 0);
+
+    return {
+        totalHours: Math.floor(difference / (1000 * 60 * 60)),
+        minutes: Math.floor((difference / (1000 * 60)) % 60),
+        seconds: Math.floor((difference / 1000) % 60),
+        isFinished: difference <= 0,
+    };
+}
+
+export default function useCountdown(deadline: Date | string) {
+    const targetTime = useMemo(() => new Date(deadline).getTime(), [deadline]);
+
     const [timeLeft, setTimeLeft] = useState<CountdownTimeLeft>({
-        days: 0,
-        hours: 0,
+        totalHours: 0,
         minutes: 0,
         seconds: 0,
+        isFinished: false,
     });
 
     useEffect(() => {
-        setTimeLeft(calculateTimeLeft());
+        const updateCountdown = () => {
+            setTimeLeft(getTimeLeft(targetTime));
+        };
 
-        const timer = setInterval(() => {
-            setTimeLeft(calculateTimeLeft());
-        }, 1000);
+        updateCountdown();
 
-        return () => clearInterval(timer);
-    }, []);
+        const timer = window.setInterval(updateCountdown, 1000);
 
-    function calculateTimeLeft(): CountdownTimeLeft {
-        let timeLeft: CountdownTimeLeft = {};
-        let currentDate = new Date();
-        let difference = deadline.getTime() - currentDate.getTime();
-
-        if (difference > 0) {
-            timeLeft = {
-                days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-                hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-                minutes: Math.floor((difference / (1000 * 60)) % 60),
-                seconds: Math.floor((difference / 1000) % 60),
-            };
-        }
-
-        return timeLeft;
-    }
+        return () => window.clearInterval(timer);
+    }, [targetTime]);
 
     return timeLeft;
 }
