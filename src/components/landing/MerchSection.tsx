@@ -53,7 +53,7 @@ export function MerchSection() {
             style={{ overflow: 'visible' }}
         >
             {/* 1. VIGNETTE LAYER (z-5) */}
-            <div className='absolute inset-0 z-[5] pointer-events-none overflow-hidden'>
+            <div className='absolute inset-0 pointer-events-none overflow-hidden'>
                 <div className='absolute top-0 left-0 w-full h-[40%] bg-gradient-to-b from-black via-black/70 to-transparent' />
                 <div className='absolute bottom-0 left-0 w-full h-[40%] bg-gradient-to-t from-black via-black/70 to-transparent' />
             </div>
@@ -94,7 +94,7 @@ export function MerchSection() {
 
             {/* 3. CONTENT & GALLERY LAYER (z-50) */}
             <motion.div
-                className='relative z-[50] w-full flex flex-col items-center justify-center'
+                className='relative z-[10] w-full flex flex-col items-center justify-center'
                 variants={staggerContainer}
                 initial="hidden"
                 animate={inView ? "visible" : "hidden"}

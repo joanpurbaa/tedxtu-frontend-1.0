@@ -158,7 +158,7 @@ export function EventSection() {
 
             {/* LAYER 4: Main Content (z-50) */}
             <motion.div
-                className='relative z-50 max-w-4xl w-full flex flex-col items-center justify-center text-center px-6'
+                className='relative z-20 max-w-4xl w-full flex flex-col items-center justify-center text-center px-6'
                 variants={staggerContainer}
                 initial='hidden'
                 animate={inView ? 'visible' : 'hidden'}
