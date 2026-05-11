@@ -2,6 +2,7 @@
 
 import Navbar from '@/components/Navbar';
 import Image from 'next/image';
+import Link from 'next/link';
 import Footer from '@/components/Footer';
 import BackToTopButton from '@/components/BackToTopButton';
 
@@ -117,54 +118,47 @@ export default function Merch() {
                     </div>
                 </section>
 
-                <section className='relative z-10 w-full bg-transparent text-white px-4 sm:px-6 md:px-14 py-20'>
-                    {/* <div className='pointer-events-none absolute right-0 top-1/2 z-0 -translate-y-1/2 translate-x-[55%]'>
-                        <div className='w-[120vw] max-w-none'>
-                            <Image
-                                src='/about/red-ellipse.webp'
-                                alt='Red ellipse decoration'
-                                width={2800}
-                                height={1500}
-                                priority={false}
-                                quality={100}
-                                className='w-full h-auto'
-                            />
-                        </div>
-                    </div> */}
-
-                    <div className='mx-60 relative z-10'>
-                        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-12 md:gap-y-16 place-items-center'>
+                <section className='relative z-10 w-full bg-transparent text-white px-4 sm:px-6 md:px-8 lg:px-14 py-20'>
+                    <div className='max-w-7xl mx-auto relative z-10'>
+                        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8'>
                             {merch.map((item, index) => (
-                                <div
+                                <Link
                                     key={index}
-                                    className='flex flex-col items-center bg-[#7e5d5d31] px-5 py-5 rounded-xl border border-[#FFB41E] backdrop-blur-xs'
+                                    href='/merch/detail'
+                                    className='group'
                                 >
-                                    <div className='relative w-60 h-60 flex justify-center items-center rounded-3xl overflow-hidden mb-3'>
-                                        <Image
-                                            src={item.img}
-                                            alt={item.name}
-                                            fill
-                                            quality={100}
-                                            className='object-cover object-center'
-                                        />
+                                    <div
+                                        className='flex flex-col items-center bg-[#7e5d5d31] px-5 py-5 rounded-xl border border-[#FFB41E] 
+                                        backdrop-blur-xs hover:bg-[#7e5d5d50] transition-all duration-300 cursor-pointer 
+                                        hover:border-[#FFB41E] hover:shadow-lg hover:shadow-[#FFB41E]/20 h-full'
+                                    >
+                                        <div className='relative w-60 h-60 flex justify-center items-center rounded-3xl overflow-hidden mb-3 bg-black/20'>
+                                            <Image
+                                                src={item.img}
+                                                alt={item.name}
+                                                fill
+                                                quality={100}
+                                                className='object-cover object-center group-hover:scale-105 transition-transform duration-300'
+                                            />
+                                        </div>
+                                        <div className='text-center'>
+                                            <h3 className='font-westmeath text-2xl text-white group-hover:text-[#FFB41E] transition-colors duration-300'>
+                                                {item.name}
+                                            </h3>
+                                            <p
+                                                className='font-westmeath text-xl mt-2 group-hover:text-[#FF6B35] transition-colors duration-300'
+                                                style={{ color: '#DCA23E' }}
+                                            >
+                                                Rp
+                                                {item.price.toLocaleString('id-ID')}
+                                            </p>
+                                        </div>
                                     </div>
-                                    <div className='text-center'>
-                                        <h3 className='font-westmeath text-2xl text-white'>
-                                            {item.name}
-                                        </h3>
-                                        <p
-                                            className='font-westmeath text-xl mt-2'
-                                            style={{ color: '#DCA23E' }}
-                                        >
-                                            Rp
-                                            {item.price.toLocaleString('id-ID')}
-                                        </p>
-                                    </div>
-                                </div>
+                                </Link>
                             ))}
                         </div>
                     </div>
-                    <div className='pointer-events-none absolute -left-[450] bottom-0 z-[5] overflow-hidden blur-md'>
+                    <div className='pointer-events-none absolute -left-[300px] md:-left-[200px] bottom-0 z-[5] overflow-hidden blur-md'>
                         <Image
                             src='/about/Mist.webp'
                             alt='Mist decoration'
@@ -172,10 +166,10 @@ export default function Merch() {
                             height={800}
                             priority={false}
                             quality={100}
-                            className='w-[85vw] max-w-[1020px] h-auto'
+                            className='w-[70vw] md:w-[60vw] h-auto'
                         />
                     </div>
-                    <div className='pointer-events-none absolute -right-[350px] bottom-0 z-[5] overflow-hidden blur-md'>
+                    <div className='pointer-events-none absolute -right-[300px] md:-right-[200px] bottom-0 z-[5] overflow-hidden blur-md'>
                         <Image
                             src='/about/Mist.webp'
                             alt='Mist decoration'
@@ -183,7 +177,7 @@ export default function Merch() {
                             height={800}
                             priority={false}
                             quality={100}
-                            className='w-[85vw] max-w-[1020px] h-auto'
+                            className='w-[70vw] md:w-[60vw] h-auto'
                         />
                     </div>
                 </section>
