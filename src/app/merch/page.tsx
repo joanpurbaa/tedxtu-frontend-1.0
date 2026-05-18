@@ -41,80 +41,90 @@ export default function Merch() {
                     </div>
                 </div>
 
-                <section className='relative z-20 w-full min-h-[100dvh] flex items-center justify-center overflow-visible bg-transparent'>
-                    <div className='absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2'>
+                <section className='relative z-20 w-full min-h-[100dvh] flex items-center justify-center overflow-hidden bg-transparent px-4 sm:px-6'>
+                    {/* Top-left: Mask */}
+                    <div className='hidden lg:block absolute top-8 lg:top-12 left-6 lg:left-10 z-10'>
                         <Image
                             src='/about/mask.webp'
                             alt='Mask decoration'
-                            width={120}
-                            height={120}
+                            width={80}
+                            height={80}
                             priority
                             quality={100}
+                            className='w-16 lg:w-20 h-auto'
                         />
                     </div>
-                    <div className='absolute top-1/4 right-1/4 translate-x-1/2 -translate-y-1/2'>
+                    
+                    {/* Top-right: Trumpet */}
+                    <div className='hidden lg:block absolute top-8 lg:top-12 right-6 lg:right-10 z-10'>
                         <Image
                             src='/about/trumpet.webp'
                             alt='Trumpet decoration'
-                            width={120}
-                            height={120}
+                            width={80}
+                            height={80}
                             priority
                             quality={100}
+                            className='w-16 lg:w-20 h-auto'
                         />
                     </div>
-                    <div className='absolute bottom-1/4 left-1/4 -translate-x-1/2 translate-y-1/2'>
+                    
+                    {/* Bottom-left: Turn table */}
+                    <div className='hidden lg:block absolute bottom-8 lg:bottom-12 left-6 lg:left-10 z-10'>
                         <Image
                             src='/about/turn-table.webp'
                             alt='Turn table decoration'
-                            width={120}
-                            height={120}
+                            width={80}
+                            height={80}
                             priority
                             quality={100}
+                            className='w-16 lg:w-20 h-auto'
                         />
                     </div>
-                    <div
-                        className='absolute bottom-1/4 right-1/4 translate-x-1/2 translate-y-1/2'
-                        style={{
-                            transform:
-                                'translateX(50%) translateY(50%) rotate(20deg)',
-                        }}
-                    >
+                    
+                    {/* Bottom-right: Crown */}
+                    <div className='hidden lg:block absolute bottom-8 lg:bottom-12 right-6 lg:right-10 z-10'>
                         <Image
                             src='/about/crown.webp'
                             alt='Crown decoration'
-                            width={120}
-                            height={120}
+                            width={80}
+                            height={80}
                             priority
                             quality={100}
+                            className='w-16 lg:w-20 h-auto'
+                            style={{ transform: 'rotate(20deg)' }}
                         />
                     </div>
 
-                    <div className='relative z-10 text-center'>
-                        <div className='relative z-10 text-center'>
-                            <div className='flex items-center justify-center gap-8'>
-                                <span className='font-westmeath text-6xl md:text-7xl text-white font-bold'>
+                    <div className='relative z-10 text-center w-full max-w-4xl mx-auto'>
+                        <div className='flex flex-col items-center justify-center gap-3 sm:gap-4'>
+                            {/* Title with Music Note */}
+                            <div className='flex items-center justify-center gap-2 sm:gap-3 md:gap-4 flex-wrap'>
+                                <span className='font-westmeath text-3xl sm:text-4xl md:text-6xl lg:text-7xl text-white font-bold'>
                                     OUR
                                 </span>
                                 <Image
                                     src='/about/music-note.webp'
                                     alt='Music note'
-                                    width={30}
-                                    height={30}
+                                    width={24}
+                                    height={24}
                                     priority
                                     quality={100}
+                                    className='w-6 sm:w-7 md:w-8 h-auto'
                                     style={{ transform: 'rotate(18deg)' }}
                                 />
-                                <span className='font-westmeath text-6xl md:text-7xl text-white font-bold'>
+                                <span className='font-westmeath text-3xl sm:text-4xl md:text-6xl lg:text-7xl text-white font-bold'>
                                     MERCHANDISE
                                 </span>
                             </div>
+                            
+                            {/* Description */}
+                            <p className='font-raleway text-sm sm:text-base md:text-lg lg:text-xl text-white/80 max-w-2xl mx-auto mt-2 sm:mt-3 md:mt-5'>
+                                Take a piece of the symphony home with you.
+                                TEDxTelkom University merchandise is more than just
+                                a souvenir — it's a statement. Wear the story, carry
+                                the idea.
+                            </p>
                         </div>
-                        <p className='font-raleway text-lg md:text-xl text-white/80 max-w-2xl mx-auto mt-5'>
-                            Take a piece of the symphony home with you.
-                            TEDxTelkom University merchandise is more than just
-                            a souvenir — it's a statement. Wear the story, carry
-                            the idea.
-                        </p>
                     </div>
                 </section>
 
