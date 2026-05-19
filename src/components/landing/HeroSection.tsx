@@ -1,303 +1,234 @@
-"use client"
+"use client";
+import { useRef } from 'react';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { ElementsButton } from '../ElementsButton';
-import Navbar from '../Navbar';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
-import { motion, useAnimation, useInView } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring, type Variants } from 'framer-motion';
 
-// Types
-interface DecorElement {
-    src: string;
-    top?: string;
-    left?: string;
-    right?: string;
-    bottom?: string;
-    size: {
-        base: string;
-        md: string;
-        lg: string;
-    };
-}
-
-interface FloatingElementProps {
-    src: string;
-    style: React.CSSProperties;
-    size: {
-        base: string;
-        md: string;
-        lg: string;
-    };
-    delay?: number;
-}
-
-// Decorative elements with responsive sizes
-const decorElements: DecorElement[] = [
-    {
-        src: "/hero/v1.png",
-        top: "5%",
-        left: "2%",
-        size: {
-            base: "w-8 h-8",
-            md: "w-12 h-12",
-            lg: "w-16 h-16"
-        }
+const heroReveal: Variants = {
+    initial: { opacity: 0 },
+    animate: {
+        opacity: 1,
+        transition: {
+            staggerChildren: 0.12,
+            delayChildren: 0.15,
+        },
     },
-    {
-        src: "/hero/v3.png",
-        top: "5%",
-        right: "2%",
-        size: {
-            base: "w-10 h-10",
-            md: "w-16 h-16",
-            lg: "w-20 h-20"
-        }
+};
+
+const bgReveal: Variants = {
+    initial: { opacity: 0, scale: 1.08 },
+    animate: {
+        opacity: 1,
+        scale: 1,
+        transition: { duration: 1.1, ease: 'easeOut' },
     },
-    {
-        src: "/hero/v6.png",
-        bottom: "25%",
-        left: "3%",
-        size: {
-            base: "w-8 h-8",
-            md: "w-10 h-10",
-            lg: "w-14 h-14"
-        }
+};
+
+const decorReveal: Variants = {
+    initial: { opacity: 0, y: 24, scale: 0.96 },
+    animate: {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        transition: { duration: 0.9, ease: 'easeOut' },
     },
-    {
-        src: "/hero/v7.png",
-        bottom: "25%",
-        right: "3%",
-        size: {
-            base: "w-8 h-8",
-            md: "w-12 h-12",
-            lg: "w-16 h-16"
-        }
+};
+
+const contentReveal: Variants = {
+    initial: { opacity: 0, y: 28 },
+    animate: {
+        opacity: 1,
+        y: 0,
+        transition: { duration: 0.95, ease: 'easeOut' },
     },
-];
-
-// Animated decorative element component
-const FloatingElement: React.FC<FloatingElementProps> = ({ src, style, size, delay = 0 }) => {
-    const [windowWidth, setWindowWidth] = useState<number>(768);
-
-    useEffect(() => {
-        const handleResize = () => {
-            setWindowWidth(window.innerWidth);
-        };
-
-        // Set initial width
-        handleResize();
-
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
-
-    // Determine which size class to use based on window width
-    const getSizeClass = (): string => {
-        if (windowWidth >= 1024) return size.lg;
-        if (windowWidth >= 768) return size.md;
-        return size.base;
-    };
-
-    return (
-        <motion.img
-            src={src}
-            alt="Decorative element"
-            className={`absolute ${getSizeClass()} z-10 hidden sm:block`}
-            style={style}
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{
-                opacity: 1,
-                scale: 1,
-                y: [0, -15, 0],
-                rotate: [0, delay % 2 === 0 ? 10 : -10, 0]
-            }}
-            transition={{
-                opacity: { duration: 0.5, delay: delay * 0.2 },
-                scale: { duration: 0.5, delay: delay * 0.2 },
-                y: {
-                    repeat: Infinity,
-                    duration: 5 + delay,
-                    ease: "easeInOut"
-                },
-                rotate: {
-                    repeat: Infinity,
-                    duration: 7 + delay,
-                    ease: "easeInOut"
-                }
-            }}
-        />
-    );
 };
 
 export function HeroSection() {
-    const [isVisible, setIsVisible] = useState<boolean>(false);
-    const [scrollY, setScrollY] = useState<number>(0);
+    const containerRef = useRef<HTMLDivElement>(null);
+    const pathname = usePathname();
+    
+    const { scrollYProgress } = useScroll({
+        target: containerRef,
+        offset: ["start start", "end start"]
+    });
 
-    // Handle initial animation on mount and scroll effects
-    useEffect(() => {
-        setIsVisible(true);
-        if (typeof window === 'undefined') return;
+    const springConfig = { stiffness: 60, damping: 20, restDelta: 0.001 };
 
-        const handleScroll = () => {
-            setScrollY(window.scrollY);
-        };
+    const rawBgY = useTransform(scrollYProgress, [0, 1], ["0%", "25%"]);
+    const rawContentY = useTransform(scrollYProgress, [0, 1], ["0%", "-25%"]);
+    const rawOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
 
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
+    const rawTopLeftY = useTransform(scrollYProgress, [0, 1], ["0%", "40%"]);
+    const rawTopRightY = useTransform(scrollYProgress, [0, 1], ["0%", "60%"]);
+    const rawBottomLeftY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+    const rawBottomRightY = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
+
+    const rawTopLeftX = useTransform(scrollYProgress, [0, 1], ["0%", "-8%"]);
+    const rawTopRightX = useTransform(scrollYProgress, [0, 1], ["0%", "8%"]);
+    const rawBottomLeftX = useTransform(scrollYProgress, [0, 1], ["0%", "-5%"]);
+    const rawBottomRightX = useTransform(scrollYProgress, [0, 1], ["0%", "5%"]);
+
+    const rawTopLeftRot = useTransform(scrollYProgress, [0, 1], [0, -8]);
+    const rawTopRightRot = useTransform(scrollYProgress, [0, 1], [0, 8]);
+    const rawBottomLeftRot = useTransform(scrollYProgress, [0, 1], [0, 6]);
+    const rawBottomRightRot = useTransform(scrollYProgress, [0, 1], [0, -6]);
+
+    const bgY = useSpring(rawBgY, springConfig);
+    const contentY = useSpring(rawContentY, springConfig);
+    const contentOpacity = useSpring(rawOpacity, springConfig);
+
+    const topLeftY = useSpring(rawTopLeftY, springConfig);
+    const topRightY = useSpring(rawTopRightY, springConfig);
+    const bottomLeftY = useSpring(rawBottomLeftY, springConfig);
+    const bottomRightY = useSpring(rawBottomRightY, springConfig);
+
+    const topLeftX = useSpring(rawTopLeftX, springConfig);
+    const topRightX = useSpring(rawTopRightX, springConfig);
+    const bottomLeftX = useSpring(rawBottomLeftX, springConfig);
+    const bottomRightX = useSpring(rawBottomRightX, springConfig);
+
+    const topLeftRot = useSpring(rawTopLeftRot, springConfig);
+    const topRightRot = useSpring(rawTopRightRot, springConfig);
+    const bottomLeftRot = useSpring(rawBottomLeftRot, springConfig);
+    const bottomRightRot = useSpring(rawBottomRightRot, springConfig);
 
     return (
-        <main id='hero' className='min-h-screen flex flex-col overflow-hidden pt-20'>
-            <div className='flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8'>
-                <div className='container relative max-w-7xl'>
-                    {/* Animated background */}
-                    <div
-                        className={`
-                            absolute inset-0 -z-9 h-[70%] w-[70%] sm:h-[80%] sm:w-[80%] md:h-[85%] md:w-[85%] lg:h-[90%] lg:w-[90%] mx-auto
-                            transition-all duration-1000 ease-in-out
-                            ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}
-                        `}
-                        style={{
-                            transform: `translateY(${scrollY * 0.05}px)`,
-                            top: '-5%',
-                        }}
-                    >
+        <motion.main
+            key={pathname}
+            id='hero'
+            ref={containerRef}
+            variants={heroReveal}
+            initial='initial'
+            animate='animate'
+            className='relative w-full min-h-[100dvh] flex flex-col items-center justify-center bg-black overflow-hidden'
+        >
+            {/* Layer 1 — Background */}
+            <motion.div
+                variants={bgReveal}
+                style={{ y: bgY }}
+                // scale-150 memberi cukup ruang gerak agar tidak ada gap/kepotong saat scroll
+                className='absolute inset-0 z-0 scale-150'
+            >
+                <Image
+                    src='/about/tedx-background.webp'
+                    alt='Hero background'
+                    fill
+                    className='object-cover'
+                    priority
+                />
+            </motion.div>
+
+            {/* Vignette layer — dipisah dari motion div agar tidak ikut bergerak */}
+            {/* Dengan begitu vignette selalu cover full screen tanpa gap */}
+            <div className='absolute inset-0 z-[1] pointer-events-none'>
+                {/* Atas */}
+                <div className='absolute inset-x-0 top-0 h-1/3 bg-gradient-to-b from-black via-black/70 to-transparent' />
+                {/* Bawah — intens agar nyambung ke section berikutnya */}
+                <div className='absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black via-black/80 to-transparent' />
+                {/* Solid hitam di paling bawah agar benar-benar seamless */}
+                <div className='absolute inset-x-0 bottom-0 h-16 bg-black' />
+                {/* Kiri */}
+                <div className='absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-black/80 to-transparent' />
+                {/* Kanan */}
+                <div className='absolute inset-y-0 right-0 w-1/4 bg-gradient-to-l from-black/80 to-transparent' />
+            </div>
+
+            {/* Layer 2 — Decorative elements */}
+            <motion.div
+                variants={decorReveal}
+                style={{ y: topLeftY, x: topLeftX, rotate: topLeftRot }}
+                className='absolute top-[20%] left-[15%] md:top-1/4 md:left-1/4 -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none'
+            >
+                <Image src='/about/mask.webp' alt='Mask' width={120} height={120} priority quality={100} className="w-16 md:w-28 lg:w-32" />
+            </motion.div>
+
+            <motion.div
+                variants={decorReveal}
+                transition={{ delay: 0.08 }}
+                style={{ y: topRightY, x: topRightX, rotate: topRightRot }}
+                className='absolute top-[20%] right-[15%] md:top-1/4 md:right-1/4 translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none'
+            >
+                <Image src='/about/trumpet.webp' alt='Trumpet' width={120} height={120} priority quality={100} className="w-16 md:w-28 lg:w-32" />
+            </motion.div>
+
+            <motion.div
+                variants={decorReveal}
+                transition={{ delay: 0.16 }}
+                style={{ y: bottomLeftY, x: bottomLeftX, rotate: bottomLeftRot }}
+                className='absolute bottom-[20%] left-[15%] md:bottom-1/4 md:left-1/4 -translate-x-1/2 translate-y-1/2 z-10 pointer-events-none'
+            >
+                <Image src='/about/turn-table.webp' alt='Turn table' width={120} height={120} priority quality={100} className="w-16 md:w-28 lg:w-32" />
+            </motion.div>
+
+            <motion.div
+                variants={decorReveal}
+                transition={{ delay: 0.24 }}
+                style={{ y: bottomRightY, x: bottomRightX, rotate: bottomRightRot }}
+                className='absolute bottom-[20%] right-[15%] md:bottom-1/4 md:right-1/4 translate-x-1/2 translate-y-1/2 z-10 pointer-events-none'
+            >
+                <Image src='/about/crown.webp' alt='Crown' width={120} height={120} priority quality={100} className="w-16 md:w-28 lg:w-32" />
+            </motion.div>
+
+            {/* Layer 3 — Content */}
+            <motion.div 
+                variants={contentReveal}
+                style={{ y: contentY, opacity: contentOpacity }}
+                className='relative z-20 flex flex-col items-center justify-center gap-8'
+            >
+                <h1 className='text-center'>
+                    <div className='flex items-center justify-center gap-4 flex-wrap'>
+                        <span className='font-westmeath text-5xl md:text-6xl lg:text-7xl text-white font-normal'>
+                            Tailoring
+                        </span>
+                        <Image src='/about/music-note.webp' alt='Music note' width={30} height={30} priority quality={100} />
+                        <span className='font-westmeath text-5xl md:text-6xl lg:text-7xl text-white font-normal'>
+                            your
+                        </span>
+                    </div>
+                    <div className='flex items-center justify-center gap-4 flex-wrap mt-2'>
+                        <span className='font-westmeath text-5xl md:text-6xl lg:text-7xl text-white font-normal'>
+                            own
+                        </span>
+                        <Image src='/about/single-golden-note.png' alt='Golden note' width={30} height={30} priority quality={100} />
+                        <span className='font-westmeath text-5xl md:text-6xl lg:text-7xl text-white font-normal'>
+                            tapestry
+                        </span>
+                    </div>
+                </h1>
+
+                <p className='text-sm sm:text-base md:text-lg lg:text-xl font-raleway italic font-medium text-white/80 px-4 max-w-2xl text-center'>
+                    Every thread has a story. What tapestry do you want to weave?
+                </p>
+
+                <div className='flex flex-col sm:flex-row justify-center items-center gap-2 px-4 mt-4'>
+                    <Link href="/event" className='relative group flex items-center justify-center w-[220px] h-[65px] md:w-[320px] md:h-[62px] transition-transform hover:scale-105 active:scale-95'>
                         <Image
-                            src='/text-hero-background.png'
-                            alt='text background vector'
+                            src='/about/get-ticket-button.png'
+                            alt='Get your ticket now'
                             fill
                             className='object-contain'
                             priority
                         />
-                    </div>
+                        <span className='relative z-10 font-westmeath text-white text-lg md:text-xl leading-none uppercase tracking-tight -mt-1 md:-mt-2'>
+                            Get your ticket now
+                        </span>
+                    </Link>
 
-                    {/* Floating particles */}
-                    <div className="absolute inset-0 pointer-events-none">
-                        {[...Array(8)].map((_, i) => (
-                            <div
-                                key={i}
-                                className="absolute w-1 h-1 sm:w-1.5 sm:h-1.5 md:w-2 md:h-2 rounded-full bg-amber-200/30 animate-float"
-                                style={{
-                                    left: `${10 + Math.random() * 80}%`,
-                                    top: `${10 + Math.random() * 80}%`,
-                                    animationDelay: `${i * 0.5}s`,
-                                    animationDuration: `${6 + Math.random() * 10}s`
-                                }}
-                            />
-                        ))}
-                    </div>
-
-                    <div className='mx-auto text-center relative z-10'>
-                        {/* Animated heading */}
-                        <h1 className={`
-                            scroll-m-20 font-bold text-xl sm:text-2xl md:text-4xl lg:text-6xl xl:text-7xl 2xl:text-8xl relative 
-                            font-[family-name:var(--font-cinzel-decorative)]
-                            transition-all duration-1000 ease-out
-                            ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}
-                        `}>
-                            <span className='inline-flex items-center font-[family-name:var(--font-cinzel-decorative)] flex-wrap justify-center'>
-                                <span className='whitespace-nowrap'>Tailoring</span>
-                                <span className='flex items-center font-[family-name:var(--font-playfair-display)] text-sm sm:text-base md:text-2xl lg:text-4xl xl:text-5xl italic font-normal'>
-                                    <div className="relative mx-1 sm:mx-2 md:mx-3 lg:mx-4 xl:mx-6 w-[15px] h-[15px] sm:w-[25px] sm:h-[25px] md:w-[40px] md:h-[40px] lg:w-[80px] lg:h-[80px] xl:w-[100px] xl:h-[100px] 2xl:w-[120px] 2xl:h-[120px]">
-                                        <Image
-                                            src='/flower-ilus.svg'
-                                            alt='hero text icon'
-                                            width={120}
-                                            height={120}
-                                            quality={100}
-                                            className={`
-                                                inline-block w-full h-full 
-                                                animate-pulse-slow transition-transform duration-700
-                                            `}
-                                        />
-                                    </div>
-                                </span>
-                                <span className='whitespace-nowrap'>your</span>
-                            </span>
-                            <br className="sm:hidden" />
-                            <span className='inline-flex items-center flex-wrap justify-center mt-2 sm:mt-0'>
-                                <span className='whitespace-nowrap'>Own</span>
-                                <span className='flex items-center font-[family-name:var(--font-playfair-display)] text-sm sm:text-base md:text-2xl lg:text-4xl xl:text-5xl italic font-normal'>
-                                    <div className="relative mx-1 sm:mx-2 md:mx-3 lg:mx-4 xl:mx-6 w-[15px] h-[15px] sm:w-[25px] sm:h-[25px] md:w-[40px] md:h-[40px] lg:w-[80px] lg:h-[80px] xl:w-[100px] xl:h-[100px] 2xl:w-[120px] 2xl:h-[120px]">
-                                        <Image
-                                            src='/flower-ilus.svg'
-                                            alt='hero text icon'
-                                            width={120}
-                                            height={120}
-                                            quality={100}
-                                            className={`
-                                                inline-block w-full h-full
-                                                animate-pulse-slow transition-transform duration-700
-                                                animation-delay-500
-                                            `}
-                                        />
-                                    </div>
-                                </span>
-                                <span className="relative whitespace-nowrap">
-                                    Tapestry
-                                    <span
-                                        className={`
-                                            absolute -bottom-1 sm:-bottom-2 left-0 w-full h-0.5 sm:h-1 bg-amber-500 
-                                            origin-left transition-transform duration-1000 delay-1000
-                                            ${isVisible ? 'scale-x-100' : 'scale-x-0'}
-                                        `}
-                                    />
-                                </span>
-                            </span>
-                        </h1>
-
-                        {/* Floating decorative elements */}
-                        {decorElements.map((elem, index) => (
-                            <FloatingElement
-                                key={index}
-                                src={elem.src}
-                                style={{
-                                    top: elem.top || "auto",
-                                    left: elem.left || "auto",
-                                    right: elem.right || "auto",
-                                    bottom: elem.bottom || "auto"
-                                }}
-                                size={elem.size}
-                                delay={index}
-                            />
-                        ))}
-
-                        {/* Animated tagline */}
-                        <p className={`
-                            mt-4 sm:mt-6 md:mt-8 lg:mt-10 text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 
-                            font-[family-name:var(--font-raleway)] italic font-medium
-                            transition-all duration-1000 delay-500 ease-out px-4 sm:px-8 md:px-16 lg:px-0
-                            ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}
-                        `}>
-                            Every thread has a story. What tapestry do you want to weave?
-                        </p>
-
-                        {/* Animated buttons */}
-                        <div className={`
-                            mt-6 sm:mt-8 flex flex-col sm:flex-row justify-center gap-4 sm:gap-6 px-4 sm:px-0
-                            transition-all duration-1000 delay-700 ease-out
-                            ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}
-                        `}>
-                            <Link href="https://www.instagram.com/tedxtelkomuniversity?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==">
-                                <ElementsButton
-                                    variant='red'
-                                    className="w-full sm:w-auto whitespace-nowrap min-w-full sm:min-w-[250px] md:min-w-[280px] hover:scale-105 transition-transform duration-300 text-sm sm:text-base"
-                                >
-                                    Follow us on Instagram
-                                </ElementsButton>
-                            </Link>
-                            <Link href="/recruitment">
-                                <ElementsButton
-                                    variant='gold'
-                                    className="w-full sm:w-auto hover:scale-105 transition-transform duration-300 text-sm sm:text-base"
-                                >
-                                    Join our team
-                                </ElementsButton>
-                            </Link>
-                        </div>
-                    </div>
+                    <Link href="/merch" className='relative group flex items-center justify-center w-[180px] h-[60px] md:w-[220px] md:h-[62px] transition-transform hover:scale-105 active:scale-95'>
+                        <Image
+                            src='/about/merch-button.png'
+                            alt='Our merch'
+                            fill
+                            className='object-contain'
+                            priority
+                        />
+                        <span className='relative z-10 font-westmeath text-white text-lg md:text-xl leading-none uppercase tracking-tight -mt-1 md:-mt-2'>
+                            Our merch
+                        </span>
+                    </Link>
                 </div>
-            </div>
-        </main>
+            </motion.div>
+        </motion.main>
     );
 }

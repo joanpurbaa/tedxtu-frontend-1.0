@@ -1,41 +1,206 @@
-import React from 'react';
-import { Play } from 'lucide-react';
-export function EventSection(): React.JSX.Element {
+'use client';
+import Link from 'next/link';
+import Image from 'next/image';
+import { motion, Variants, useScroll, useTransform, useSpring } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
+import { useRef } from 'react';
+
+const fadeInUp: Variants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+        opacity: 1,
+        y: 0,
+        transition: { duration: 0.8, ease: "easeOut" as const }
+    }
+};
+
+const staggerContainer: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+        opacity: 1,
+        transition: {
+            staggerChildren: 0.2,
+            delayChildren: 0.3
+        }
+    }
+};
+
+export function EventSection() {
+    const sectionRef = useRef<HTMLDivElement>(null);
+
+    const { ref: inViewRef, inView } = useInView({
+        triggerOnce: true,
+        threshold: 0.1
+    });
+
+    const setRefs = (node: HTMLDivElement | null) => {
+        (sectionRef as React.MutableRefObject<HTMLDivElement | null>).current = node;
+        inViewRef(node);
+    };
+
+    const { scrollYProgress } = useScroll({
+        target: sectionRef,
+        offset: ["start end", "end start"]
+    });
+
+    const springConfig = { stiffness: 80, damping: 20, restDelta: 0.001 };
+
+    const rawMistLeftX = useTransform(scrollYProgress, [0.05, 0.25], ["-40%", "0%"]);
+    const rawMistLeftOpacity = useTransform(scrollYProgress, [0.05, 0.22], [0, 0.7]);
+    const rawMistRightX = useTransform(scrollYProgress, [0.05, 0.25], ["40%", "0%"]);
+    const rawMistRightOpacity = useTransform(scrollYProgress, [0.05, 0.22], [0, 0.7]);
+
+    const mistLeftX = useSpring(rawMistLeftX, springConfig);
+    const mistLeftOpacity = useSpring(rawMistLeftOpacity, springConfig);
+    const mistRightX = useSpring(rawMistRightX, springConfig);
+    const mistRightOpacity = useSpring(rawMistRightOpacity, springConfig);
+
+    const largeGallerySize = Math.round(192 * 1.35); 
+    const smallGallerySize = 192; 
+
     return (
-        <div className="relative min-h-screen flex items-center justify-center bg-[#0A0A0A] overflow-hidden">
-            <div className="absolute inset-0 z-0">
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-90"></div>
-                <video
-                    className="w-full h-full object-cover opacity-50"
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    // poster="https://images.pexels.com/photos/2774556/pexels-photo-2774556.jpeg"
-                >
-                    <source
-                        src="https://player.vimeo.com/external/434045526.sd.mp4?s=c27eecc69a27dbc4ff2b87d38afc35f1a9e7c02d&profile_id=164&oauth2_token_id=57447761"
-                        type="video/mp4" />
-                </video>
+        <section
+            id='event'
+            ref={setRefs}
+            className='relative w-full min-h-screen flex items-center justify-center bg-black px-4 py-20'
+            style={{
+                overflow: 'visible', // Agar ellipse dari section bawah bisa menembus ke sini
+                // zIndex dihapus untuk menghindari isolasi stacking context
+            }}
+        >
+            {/* LAYER 1: Background (z-0) */}
+            <div className='absolute inset-0 z-0 overflow-hidden'>
+                <Image
+                    src='/gallery/gallery-12.png'
+                    alt='Event Background'
+                    fill
+                    className='object-cover opacity-60'
+                    quality={100}
+                    priority
+                />
+                <div className='absolute inset-0 pointer-events-none'>
+                    <div className='absolute top-0 left-0 w-full h-[30%] bg-gradient-to-b from-black to-transparent' />
+                    <div className='absolute bottom-0 left-0 w-full h-[30%] bg-gradient-to-t from-black to-transparent' />
+                </div>
             </div>
 
-            <div className="relative z-10 max-w-4xl mx-auto py-12 px-4 sm:px-6 text-center">
-                <h1 className="text-4xl md:text-6xl font-bold py-3 px-3 text-white mb-6 animate-fadeIn">
-                    Main Event TEDxTelkomUniversity 2025
-                </h1>
-                <p className="text-xl text-gray-300 mb-12 max-w-2xl mx-auto animate-fadeIn" style={{ animationDelay: '0.2s' }}>
-                    Join us for an extraordinary journey of ideas worth spreading
-                </p>
-                <button
-                    className="group inline-flex items-center gap-2 bg-[#e62b1e] hover:bg-[#ff3b2f] text-white font-medium py-3 px-8 rounded-full transition-all duration-300 transform hover:scale-105 animate-fadeIn"
-                    onClick={() => alert('Video playback would start here')}
-                    style={{ animationDelay: '0.4s' }}
+            {/* LAYER 2: Mist (z-10) */}
+            <div className='absolute inset-0 z-10 pointer-events-none'>
+                <motion.div
+                    style={{ x: mistLeftX, opacity: mistLeftOpacity }}
+                    className='absolute top-0 left-0 h-0'
                 >
-                    {/* <Play size={24} className="group-hover:scale-110 transition-transform" /> */}
-                    <span>Watch Teaser</span>
-                </button>
+                    <div className='relative -top-[180px] md:-top-[280px] -translate-x-[40%]'>
+                        <Image
+                            src='/about/Mist.webp'
+                            alt=''
+                            width={1100}
+                            height={800}
+                            className='w-[65vw] max-w-[950px] h-auto'
+                        />
+                    </div>
+                </motion.div>
+                <motion.div
+                    style={{ x: mistRightX, opacity: mistRightOpacity }}
+                    className='absolute top-0 right-0 h-0'
+                >
+                    <div className='relative -top-[150px] md:-top-[250px] translate-x-[15%]'>
+                        <Image
+                            src='/about/Mist.webp'
+                            alt=''
+                            width={1100}
+                            height={800}
+                            className='w-[65vw] max-w-[950px] h-auto'
+                        />
+                    </div>
+                </motion.div>
             </div>
-        </div>
+
+            {/* LAYER 3: Gallery (z-[20]) — Di bawah ellipse merch (z-30) */}
+            <div className='absolute inset-0 z-[20] pointer-events-none'>
+                <div className='absolute top-[18%] left-[12%] md:top-[22%] md:left-[25%] -translate-x-1/2 -translate-y-1/2'>
+                    <Image
+                        src='/gallery/gallery-10.png'
+                        alt=''
+                        width={smallGallerySize}
+                        height={smallGallerySize}
+                        className='opacity-100'
+                    />
+                </div>
+                <div className='absolute top-[18%] right-[12%] md:top-[22%] md:right-[25%] translate-x-1/2 -translate-y-1/2'>
+                    <Image
+                        src='/gallery/gallery-8.jpg'
+                        alt=''
+                        width={largeGallerySize}
+                        height={largeGallerySize}
+                        className='opacity-100'
+                    />
+                </div>
+                <div className='absolute bottom-[18%] left-[12%] md:bottom-[22%] md:left-[25%] -translate-x-1/2 translate-y-1/2'>
+                    <Image
+                        src='/gallery/gallery-9.jpg'
+                        alt=''
+                        width={largeGallerySize}
+                        height={largeGallerySize}
+                        className='opacity-100'
+                    />
+                </div>
+                <div className='absolute bottom-[18%] right-[12%] md:bottom-[22%] md:right-[25%] translate-x-1/2 translate-y-1/2'>
+                    <Image
+                        src='/gallery/gallery-11.png'
+                        alt=''
+                        width={smallGallerySize}
+                        height={smallGallerySize}
+                        className='opacity-100'
+                    />
+                </div>
+            </div>
+
+            {/* LAYER 4: Main Content (z-50) */}
+            <motion.div
+                className='relative z-50 max-w-4xl w-full flex flex-col items-center justify-center text-center px-6'
+                variants={staggerContainer}
+                initial='hidden'
+                animate={inView ? 'visible' : 'hidden'}
+            >
+                <motion.h2
+                    variants={fadeInUp}
+                    className='font-westmeath text-4xl md:text-5xl lg:text-6xl text-white mb-6 tracking-wider uppercase drop-shadow-[0_5px_5px_rgba(0,0,0,0.8)]'
+                >
+                    THE EVENT
+                </motion.h2>
+
+                <motion.p
+                    variants={fadeInUp}
+                    className='font-raleway text-base md:text-xl text-gray-300 mb-10 leading-relaxed max-w-2xl mx-auto drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]'
+                >
+                    Once a year, the stage is set. The lights dim, the curtain
+                    rises — and ideas take center stage. TEDxTelkom University
+                    Main Event brings together voices that dare to think
+                    differently, delivering talks that linger long after the
+                    applause fades. No scripts, no filters — just real ideas,
+                    told with conviction. The symphony is coming. Will you be
+                    there?
+                </motion.p>
+
+                <motion.div variants={fadeInUp}>
+                    <Link
+                        href='/event'
+                        className='relative group flex items-center justify-center w-[220px] h-[60px] md:w-[320px] md:h-[65px] transition-transform hover:scale-105 active:scale-95 mx-auto'
+                    >
+                        <Image
+                            src='/about/get-ticket-button.png'
+                            alt=''
+                            fill
+                            className='object-contain'
+                        />
+                        <span className='relative z-10 font-westmeath text-white text-lg md:text-xl leading-none uppercase -mt-1 md:-mt-2'>
+                            more about event
+                        </span>
+                    </Link>
+                </motion.div>
+            </motion.div>
+        </section>
     );
 }
 

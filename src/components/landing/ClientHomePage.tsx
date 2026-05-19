@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { HeroSection, FaqSection, VisionSection, AboutSection, EventSection } from '@/components/landing';
-import Countdown from '@/components/countdown';
+import { HeroSection, FaqSection, VisionSection, AboutUsSection, EventSection, MerchSection } from '@/components/landing';
+import Countdown from '@/components/CountDown';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -62,13 +62,6 @@ export function ClientHomePage() {
     return (
 
         <div className="min-h-screen bg-[#000000] bg-cover bg-top bg-no-repeat relative overflow-x-hidden">
-            {/* <div
-                ref={countdownRef}
-                className="bg-[url(/countdown-background.png)] bg-no-repeat bg-cover flex items-center justify-center h-[77px] w-full fixed top-0 left-0 right-0 z-50"
-            >
-                <Countdown />
-            </div> */}
-
             <div>
                 <Navbar />
                 <div
@@ -76,8 +69,9 @@ export function ClientHomePage() {
                 />
 
                 <HeroSection />
-                <VisionSection />
-                <AboutSection />
+                <AboutUsSection />
+                <EventSection />
+                <MerchSection />
                 <FaqSection />
                 <Footer />
                 <BackToTopButton />

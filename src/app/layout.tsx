@@ -7,8 +7,25 @@ import {
     Playfair_Display,
     Raleway,
 } from 'next/font/google';
-import './globals.css';
 import { ThemeProvider } from '@/components/theme-provider';
+import localFont from 'next/font/local';
+import './globals.css';
+
+const westmeath = localFont({
+    src: [
+        {
+            path: '../../public/font/westmeath.regular.ttf',
+            weight: '400',
+            style: 'normal',
+        },
+        {
+            path: '../../public/font/westmeath.italic.ttf',
+            weight: '400',
+            style: 'italic',
+        },
+    ],
+    variable: '--font-westmeath',
+});
 
 const geistSans = Geist({
     variable: '--font-geist-sans',
@@ -40,7 +57,6 @@ const cinzelDecorative = Cinzel_Decorative({
     weight: ['400', '700', '900'],
 });
 
-
 const cinzelNormal = Cinzel({
     variable: '--font-cinzel',
     subsets: ['latin'],
@@ -59,7 +75,7 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang='en' suppressHydrationWarning>
+        <html lang='en' suppressHydrationWarning className={westmeath.variable}>
             <body
                 suppressHydrationWarning
                 className={`${geistSans.variable} ${raleway.variable} ${cinzelNormal.variable} ${playfairDisplay.variable} ${geistMono.variable} ${cinzelDecorative.className}  antialiased`}

@@ -1,7 +1,7 @@
 'use client';
 import React, { useState, useEffect } from "react";
 import { Card, CardContent } from "../../components/ui/card";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 
 const speakers = [
   {
@@ -64,7 +64,7 @@ export const SpeakersSection = () => {
   }, []);
 
   // Animation variants for different elements
-  const fadeInUp = {
+  const fadeInUp: Variants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
@@ -73,38 +73,38 @@ export const SpeakersSection = () => {
     }
   };
 
-  const floatingAnimation = {
+  const floatingAnimation: Variants = {
     initial: { y: 0 },
     animate: {
       y: [0, -10, 0],
       transition: {
         duration: 4,
         repeat: Infinity,
-        ease: "easeInOut"
+        ease: "easeInOut" as const
       }
     }
   };
 
-  const rotatingAnimation = {
+  const rotatingAnimation: Variants = {
     initial: { rotate: 0 },
     animate: {
       rotate: 360,
       transition: {
         duration: 30,
         repeat: Infinity,
-        ease: "linear"
+        ease: "linear" as const
       }
     }
   };
 
-  const pulseAnimation = {
+  const pulseAnimation: Variants = {
     initial: { scale: 1 },
     animate: {
       scale: [1, 1.05, 1],
       transition: {
         duration: 3,
         repeat: Infinity,
-        ease: "easeInOut"
+        ease: "easeInOut" as const
       }
     }
   };
