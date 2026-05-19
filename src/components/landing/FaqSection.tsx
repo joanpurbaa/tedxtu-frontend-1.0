@@ -51,7 +51,7 @@ const FaqCard = ({ faq, index, isOpen, onToggle }: {
     return (
         <div
             onClick={onToggle}
-            className={`relative mb-6 cursor-pointer border-[4px] ${borderColor} overflow-hidden w-full hover:scale-[1.01] active:scale-[0.99] transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]`}
+            className={`relative mb-6 cursor-pointer border-[4px] ${borderColor} overflow-hidden w-full hover:scale-[1.01] active:scale-[0.99] transition-all duration-500 ease-in-out`}
             style={{ 
                 backgroundColor: bgFallback,
                 // FIX: Gunakan radius yang lebih kecil saat terbuka agar tidak terlihat aneh/goofy

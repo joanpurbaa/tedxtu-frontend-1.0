@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import { HeroSection, FaqSection, VisionSection, AboutUsSection, EventSection, MerchSection } from '@/components/landing';
-import Countdown from '@/components/CountDown';
+import Countdown from '@/components/countdown';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
