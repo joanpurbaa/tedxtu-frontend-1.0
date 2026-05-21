@@ -2,6 +2,7 @@
 
 import Navbar from '@/components/Navbar';
 import Image from 'next/image';
+import Link from 'next/link';
 import Footer from '@/components/Footer';
 import BackToTopButton from '@/components/BackToTopButton';
 
@@ -159,9 +160,10 @@ export default function Merch() {
                     <div className='relative z-10 w-full max-w-6xl mx-auto'>
                         <div className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-8'>
                             {merch.map((item, index) => (
-                                <div
+                                <Link
                                     key={index}
-                                    className='flex flex-col items-start w-full'
+                                    href='/merch/detail'
+                                    className='flex flex-col items-start w-full group cursor-pointer'
                                 >
                                     <div className='relative w-full aspect-square flex justify-center items-center mb-2'>
                                         <Image
@@ -169,14 +171,14 @@ export default function Merch() {
                                             alt={item.name}
                                             fill
                                             quality={90}
-                                            className='object-contain object-center'
+                                            className='object-contain object-center group-hover:scale-105 transition-transform duration-300'
                                             style={{ mixBlendMode: 'multiply' }}
                                         />
                                     </div>
 
                                     {/* Text */}
                                     <div className='text-left px-1'>
-                                        <h3 className='font-westmeath text-sm sm:text-base md:text-lg text-white font-bold leading-snug'>
+                                        <h3 className='font-westmeath text-sm sm:text-base md:text-lg text-white font-bold leading-snug group-hover:text-[#FFB41E] transition-colors duration-300'>
                                             {item.name}
                                         </h3>
                                         <p
@@ -186,7 +188,7 @@ export default function Merch() {
                                             Rp{item.price.toLocaleString('id-ID')}
                                         </p>
                                     </div>
-                                </div>
+                                </Link>
                             ))}
                         </div>
                     </div>
