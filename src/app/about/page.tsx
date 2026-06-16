@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Image from 'next/image';
-import Countdown from '@/components/CountDown';
+import Countdown from '@/components/countdown';
 import BackToTopButton from '@/components/BackToTopButton';
 import { motion, useScroll, useSpring, useTransform, type Variants } from 'framer-motion';
 
