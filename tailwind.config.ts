@@ -10,6 +10,8 @@ export default {
     theme: {
         extend: {
             fontFamily: {
+                title: ['var(--font-westmeath)', 'serif'],
+                body: ['var(--font-raleway)', 'sans-serif'],
                 'cinzel-decorative': ['var(--font-cinzel-decorative)', 'serif'],
                 cinzel: ['var(--font-cinzel)', 'serif'],
                 playfair: ['var(--font-playfair-display)', 'serif'],

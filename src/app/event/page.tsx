@@ -5,6 +5,7 @@ import { Link, Play, X } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Gallery from './Gallery';
 import Speakers from './Speakers';
+import TicketSelection from './ticketSelection';
 import { ElementsButton } from '@/components/ElementsButton';
 import { MapSection, SpeakersSection } from '@/components/landing';
 import Footer from '@/components/landing/FooterSection';
@@ -122,6 +123,7 @@ const EventPage = () => {
         <>
             <main id='hero' className='bg-black min-h-screen flex flex-col overflow-hidden'>
                 <Navbar />
+                <TicketSelection />
                 <div className='flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8'>
                     <div className='container relative max-w-7xl'>
                         <div
