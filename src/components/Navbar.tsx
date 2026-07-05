@@ -114,8 +114,8 @@ export default function Navbar({
                                 '/',
                                 '/about',
                                 '/event',
-                                '/recruitment',
-                                '/merch',
+                                // '/recruitment',
+                                // '/merch',
                             ].map((href, i) => (
                                 <Link
                                     key={href}
@@ -128,8 +128,8 @@ export default function Navbar({
                                             'Home',
                                             'About Us',
                                             'Event',
-                                            'Recruitment',
-                                            'Merch',
+                                            // 'Recruitment',
+                                            // 'Merch',
                                         ][i]
                                     }
                                 </Link>
@@ -158,8 +158,8 @@ export default function Navbar({
                         { href: '/', label: 'Home' },
                         { href: '/about', label: 'About Us' },
                         { href: '/event', label: 'Event' },
-                        { href: '/recruitment', label: 'Recruitment' },
-                        { href: '/merch', label: 'Merch' },
+                        // { href: '/recruitment', label: 'Recruitment' },
+                        // { href: '/merch', label: 'Merch' },
                     ].map(({ href, label }) => (
                         <Link
                             key={href}

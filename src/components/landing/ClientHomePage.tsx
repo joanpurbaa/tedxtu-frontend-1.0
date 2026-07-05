@@ -70,7 +70,7 @@ export function ClientHomePage() {
                 <HeroSection />
                 <AboutUsSection />
                 <EventSection />
-                <MerchSection />
+                {/* <MerchSection /> */}
                 <FaqSection />
                 <Footer />
                 <BackToTopButton />
