@@ -70,6 +70,8 @@ export default {
                 float: 'float 10s ease-in-out infinite',
                 'pulse-slow':
                     'pulse-slow 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                'marquee-left': 'marquee-left 30s linear infinite',
+                'marquee-right': 'marquee-right 30s linear infinite',
             },
             keyframes: {
                 float: {
@@ -81,6 +83,14 @@ export default {
                 'pulse-slow': {
                     '0%, 100%': { transform: 'scale(1) rotate(0deg)' },
                     '50%': { transform: 'scale(1.05) rotate(3deg)' },
+                },
+                'marquee-left': {
+                    '0%': { transform: 'translateX(0)' },
+                    '100%': { transform: 'translateX(-50%)' },
+                },
+                'marquee-right': {
+                    '0%': { transform: 'translateX(-50%)' },
+                    '100%': { transform: 'translateX(0)' },
                 },
             },
         },

@@ -13,7 +13,7 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import useCountdown from '@/hooks/useCountdown';
 
-const EVENT_START_DATE = '2026-05-18T08:00:00+07:00';
+const EVENT_START_DATE = '2027-01-16T08:00:00+07:00';
 
 type CountdownProps = {
     targetDate?: Date | string;

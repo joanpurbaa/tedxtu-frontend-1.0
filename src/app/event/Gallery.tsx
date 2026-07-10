@@ -1,265 +1,136 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react';
+'use client';
 
-// You'll need to define this array with your actual images
+import { useState } from 'react';
+import Image from 'next/image';
+import { ExternalLink, X } from 'lucide-react';
+
 const galleryImages = [
-  '/gallery/gallery-1.jpg',
-  '/gallery/gallery-2.jpg',
-  '/gallery/gallery-3.jpg',
-  '/gallery/gallery-4.jpg',
-  '/gallery/gallery-5.jpg',
-  '/gallery/gallery-6.jpg',
-  '/gallery/gallery-7.jpg',
-  '/gallery/gallery-8.jpg',
+  '/gallery/gallery-1.webp',
+  '/gallery/gallery-2.webp',
+  '/gallery/gallery-3.webp',
+  '/gallery/gallery-4.webp',
+  '/gallery/gallery-5.webp',
+  '/gallery/gallery-6.webp',
+  '/gallery/gallery-7.webp',
+  '/gallery/gallery-8.webp',
+  '/gallery/gallery-9.webp',
+  '/gallery/gallery-10.webp',
+  '/gallery/gallery-11.webp',
+  '/gallery/gallery-12.webp',
 ];
 
-const Gallery: React.FC = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(false);
-  const [isAutoPlay, setIsAutoPlay] = useState(true);
-  const [selectedImage, setSelectedImage] = useState<number | null>(null);
+const topRow = galleryImages.slice(0, 6);
+const bottomRow = galleryImages.slice(6, 12);
 
-  const getVisibleCount = useCallback(() => {
-    if (typeof window === 'undefined') return 1;
-    if (window.innerWidth >= 1280) return 4;
-    if (window.innerWidth >= 1024) return 3;
-    if (window.innerWidth >= 768) return 2;
-    return 1;
-  }, []);
-
-  const [visibleCount, setVisibleCount] = useState(1);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setVisibleCount(getVisibleCount());
-    };
-
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, [getVisibleCount]);
-
-  // Auto-play functionality
-  useEffect(() => {
-    if (!isAutoPlay || selectedImage !== null) return;
-
-    const interval = setInterval(() => {
-      navigate('next');
-    }, 4000);
-
-    return () => clearInterval(interval);
-  }, [currentIndex, isAutoPlay, selectedImage]);
-
-  const navigate = useCallback((direction: 'prev' | 'next') => {
-    if (isTransitioning) return;
-
-    setIsTransitioning(true);
-
-    let newIndex;
-    if (direction === 'prev') {
-      newIndex = (currentIndex - 1 + galleryImages.length) % galleryImages.length;
-    } else {
-      newIndex = (currentIndex + 1) % galleryImages.length;
-    }
-
-    setCurrentIndex(newIndex);
-
-    setTimeout(() => {
-      setIsTransitioning(false);
-    }, 600);
-  }, [currentIndex, isTransitioning]);
-
-  const getVisibleImages = () => {
-    const images = [];
-    for (let i = 0; i < visibleCount; i++) {
-      const index = (currentIndex + i) % galleryImages.length;
-      images.push({ index, url: galleryImages[index] });
-    }
-    return images;
-  };
-
-  const goToSlide = (index: number) => {
-    if (isTransitioning) return;
-    setCurrentIndex(index);
-    setIsTransitioning(true);
-    setTimeout(() => setIsTransitioning(false), 600);
-  };
+const Gallery = () => {
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   return (
-    <div className="w-full bg-black py-12 sm:py-16 md:py-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header with animations */}
-        <div className="text-center mb-8 sm:mb-12 md:mb-16">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3 sm:mb-4 font-[family-name:var(--font-cinzel-decorative)]">
+    <div className="relative w-full overflow-hidden bg-black pt-12 pb-24 sm:pt-16 sm:pb-32 md:pt-20 md:pb-40">
+      <div className="absolute inset-0 opacity-15">
+        <Image src="/speakers/Texture.svg" alt="" fill className="object-cover" />
+      </div>
+      <div className="absolute inset-0 bg-gradient-to-b from-black via-black/90 to-black" />
+
+      <div className="pointer-events-none absolute bottom-0 left-1/2 h-[50rem] w-[80rem] -translate-x-1/2 translate-y-1/2 sm:h-[65rem] sm:w-[104rem] md:h-[80rem] md:w-[128rem]">
+        <Image src="/about/red-ellipse.webp" alt="" fill className="object-fill" />
+        <div
+          className="absolute inset-0"
+          style={{
+            maskImage: "url('/about/red-ellipse.webp')",
+            WebkitMaskImage: "url('/about/red-ellipse.webp')",
+            maskSize: '100% 100%',
+            WebkitMaskSize: '100% 100%',
+            maskRepeat: 'no-repeat',
+            WebkitMaskRepeat: 'no-repeat',
+            maskPosition: 'center',
+            WebkitMaskPosition: 'center',
+          }}
+        >
+          <div
+            className="h-full w-full opacity-20 mix-blend-overlay"
+            style={{
+              backgroundImage: "url('/speakers/backgroundTexture.svg')",
+              backgroundRepeat: 'repeat',
+              backgroundSize: '48rem 48rem',
+            }}
+          />
+        </div>
+      </div>
+
+      <div className="relative">
+        <div className="relative mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+          <div className="pointer-events-none absolute -right-44 -top-8 h-48 w-48 -rotate-[50deg] opacity-45 sm:-right-60 sm:-top-10 sm:h-64 sm:w-64 md:-right-80 md:-top-12 md:h-80 md:w-80">
+            <Image src="/about/golden-note.webp" alt="" fill className="object-contain" />
+          </div>
+          <h2 className="mb-14 font-westmeath text-2xl uppercase tracking-wide text-white sm:mb-20 sm:text-3xl md:mb-24 md:text-4xl lg:text-5xl">
             Gallery from Main Event
           </h2>
-          <div className="w-20 sm:w-24 md:w-32 h-1 bg-red-500 mx-auto rounded-full"></div>
         </div>
 
-        {/* Main Gallery Container */}
-        <div className="relative max-w-7xl mx-auto">
-          {/* Navigation Buttons - Hidden on mobile for swipe gestures */}
-          <button
-            onClick={() => navigate('prev')}
-            disabled={isTransitioning}
-            className="absolute -left-8 sm:-left-10 md:-left-12 lg:-left-16 top-1/2 -translate-y-1/2 z-20 bg-white/10 backdrop-blur-md hover:bg-white/20 text-white p-2 sm:p-3 md:p-4 rounded-full shadow-2xl transform transition-all duration-300 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed border border-white/20 hidden sm:block"
-            aria-label="Previous"
-          >
-            <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7" />
-          </button>
-
-          <button
-            onClick={() => navigate('next')}
-            disabled={isTransitioning}
-            className="absolute -right-8 sm:-right-10 md:-right-12 lg:-right-16 top-1/2 -translate-y-1/2 z-20 bg-white/10 backdrop-blur-md hover:bg-white/20 text-white p-2 sm:p-3 md:p-4 rounded-full shadow-2xl transform transition-all duration-300 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed border border-white/20 hidden sm:block"
-            aria-label="Next"
-          >
-            <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7" />
-          </button>
-
-          {/* Images Container */}
-          <div className="overflow-hidden px-0 sm:px-12 md:px-16 lg:px-20">
-            <div
-              className={`flex gap-3 sm:gap-4 md:gap-5 lg:gap-6 transition-all duration-700 ease-in-out ${isTransitioning ? 'transform scale-95 opacity-80' : 'transform scale-100 opacity-100'
-                }`}
-            >
-              {getVisibleImages().map(({ index, url }, idx) => (
-                <div
-                  key={`${index}-${currentIndex}`}
-                  className={`w-full flex-shrink-0 transform transition-all duration-700 cursor-pointer ${isTransitioning
-                      ? 'translate-y-2 opacity-90'
-                      : 'translate-y-0 opacity-100 hover:scale-105'
-                    }`}
-                  style={{
-                    animationDelay: `${idx * 100}ms`,
-                    transitionDelay: `${idx * 50}ms`,
-                    width: `${100 / visibleCount}%`
-                  }}
-                  onClick={() => setSelectedImage(index)}
+        <div className="space-y-4 sm:space-y-6">
+          <div className="overflow-hidden">
+            <div className="flex w-max animate-marquee-left gap-4 sm:gap-6 hover:[animation-play-state:paused]">
+              {[...topRow, ...topRow].map((src, idx) => (
+                <button
+                  key={`top-${idx}`}
+                  onClick={() => setSelectedImage(src)}
+                  className="relative h-36 w-52 shrink-0 overflow-hidden rounded-xl shadow-2xl sm:h-44 sm:w-64 md:h-52 md:w-72"
                 >
-                  <div className="relative group overflow-hidden rounded-lg sm:rounded-xl md:rounded-2xl shadow-2xl mx-1.5 sm:mx-0">
-                    <div className="aspect-[3/4] w-full">
-                      <img
-                        src={url}
-                        alt={`Gallery image ${index + 1}`}
-                        className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
-                        loading="lazy"
-                      />
-                    </div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
-                    <div className="absolute bottom-2 sm:bottom-3 md:bottom-4 left-2 sm:left-3 md:left-4 text-white opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-4 group-hover:translate-y-0">
-                      <p className="text-xs sm:text-sm text-gray-300">Click to view full size</p>
-                    </div>
-                  </div>
-                </div>
+                  <Image src={src} alt="" fill className="object-cover" />
+                </button>
               ))}
             </div>
           </div>
 
-          {/* Mobile Navigation Dots - Visible only on mobile */}
-          <div className="flex justify-center gap-2 mt-6 sm:hidden">
-            <button
-              onClick={() => navigate('prev')}
-              disabled={isTransitioning}
-              className="bg-white/10 backdrop-blur-md hover:bg-white/20 text-white p-2 rounded-full"
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </button>
-            <button
-              onClick={() => navigate('next')}
-              disabled={isTransitioning}
-              className="bg-white/10 backdrop-blur-md hover:bg-white/20 text-white p-2 rounded-full"
-            >
-              <ChevronRight className="w-5 h-5" />
-            </button>
+          <div className="overflow-hidden">
+            <div className="flex w-max animate-marquee-right gap-4 sm:gap-6 hover:[animation-play-state:paused]">
+              {[...bottomRow, ...bottomRow].map((src, idx) => (
+                <button
+                  key={`bottom-${idx}`}
+                  onClick={() => setSelectedImage(src)}
+                  className="relative h-36 w-52 shrink-0 overflow-hidden rounded-xl shadow-2xl sm:h-44 sm:w-64 md:h-52 md:w-72"
+                >
+                  <Image src={src} alt="" fill className="object-cover" />
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
-        {/* Controls */}
-        <div className="flex justify-center items-center mt-8 sm:mt-10 md:mt-12">
-          {/* Full Documentation Button */}
+        <div className="mt-16 flex justify-center sm:mt-20 md:mt-24">
           <a
             href="https://flic.kr/s/aHBqjCg6hx"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 bg-[#951900] hover:bg-[#b42000] text-white px-4 sm:px-5 md:px-6 py-2.5 sm:py-3 rounded-full transition-all duration-300 border border-white/20 backdrop-blur-md text-sm sm:text-base font-[family-name:var(--font-raleway)]"
+            className="flex items-center gap-2 rounded-full bg-amber-400 px-6 py-3 font-westmeath text-sm uppercase tracking-[0.1em] text-white transition-all duration-300 hover:scale-[1.02] hover:bg-amber-300 sm:px-8 sm:text-base"
           >
-            <span>Full Documentation</span>
-            <ExternalLink className="w-4 h-4" />
+            <span>View Full Gallery</span>
+            <ExternalLink className="h-4 w-4" />
           </a>
-        </div>
-
-        {/* Dots Indicator */}
-        <div className="flex justify-center gap-1.5 sm:gap-2 md:gap-3 mt-6 sm:mt-8">
-          {galleryImages.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => goToSlide(index)}
-              className={`w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 rounded-full transition-all duration-300 ${index === currentIndex
-                  ? 'bg-white scale-125 shadow-lg'
-                  : 'bg-white/40 hover:bg-white/70'
-                }`}
-              aria-label={`Go to slide ${index + 1}`}
-            />
-          ))}
-        </div>
-
-        {/* Progress Bar */}
-        <div className="mt-6 sm:mt-8 max-w-xs sm:max-w-sm md:max-w-md mx-auto">
-          <div className="w-full bg-white/20 rounded-full h-0.5 sm:h-1">
-            <div
-              className="bg-red-500 h-full rounded-full transition-all duration-300"
-              style={{ width: `${((currentIndex + 1) / galleryImages.length) * 100}%` }}
-            ></div>
-          </div>
         </div>
       </div>
 
-      {/* Full-size Modal */}
-      {selectedImage !== null && (
+      {selectedImage && (
         <div
-          className="fixed inset-0 bg-black/95 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 p-4 backdrop-blur-sm"
           onClick={() => setSelectedImage(null)}
         >
           <div className="relative w-full max-w-5xl">
-            <img
-              src={galleryImages[selectedImage]}
-              alt={`Gallery image ${selectedImage + 1}`}
-              className="w-full h-auto max-h-[90vh] object-contain rounded-lg shadow-2xl"
+            <Image
+              src={selectedImage}
+              alt=""
+              width={1200}
+              height={800}
+              className="h-auto max-h-[90vh] w-full rounded-lg object-contain shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             />
             <button
               onClick={() => setSelectedImage(null)}
-              className="absolute top-2 right-2 sm:top-4 sm:right-4 bg-white/20 backdrop-blur-md hover:bg-white/30 text-white p-2 rounded-full transition-all duration-300"
+              className="absolute top-2 right-2 rounded-full bg-white/20 p-2 text-white backdrop-blur-md transition-all duration-300 hover:bg-white/30 sm:top-4 sm:right-4"
             >
-              <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
+              <X className="h-5 w-5 sm:h-6 sm:w-6" />
             </button>
-
-            {/* Mobile navigation in modal */}
-            <div className="absolute inset-y-0 left-0 right-0 flex items-center justify-between pointer-events-none px-4">
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  const newIndex = (selectedImage - 1 + galleryImages.length) % galleryImages.length;
-                  setSelectedImage(newIndex);
-                }}
-                className="pointer-events-auto bg-white/20 backdrop-blur-md hover:bg-white/30 text-white p-2 sm:p-3 rounded-full transition-all duration-300"
-              >
-                <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
-              </button>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  const newIndex = (selectedImage + 1) % galleryImages.length;
-                  setSelectedImage(newIndex);
-                }}
-                className="pointer-events-auto bg-white/20 backdrop-blur-md hover:bg-white/30 text-white p-2 sm:p-3 rounded-full transition-all duration-300"
-              >
-                <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
-              </button>
-            </div>
           </div>
         </div>
       )}

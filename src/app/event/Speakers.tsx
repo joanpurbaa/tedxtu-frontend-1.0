@@ -1,159 +1,208 @@
 'use client';
-import React, { useState } from 'react';
 
-// Example usage component to show how to use with event images
-const SpeakerShowcase = () => {
-  const speakers = [
-    {
-      number: 1,
-      description: "Mr. Arvin An inspirational student of Telkom University is here to understand how we deal with FOMO, help us grow, and make us realize something. The ambience is relaxed but the material can make us feel called and focused on becoming someone who develops, makes an impact, and is able to spark the spirit of the dreamer.",
-      eventImageSrc: '/pembicara/arvin.jpg' // Replace with actual image path
-    },
-    {
-      number: 2,
-      description: "Mr. Dion, an inspirational illustrator who built the illustration class. Bringing the experience of the story told at the TEDxTelkom University Main Event. Present to dive in and lead us into another version of ourselves. What if we have another character? Which version do we choose to appear at the beginning, then which character comes to help us when we are angry? And other emotions. A warm read with illustrations that spark our imagination.",
-      eventImageSrc: "/pembicara/dion.jpg", // Replace with actual image path
-      isReversed: true
-    },
-    {
-      number: 3,
-      description: "Ms. Tanya is not just a young businesswoman, but she lives to know the direction of her business journey. Being a Telkom University student with a passion for business made her discover things that could change her life. Starting from knowing business risks, making a structured reference and goal in building a sustainable business, to how she calculates it all.",
-      eventImageSrc: "/pembicara/tanya.jpg", // Replace with actual image path
-    },
-    {
-      number: 4,
-      description: "Recognized as one of the best psychologists in Bandung by People's Choice, Ms. Kori brings a perspective on how we process and develop through our imperfections. How do we unleash our potential from discomfort? Knowing and understanding ourselves to dare to be ourselves and utilize imperfections as perfection.",
-      eventImageSrc: "/pembicara/kori.jpg", // Replace with actual image path
-      isReversed: true
-    },
-    {
-      number: 5,
-      description: "Mr. Gamma an Informatics lecturer at Telkom university as well as an AI researcher who has extraordinary technical experience in his field. The topics discussed are very relevant to our lives today. Motorcycle club? Klitih? And Artificial Intelligence. Mr. Gamma discussed how this AI can be utilized by us as a society to carry out active collaboration in making solutions to the problem of klitih or this dangerous motorcycle gang so that the case can be mitigated to be tracked with the help of AI.",
-      eventImageSrc: "/pembicara/gama.jpg" // Replace with actual image path
-    }
-  ];
+import { useState } from 'react';
+import Image from 'next/image';
+import { AnimatePresence, motion } from 'framer-motion';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 
-interface SpeakerCardProps {
-  number: number;
-  description: string;
-  isReversed?: boolean;
-  eventImageSrc?: string; // URL to the speaker event image
+interface Speaker {
+	name: string;
+	description: string;
+	image: string;
 }
 
-const SpeakerCard: React.FC<SpeakerCardProps> = ({ 
-  number, 
-  description, 
-  isReversed = false,
-  eventImageSrc 
-}) => {
-  const [isHovered, setIsHovered] = useState(false);
+const speakers: Speaker[] = Array.from({ length: 4 }).map(() => ({
+	name: "Speaker's Name",
+	description:
+		'Lorem ipsum dolor sit amet consectetur adipiscing elit. Adipiscing elit quisque faucibus ex sapien vitae pellentesque.',
+	image: '/speakers/keonho_uniform-removebg-preview 1.png',
+}));
 
-  return (
-    <div 
-      className={`flex flex-col lg:flex-row items-center gap-8 ${isReversed ? 'lg:flex-row-reverse' : ''} group cursor-pointer`}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      {/* Speaker Image Card - Now uses event image as background */}
-      <div className="flex-shrink-0 relative">
-        <div 
-          className={`w-48 h-48 rounded-3xl flex items-center justify-center transform transition-all duration-500 ease-out shadow-2xl
-            ${isHovered ? 'rotate-6 scale-110 shadow-red-500/30' : 'rotate-3'} 
-            hover:shadow-red-500/40 relative overflow-hidden bg-cover bg-center`}
-          style={{
-            backgroundImage: eventImageSrc ? `url(${eventImageSrc})` : 'linear-gradient(135deg, #e62b1e, #ff3b2f, #ff6b5a)'
-          }}
-        >
-          {/* Dark overlay for better text readability */}
-          <div className="absolute inset-0 bg-black/40 transition-opacity duration-300"></div>
-          
-          {/* Enhanced overlay on hover */}
-          <div className={`absolute inset-0 bg-gradient-to-br from-[#e62b1e]/60 via-[#ff3b2f]/40 to-transparent transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}></div>
-          
-          {/* Animated background effect */}
-          <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-          
-          {/* Floating particles effect */}
-          <div className="absolute inset-0 overflow-hidden">
-            {[...Array(6)].map((_, i) => (
-              <div
-                key={i}
-                className={`absolute w-2 h-2 bg-white/30 rounded-full transition-all duration-1000 ${isHovered ? 'animate-ping' : ''}`}
-                style={{
-                  left: `${20 + i * 15}%`,
-                  top: `${10 + i * 12}%`,
-                  animationDelay: `${i * 0.2}s`
-                }}
-              ></div>
-            ))}
-          </div>
-          
-          {/* TEDx-style red accent at bottom */}
-          <div className="absolute bottom-0 left-0 right-0 h-2 bg-gradient-to-r from-[#e62b1e] to-[#ff3b2f]"></div>
-        </div>
-        
-        {/* Glowing ring effect */}
-        <div className={`absolute inset-0 rounded-3xl border-2 border-red-400/50 transition-all duration-500 ${isHovered ? 'scale-125 opacity-100' : 'scale-100 opacity-0'}`}></div>
-      </div>
+const baseThumbnails = ['/speakers/keonho1.svg', '/speakers/keonho2.svg', '/speakers/keonho3.svg'];
 
-      {/* Description Card */}
-      <div className="flex-1 relative group-hover:translate-y-[-4px] transition-all duration-500">
-        <div className="p-8 rounded-2xl shadow-2xl backdrop-blur-sm relative overflow-hidden min-h-[140px] flex items-center">
-          {/* Animated border effect */}
-          <div className={`absolute inset-0 rounded-2xl bg-gradient-to-r from-[#e62b1e]/20 via-transparent to-[#ff3b2f]/20 opacity-0 transition-opacity duration-500 ${isHovered ? 'opacity-100' : ''}`}></div>
-          
-          {/* Background shimmer effect */}
-          <div className={`absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent transition-transform duration-1000 ${isHovered ? 'translate-x-full' : '-translate-x-full'}`}></div>
-          
-          <div className="relative z-10 w-full">
-            <p className="font-raleway text-white-200 leading-relaxed text-lg font-medium tracking-wide text-justify">
-              {description}
-            </p>
-            
-            {/* Animated accent line */}
-            <div className={`mt-4 h-1 bg-gradient-to-r from-[#e62b1e] to-[#ff3b2f] rounded-full transition-all duration-700 ${isHovered ? 'w-full opacity-100' : 'w-0 opacity-0'}`}></div>
-          </div>
-        </div>
-        
-        {/* Outer glow effect */}
-        <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br from-red-500/10 to-orange-500/10 blur-xl transition-opacity duration-500 -z-10 ${isHovered ? 'opacity-100' : 'opacity-0'}`}></div>
-      </div>
-      
-      <style jsx>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-10px); }
-        }
-        
-        @keyframes pulse-glow {
-          0%, 100% { box-shadow: 0 0 20px rgba(230, 43, 30, 0.3); }
-          50% { box-shadow: 0 0 40px rgba(230, 43, 30, 0.6); }
-        }
-        
-        .group:hover .animate-float {
-          animation: float 3s ease-in-out infinite;
-        }
-      `}</style>
-    </div>
-  );
+const thumbnailSets = Array.from({ length: 4 }).map((_, i) =>
+	baseThumbnails.map((_, slot) => baseThumbnails[(slot + i) % baseThumbnails.length])
+);
+
+const Speakers = () => {
+	const [[index, direction], setIndex] = useState<[number, number]>([0, 0]);
+	const speaker = speakers[index];
+	const thumbnails = thumbnailSets[index];
+	const progress = ((index + 1) / speakers.length) * 100;
+
+	const navigate = (dir: 'prev' | 'next') => {
+		setIndex(([prev]) => {
+			const nextIndex =
+				dir === 'next'
+					? (prev + 1) % speakers.length
+					: (prev - 1 + speakers.length) % speakers.length;
+			return [nextIndex, dir === 'next' ? 1 : -1];
+		});
+	};
+
+	return (
+		<section className="relative overflow-hidden bg-black py-16">
+			<div className="pointer-events-none absolute -left-10 -top-4 h-56 w-40 sm:-left-14 sm:h-72 sm:w-52 md:-left-20 md:h-96 md:w-72">
+				<Image src="/speakers/goldenMusicNote3.svg" alt="" fill className="object-contain" />
+			</div>
+
+			<div className="pointer-events-none absolute right-0 top-1/2 h-[78rem] w-[78rem] -translate-y-1/2 translate-x-1/2 sm:h-[100rem] sm:w-[100rem]">
+				<Image src="/about/red-ellipse.webp" alt="" fill className="object-contain" />
+				<div
+					className="absolute inset-0"
+					style={{
+						maskImage: "url('/about/red-ellipse.webp')",
+						WebkitMaskImage: "url('/about/red-ellipse.webp')",
+						maskSize: 'contain',
+						WebkitMaskSize: 'contain',
+						maskRepeat: 'no-repeat',
+						WebkitMaskRepeat: 'no-repeat',
+						maskPosition: 'center',
+						WebkitMaskPosition: 'center',
+					}}
+				>
+					<Image
+						src="/speakers/backgroundTexture.svg"
+						alt=""
+						fill
+						className="object-cover opacity-20 mix-blend-overlay"
+					/>
+				</div>
+				<div className="absolute left-1/2 top-1/2 h-[25%] w-[18%] -translate-x-[85%] -translate-y-1/2 opacity-50">
+					<Image src="/speakers/goldenMusicNote2.svg" alt="" fill className="object-contain" />
+				</div>
+			</div>
+
+			<div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+				<h2 className="mb-10 text-center font-westmeath text-3xl uppercase tracking-wide text-white sm:mb-14 sm:text-4xl lg:text-5xl">
+					Our Speakers
+				</h2>
+
+				<div className="grid gap-12 lg:grid-cols-2 lg:items-center lg:gap-16">
+					<div className="relative mx-auto -mt-8 w-full max-w-md sm:-mt-10">
+						<AnimatePresence mode="wait" custom={direction}>
+							<motion.div
+								key={index}
+								custom={direction}
+								initial={{ x: direction >= 0 ? 80 : -80, opacity: 0 }}
+								animate={{ x: 0, opacity: 1 }}
+								exit={{ x: direction >= 0 ? -80 : 80, opacity: 0 }}
+								transition={{ duration: 0.4, ease: 'easeInOut' }}
+								className="relative"
+							>
+								<div
+									className="relative z-10 mx-auto w-3/4"
+									style={{
+										maskImage: 'linear-gradient(to bottom, black 72%, transparent 92%)',
+										WebkitMaskImage: 'linear-gradient(to bottom, black 72%, transparent 92%)',
+									}}
+								>
+									<Image
+										src={speaker.image}
+										alt={speaker.name}
+										width={470}
+										height={620}
+										className="h-auto w-full object-contain"
+										priority
+									/>
+								</div>
+								<div
+									className="absolute left-1/2 z-20 -translate-x-1/2"
+									style={{ top: '55%', width: '110%' }}
+								>
+									<Image
+										src="/speakers/Mist.svg"
+										alt=""
+										width={470}
+										height={433}
+										className="h-auto w-full object-contain"
+									/>
+								</div>
+							</motion.div>
+						</AnimatePresence>
+					</div>
+
+					<div>
+						<div className="relative overflow-hidden">
+							<AnimatePresence mode="wait" custom={direction}>
+								<motion.div
+									key={index}
+									custom={direction}
+									initial={{ x: direction >= 0 ? 60 : -60, opacity: 0 }}
+									animate={{ x: 0, opacity: 1 }}
+									exit={{ x: direction >= 0 ? -60 : 60, opacity: 0 }}
+									transition={{ duration: 0.4, ease: 'easeInOut' }}
+								>
+									<h3 className="font-westmeath text-2xl text-amber-300 sm:text-3xl">
+										{speaker.name}
+									</h3>
+									<p className="mt-4 font-raleway text-sm leading-6 text-white/80 sm:text-base">
+										{speaker.description}
+									</p>
+								</motion.div>
+							</AnimatePresence>
+						</div>
+
+						<div className="relative mt-10 overflow-hidden">
+							<AnimatePresence mode="wait" custom={direction}>
+								<motion.div
+									key={index}
+									custom={direction}
+									initial={{ x: direction >= 0 ? 60 : -60, opacity: 0 }}
+									animate={{ x: 0, opacity: 1 }}
+									exit={{ x: direction >= 0 ? -60 : 60, opacity: 0 }}
+									transition={{ duration: 0.4, ease: 'easeInOut' }}
+									className="flex items-end gap-6"
+								>
+									{thumbnails.map((src) => (
+										<div key={src} className="w-1/3">
+											<Image
+												src={src}
+												alt=""
+												width={139}
+												height={139}
+												className="h-auto w-full object-contain"
+											/>
+										</div>
+									))}
+								</motion.div>
+							</AnimatePresence>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div className="relative mx-auto mt-12 max-w-6xl px-4 sm:mt-16 sm:px-6 lg:px-8">
+				<div className="relative h-1 w-full overflow-hidden rounded-full bg-white">
+					<div
+						className="absolute inset-y-0 left-0 rounded-full bg-red-600 transition-all duration-500 ease-out"
+						style={{ width: `${progress}%` }}
+					/>
+					<div
+						className="absolute top-1/2 h-2.5 w-2.5 -translate-y-1/2 rounded-full bg-red-600 transition-all duration-500 ease-out"
+						style={{ left: `calc(${progress}% - 5px)` }}
+					/>
+				</div>
+
+				<div className="mt-5 flex items-center justify-center gap-6">
+					<button
+						onClick={() => navigate('prev')}
+						aria-label="Previous speaker"
+						className="text-white transition-transform duration-300 hover:-translate-x-1"
+					>
+						<ArrowLeft className="h-6 w-6 sm:h-7 sm:w-7" />
+					</button>
+					<button
+						onClick={() => navigate('next')}
+						aria-label="Next speaker"
+						className="text-white transition-transform duration-300 hover:translate-x-1"
+					>
+						<ArrowRight className="h-6 w-6 sm:h-7 sm:w-7" />
+					</button>
+				</div>
+			</div>
+		</section>
+	);
 };
 
-  return (
-    <div className="min-h-screen bg-black p-8">
-      <div className="max-w-6xl mx-auto space-y-12">
-        <h1 className="text-4xl font-bold text-white text-center mb-16">Featured Speakers</h1>
-        {speakers.map((speaker, index) => (
-          <SpeakerCard
-            key={index}
-            number={speaker.number}
-            description={speaker.description}
-            isReversed={speaker.isReversed}
-            eventImageSrc={speaker.eventImageSrc}
-          />
-        ))}
-      </div>
-    </div>
-  );
-};
-
-export default SpeakerShowcase;
+export default Speakers;
