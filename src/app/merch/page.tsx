@@ -157,8 +157,8 @@ export default function Merch() {
                             {merch.map((item, index) => (
                                 <Link
                                     key={index}
-                                    className='flex flex-col items-start w-full'
-                                    href={''}
+                                    href='/merch/detail'
+                                    className='flex flex-col items-start w-full group cursor-pointer'
                                 >
                                     <div className='relative w-full aspect-square flex justify-center items-center mb-2'>
                                         <Image
@@ -166,13 +166,13 @@ export default function Merch() {
                                             alt={item.name}
                                             fill
                                             quality={90}
-                                            className='object-contain object-center'
+                                            className='object-contain object-center group-hover:scale-105 transition-transform duration-300'
                                             style={{ mixBlendMode: 'multiply' }}
                                         />
                                     </div>
 
                                     <div className='text-left px-1'>
-                                        <h3 className='font-westmeath text-sm sm:text-base md:text-lg text-white font-bold leading-snug'>
+                                        <h3 className='font-westmeath text-sm sm:text-base md:text-lg text-white font-bold leading-snug group-hover:text-[#FFB41E] transition-colors duration-300'>
                                             {item.name}
                                         </h3>
                                         <p
