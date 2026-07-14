@@ -10,8 +10,8 @@ interface FaqItem {
 
 const faqData: FaqItem[] = [
     {
-        question: 'APA ITU TEDX TELKOM UNIVERSITY?',
-        answer: 'TeDx Telkom University adalah sebuah organisasi yang didirikan oleh mahasiswa Telkom University untuk berbagi ide-ide inovatif dan inspiratif melalui format TEDx.',
+        question: 'APA ITU TEDx TELKOM UNIVERSITY?',
+        answer: 'TEDx Telkom University adalah sebuah organisasi yang didirikan oleh mahasiswa Telkom University untuk berbagi ide-ide inovatif dan inspiratif melalui format TEDx.',
     },
     {
         question: 'BAGAIMANA CARA MENDAFTAR?',

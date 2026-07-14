@@ -476,10 +476,10 @@ export default function About() {
                                 whileInView='visible'
                                 viewport={{ once: true, amount: 0.35 }}
                             >
-                                "Creating the Symphony"
+                                &quot;Creating the Symphony&quot;
                             </motion.h3>
                             <motion.p
-                                className='font-raleway text-base md:text-xl leading-9 text-white/80'
+                                className='font-raleway text-base md:text-3xl leading-9 text-white/80'
                                 variants={entranceUp}
                                 initial='hidden'
                                 whileInView='visible'
@@ -495,7 +495,7 @@ export default function About() {
                                 — working in harmony toward something greater
                                 than itself. Creating the Symphony is our
                                 reminder that ideas, like music, are most
-                                powerful when they're built together. This is
+                                powerful when they&apos;re built together. This is
                                 where it all begins.
                             </motion.p>
                         </div>

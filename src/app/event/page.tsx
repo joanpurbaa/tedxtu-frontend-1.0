@@ -92,7 +92,7 @@ const EventPage = () => {
                                             <span className="font-westmeath text-2xl font-bold text-white sm:text-4xl md:text-5xl">
                                                 {formatCountdownUnit(unit.value)}
                                             </span>
-                                            <span className="mt-1 font-raleway text-[10px] uppercase tracking-[0.15em] text-white/60 sm:text-xs">
+                                            <span className="mt-3 font-raleway text-[10px] uppercase tracking-[0.15em] text-white sm:text-xs">
                                                 {unit.label}
                                             </span>
                                         </div>

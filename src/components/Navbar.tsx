@@ -58,7 +58,6 @@ export default function Navbar({
                             <span>WILL BE START IN : </span>
                             <time
                                 dateTime={new Date(targetDate).toISOString()}
-                                className='text-[#FFB41E]'
                             >
                                 {totalHours}H {formatTime(minutes)}M{' '}
                                 {formatTime(seconds)}S

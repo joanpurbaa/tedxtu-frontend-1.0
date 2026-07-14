@@ -124,7 +124,7 @@ export function EventSection() {
                         alt=''
                         width={smallGallerySize}
                         height={smallGallerySize}
-                        className='opacity-100'
+                        className='opacity-100 rounded-xl'
                     />
                 </div>
                 <div className='absolute top-[18%] right-[12%] md:top-[22%] md:right-[25%] translate-x-1/2 -translate-y-1/2'>
@@ -133,7 +133,7 @@ export function EventSection() {
                         alt=''
                         width={largeGallerySize}
                         height={largeGallerySize}
-                        className='opacity-100'
+                        className='opacity-100 rounded-xl'
                     />
                 </div>
                 <div className='absolute bottom-[18%] left-[12%] md:bottom-[22%] md:left-[25%] -translate-x-1/2 translate-y-1/2'>
@@ -142,7 +142,7 @@ export function EventSection() {
                         alt=''
                         width={largeGallerySize}
                         height={largeGallerySize}
-                        className='opacity-100'
+                        className='opacity-100 rounded-xl'
                     />
                 </div>
                 <div className='absolute bottom-[18%] right-[12%] md:bottom-[22%] md:right-[25%] translate-x-1/2 translate-y-1/2'>
@@ -151,7 +151,7 @@ export function EventSection() {
                         alt=''
                         width={smallGallerySize}
                         height={smallGallerySize}
-                        className='opacity-100'
+                        className='opacity-100 rounded-xl'
                     />
                 </div>
             </div>
