@@ -324,7 +324,7 @@ export default function PaymentPage({ onConfirm }: Props) {
                     uppercase
                   "
                 >
-                  Payment's Name
+                  YOUR BANK ACCOUNT NAME
                 </label>
 
                 <input
