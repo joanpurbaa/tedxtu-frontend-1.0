@@ -37,6 +37,7 @@ const EventPage = () => {
                         src='/speakers/heroBackground.svg'
                         alt='Hero background'
                         fill
+                        sizes='100vw'
                         className='object-cover'
                         priority
                     />
@@ -64,7 +65,7 @@ const EventPage = () => {
                                     alt='Music note'
                                     width={80}
                                     height={80}
-                                    quality={100}
+                                    quality={75}
                                     className='w-3 sm:w-4 md:w-5 lg:w-6 h-auto -rotate-[15deg]'
                                 />
                                 <span className='text-4xl sm:text-5xl md:text-6xl lg:text-7xl uppercase tracking-wide'>

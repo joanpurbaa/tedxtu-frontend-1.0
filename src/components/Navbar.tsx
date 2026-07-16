@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import {
     Sheet,
     SheetTrigger,
@@ -29,6 +30,8 @@ export default function Navbar({
     className,
 }: CountdownProps) {
     const [isScrolled, setIsScrolled] = useState(false);
+    const pathname = usePathname();
+    const isActive = (href: string) => pathname === href;
 
     useEffect(() => {
         const handleScroll = () => {
@@ -71,8 +74,8 @@ export default function Navbar({
                 className={cn(
                     'flex h-20 w-full items-center px-4 transition-all duration-300 md:px-14',
                     isScrolled
-                        ? 'bg-black/95 backdrop-blur-md shadow-lg'
-                        : 'bg-black/70 backdrop-blur-sm',
+                        ? 'lg:bg-black/95 lg:backdrop-blur-md lg:shadow-lg'
+                        : 'lg:bg-black/70 lg:backdrop-blur-sm',
                 )}
             >
                 <Sheet>
@@ -92,7 +95,7 @@ export default function Navbar({
                         side='left'
                         className='bg-black border-gray-800'
                     >
-                        <SheetTitle className='text-white'>
+                        <SheetTitle className='sr-only'>
                             Navigation
                         </SheetTitle>
                         <div className='flex flex-col items-start gap-6 py-6'>
@@ -104,9 +107,9 @@ export default function Navbar({
                                 <Image
                                     src='/logo.webp'
                                     alt='TEDxTelkom University logo'
-                                    width={120}
-                                    height={30}
-                                    quality={100}
+                                    width={140}
+                                    height={35}
+                                    quality={75}
                                 />
                             </Link>
                             {[
@@ -119,7 +122,12 @@ export default function Navbar({
                                 <Link
                                     key={href}
                                     href={href}
-                                    className='w-full py-2 text-lg font-westmeath text-white hover:text-red-500 transition-colors'
+                                    className={cn(
+                                        'w-full py-2 text-lg font-westmeath text-white hover:text-red-500 transition-colors border-b-2',
+                                        isActive(href)
+                                            ? 'border-[#8A0E04]'
+                                            : 'border-transparent',
+                                    )}
                                     prefetch={false}
                                 >
                                     {
@@ -147,7 +155,7 @@ export default function Navbar({
                         alt='TEDxTelkom University logo'
                         width={172}
                         height={43}
-                        quality={100}
+                        quality={75}
                     />
                     <span className='sr-only'>TEDxTelkom University</span>
                 </Link>
@@ -164,7 +172,12 @@ export default function Navbar({
                             key={href}
                             href={href}
                             prefetch={false}
-                            className='group inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 text-lg font-westmeath text-white transition-colors hover:text-red-500 focus:text-red-500 focus:outline-none'
+                            className={cn(
+                                'group inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 text-lg font-westmeath text-white transition-colors hover:text-red-500 focus:text-red-500 focus:outline-none border-b-2',
+                                isActive(href)
+                                    ? 'border-[#8A0E04]'
+                                    : 'border-transparent',
+                            )}
                         >
                             {label}
                         </Link>

@@ -54,7 +54,7 @@ const TicketSelection = () => {
 	return (
 		<section className="relative overflow-hidden bg-[#4a1512] px-4 py-16 sm:px-6 lg:px-8">
 			<div
-				className="absolute inset-0"
+				className="absolute inset-0 hidden md:block"
 				style={{
 					backgroundImage: "url('/speakers/ticketSectionBackground.png')",
 					backgroundRepeat: 'no-repeat',
@@ -63,11 +63,12 @@ const TicketSelection = () => {
 				}}
 			/>
 			<div
-				className="absolute inset-0 opacity-15 mix-blend-overlay"
+				className="absolute inset-0 md:hidden"
 				style={{
-					backgroundImage: "url('/speakers/backgroundTexture.svg')",
-					backgroundRepeat: 'repeat',
-					backgroundSize: '60rem 60rem',
+					backgroundImage: "url('/Ticket%20section.png')",
+					backgroundRepeat: 'no-repeat',
+					backgroundSize: 'cover',
+					backgroundPosition: 'center',
 				}}
 			/>
 			<div className="absolute inset-0 bg-black/20" />

@@ -74,9 +74,9 @@ export function EventSection() {
                     src='/gallery/gallery-12.webp'
                     alt='Event Background'
                     fill
+                    sizes='100vw'
                     className='object-cover opacity-60'
-                    quality={100}
-                    priority
+                    quality={75}
                 />
                 <div className='absolute inset-0 pointer-events-none'>
                     <div className='absolute top-0 left-0 w-full h-[30%] bg-gradient-to-b from-black to-transparent' />
@@ -192,6 +192,7 @@ export function EventSection() {
                             src='/about/get-ticket-button.webp'
                             alt=''
                             fill
+                            sizes='(min-width: 768px) 320px, 220px'
                             className='object-contain'
                         />
                         <span className='relative z-10 font-westmeath text-white text-lg md:text-xl leading-none uppercase -mt-1 md:-mt-2'>

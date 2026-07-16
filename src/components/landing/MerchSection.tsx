@@ -87,7 +87,7 @@ export function MerchSection() {
                             maskImage: ellipseConfig.blur,
                             WebkitMaskImage: ellipseConfig.blur
                         }}
-                        quality={100}
+                        quality={75}
                     />
                 </div>
             </div>
@@ -143,7 +143,7 @@ export function MerchSection() {
                                     alt={`Merch item ${index}`}
                                     fill
                                     className='object-contain'
-                                    quality={100}
+                                    quality={75}
                                 />
                             </div>
                         ))}

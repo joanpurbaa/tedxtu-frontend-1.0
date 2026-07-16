@@ -17,7 +17,7 @@ export default function Footer() {
                                 alt='TEDxTelkom University logo'
                                 width={172}
                                 height={43}
-                                quality={100}
+                                quality={75}
                                 className='w-full h-auto'
                             />
                         </div>

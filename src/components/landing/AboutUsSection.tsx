@@ -186,14 +186,14 @@ export function AboutUsSection() {
                         src='/about/red-ellipse.webp'
                         alt='Red ellipse decoration'
                         fill
+                        sizes='2000px'
                         className='object-contain'
                         style={{
                             opacity: ellipseConfig.opacity,
                             maskImage: ellipseConfig.blur,
                             WebkitMaskImage: ellipseConfig.blur,
                         }}
-                        quality={100}
-                        priority
+                        quality={75}
                     />
                 </div>
             </div>
@@ -247,8 +247,9 @@ export function AboutUsSection() {
                                 src='/about/get-ticket-button.webp'
                                 alt='Get to know us'
                                 fill
+                                sizes='(min-width: 768px) 320px, 220px'
                                 className='object-contain'
-                                quality={100}
+                                quality={75}
                             />
                             <span className='relative z-10 font-westmeath text-white text-lg md:text-xl leading-none uppercase tracking-tight -mt-1 md:-mt-2'>
                                 get to know us

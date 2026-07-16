@@ -25,6 +25,16 @@ const merch = [
 export default function Merch() {
     return (
         <section className='merchBackground'>
+            <div
+                className='fixed inset-0 -z-10'
+                style={{
+                    backgroundImage: "url('/Ticket%20section.png')",
+                    backgroundRepeat: 'no-repeat',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                }}
+            />
+            <div className='fixed inset-0 -z-10 bg-black/55' />
             <Navbar />
             <main className='relative overflow-x-hidden'>
                 <section className='relative w-full min-h-[100dvh] flex items-center justify-center overflow-hidden bg-transparent px-4 sm:px-6'>
@@ -35,7 +45,7 @@ export default function Merch() {
                             width={2800}
                             height={1500}
                             priority
-                            quality={100}
+                            quality={75}
                             className='w-full h-auto'
                         />
                     </div>
@@ -50,7 +60,7 @@ export default function Merch() {
                             width={100}
                             height={100}
                             priority
-                            quality={100}
+                            quality={75}
                             className='w-[44px] sm:w-[60px] md:w-[72px] lg:w-[90px] xl:w-[100px] h-auto'
                         />
                     </div>
@@ -65,7 +75,7 @@ export default function Merch() {
                             width={100}
                             height={100}
                             priority
-                            quality={100}
+                            quality={75}
                             className='w-[44px] sm:w-[60px] md:w-[72px] lg:w-[90px] xl:w-[100px] h-auto'
                         />
                     </div>
@@ -80,7 +90,7 @@ export default function Merch() {
                             width={100}
                             height={100}
                             priority
-                            quality={100}
+                            quality={75}
                             className='w-[44px] sm:w-[60px] md:w-[72px] lg:w-[90px] xl:w-[100px] h-auto'
                         />
                     </div>
@@ -95,7 +105,7 @@ export default function Merch() {
                             width={100}
                             height={100}
                             priority
-                            quality={100}
+                            quality={75}
                             className='w-[44px] sm:w-[60px] md:w-[72px] lg:w-[90px] xl:w-[100px] h-auto'
                             style={{ transform: 'rotate(20deg)' }}
                         />
@@ -112,7 +122,7 @@ export default function Merch() {
                                 width={32}
                                 height={32}
                                 priority
-                                quality={100}
+                                quality={75}
                                 className='w-7 sm:w-8 md:w-9 h-auto'
                                 style={{ transform: 'rotate(18deg)' }}
                             />
@@ -147,7 +157,7 @@ export default function Merch() {
                             width={1200}
                             height={800}
                             priority={false}
-                            quality={100}
+                            quality={75}
                             className='w-[60vw] max-w-[800px] h-auto'
                         />
                     </div>

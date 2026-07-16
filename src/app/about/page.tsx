@@ -94,7 +94,8 @@ function FloatingOrnament({
                 width={size}
                 height={size}
                 priority
-                quality={100}
+                quality={75}
+                className='w-14 h-14 md:w-[120px] md:h-[120px]'
             />
         </motion.div>
     );
@@ -313,7 +314,7 @@ export default function About() {
                                 width={2800}
                                 height={1500}
                                 priority
-                                quality={100}
+                                quality={75}
                                 className='w-full h-auto'
                             />
                         </div>
@@ -342,7 +343,7 @@ export default function About() {
                                     width={30}
                                     height={30}
                                     priority
-                                    quality={100}
+                                    quality={75}
                                     style={{ transform: 'rotate(18deg)' }}
                                 />
                             </motion.div>
@@ -370,7 +371,7 @@ export default function About() {
                     <FloatingOrnament
                         src='/about/mask.webp'
                         alt='Mask decoration'
-                        className='absolute top-[24%] left-[18%] -translate-x-1/2 -translate-y-1/2 pointer-events-none'
+                        className='absolute top-[18%] left-[14%] md:top-[21%] md:left-[15%] -translate-x-1/2 -translate-y-1/2 pointer-events-none'
                         delay={0.1}
                         size={120}
                         active={introComplete}
@@ -378,7 +379,7 @@ export default function About() {
                     <FloatingOrnament
                         src='/about/trumpet.webp'
                         alt='Trumpet decoration'
-                        className='absolute top-[24%] right-[18%] translate-x-1/2 -translate-y-1/2 pointer-events-none'
+                        className='absolute top-[18%] right-[14%] md:top-[21%] md:right-[15%] translate-x-1/2 -translate-y-1/2 pointer-events-none'
                         delay={0.2}
                         size={120}
                         active={introComplete}
@@ -386,7 +387,7 @@ export default function About() {
                     <FloatingOrnament
                         src='/about/turn-table.webp'
                         alt='Turn table decoration'
-                        className='absolute bottom-[24%] left-[18%] -translate-x-1/2 translate-y-1/2 pointer-events-none'
+                        className='absolute bottom-[18%] left-[14%] md:bottom-[21%] md:left-[15%] -translate-x-1/2 translate-y-1/2 pointer-events-none'
                         delay={0.3}
                         size={120}
                         active={introComplete}
@@ -394,14 +395,14 @@ export default function About() {
                     <FloatingOrnament
                         src='/about/crown.webp'
                         alt='Crown decoration'
-                        className='absolute bottom-[24%] right-[18%] translate-x-1/2 translate-y-1/2 pointer-events-none'
+                        className='absolute bottom-[18%] right-[14%] md:bottom-[21%] md:right-[15%] translate-x-1/2 translate-y-1/2 pointer-events-none'
                         delay={0.4}
                         size={120}
                         active={introComplete}
                     />
                 </section>
 
-                <section className='relative w-full min-h-screen overflow-visible bg-transparent text-white px-4 md:px-14 py-20'>
+                <section className='relative w-full overflow-visible bg-transparent text-white px-4 md:px-14 py-12 md:py-16 md:min-h-screen mb-12 md:mb-24'>
                     <motion.div
                         className='pointer-events-none absolute left-0 top-[50%]'
                         style={{
@@ -423,7 +424,7 @@ export default function About() {
                             width={900}
                             height={900}
                             priority={false}
-                            quality={100}
+                            quality={75}
                             className='w-[160vw] max-w-[1800px] h-auto'
                         />
                     </motion.div>
@@ -449,12 +450,12 @@ export default function About() {
                             width={900}
                             height={900}
                             priority={false}
-                            quality={100}
+                            quality={75}
                             className='w-[160vw] max-w-[1800px] h-auto'
                         />
                     </motion.div>
 
-                    <div className='relative max-w-6xl mx-auto'>
+                    <div className='relative z-20 max-w-6xl mx-auto'>
                         <motion.h2
                             className='font-westmeath text-4xl md:text-5xl lg:text-6xl text-center mb-12'
                             variants={gentleRise}
@@ -503,7 +504,7 @@ export default function About() {
                 </section>
 
                 <div
-                    className='pointer-events-none absolute -left-[11%]'
+                    className='pointer-events-none absolute z-10 -left-[11%]'
                     style={{ top: '45%', transform: 'translateY(-50%)' }}
                 >
                     <Image
@@ -512,7 +513,7 @@ export default function About() {
                         width={523}
                         height={597}
                         priority={false}
-                        quality={100}
+                        quality={75}
                         className='w-[41.8vw] max-w-[523px] h-auto'
                         style={{ transform: 'rotate(-53.68deg)' }}
                     />
@@ -520,7 +521,7 @@ export default function About() {
 
                 <section
                     ref={conductorRef}
-                    className='relative w-full min-h-screen bg-transparent text-white px-3 sm:px-6 md:px-14 py-6 sm:py-8 md:py-12'
+                    className='relative z-10 w-full bg-transparent text-white px-3 sm:px-6 md:px-14 py-6 sm:py-8 md:py-12 md:min-h-screen mb-12 md:mb-24'
                 >
                     <div className='max-w-6xl mx-auto'>
                         <h2 className='font-westmeath text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-center mb-6 sm:mb-8 md:mb-12 flex items-center justify-center gap-3 flex-wrap'>
@@ -540,16 +541,24 @@ export default function About() {
                             <span>MISSION</span>
                         </h2>
                         <div className='space-y-4 sm:space-y-5 md:space-y-6'>
-                            <div className='relative w-full overflow-hidden'>
+                            <div className='relative w-full overflow-hidden aspect-[783/516] md:aspect-auto'>
+                                <Image
+                                    src='/about/Vision Section.svg'
+                                    alt='Vision card background'
+                                    fill
+                                    sizes='100vw'
+                                    className='object-cover md:hidden'
+                                />
                                 <Image
                                     src='/about/long-red-card.webp'
-                                    alt='Vision card background'
+                                    alt=''
+                                    aria-hidden='true'
                                     width={1200}
                                     height={280}
                                     quality={100}
-                                    className='w-full h-auto'
+                                    className='hidden md:block w-full h-auto'
                                 />
-                                <div className='absolute inset-0 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-[200px_1fr] lg:grid-cols-[220px_1fr] items-center gap-4 sm:gap-6 md:gap-10 lg:gap-12 px-4 sm:px-6 md:px-8 lg:px-10 py-4 sm:py-6 md:py-8'>
+                                <div className='relative md:absolute md:inset-0 grid grid-cols-1 md:grid-cols-[200px_1fr] lg:grid-cols-[220px_1fr] items-center gap-4 sm:gap-6 md:gap-10 lg:gap-12 px-4 sm:px-6 md:px-8 lg:px-10 py-4 sm:py-6 md:py-8'>
                                     <h3 className='font-westmeath text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-white text-left md:text-center pt-2 md:pt-0'>
                                         Vision
                                     </h3>
@@ -564,17 +573,25 @@ export default function About() {
                                 </div>
                             </div>
 
-                            <div className='relative w-full overflow-hidden'>
+                            <div className='relative w-full overflow-hidden aspect-[783/516] md:aspect-auto'>
+                                <Image
+                                    src='/about/Mission Section.svg'
+                                    alt='Mission card background'
+                                    fill
+                                    sizes='100vw'
+                                    className='object-cover md:hidden'
+                                />
                                 <Image
                                     src='/about/long-yellow-card.webp'
-                                    alt='Mission card background'
+                                    alt=''
+                                    aria-hidden='true'
                                     width={1200}
                                     height={280}
                                     quality={100}
-                                    className='w-full h-auto'
+                                    className='hidden md:block w-full h-auto'
                                 />
-                                <div className='absolute inset-0 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-[1fr_200px] lg:grid-cols-[1fr_220px] items-center gap-4 sm:gap-6 md:gap-10 lg:gap-12 px-4 sm:px-6 md:px-8 lg:px-10 py-4 sm:py-6 md:py-8'>
-                                    <p className='font-raleway text-sm sm:text-base md:text-lg lg:text-2xl leading-relaxed text-white/95 text-left pt-2 md:pt-0'>
+                                <div className='relative md:absolute md:inset-0 grid grid-cols-1 md:grid-cols-[1fr_200px] lg:grid-cols-[1fr_220px] items-center gap-4 sm:gap-6 md:gap-10 lg:gap-12 px-4 sm:px-6 md:px-8 lg:px-10 py-4 sm:py-6 md:py-8'>
+                                    <p className='order-last md:order-none font-raleway text-sm sm:text-base md:text-lg lg:text-2xl leading-relaxed text-white/95 text-left pt-2 md:pt-0'>
                                         To build a sustainable legacy by
                                         leveraging Telkom&apos;s potential
                                         resources, fostering collaboration
@@ -582,7 +599,7 @@ export default function About() {
                                         relevant local issues to shape an ideal
                                         society.
                                     </p>
-                                    <h3 className='font-westmeath text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-white text-left md:text-center pt-2 md:pt-0'>
+                                    <h3 className='order-first md:order-none font-westmeath text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-white text-left md:text-center pt-2 md:pt-0'>
                                         Mission
                                     </h3>
                                 </div>
@@ -591,7 +608,7 @@ export default function About() {
                     </div>
                 </section>
 
-                <section className='relative w-full min-h-screen bg-transparent text-white py-20 mt-20'>
+                <section className='relative w-full bg-transparent text-white py-12 md:py-16 md:min-h-screen'>
                     <div className='pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'>
                         <div className='w-[140vw] max-w-none'>
                             <Image
@@ -599,7 +616,7 @@ export default function About() {
                                 alt='Red ellipse decoration conductors'
                                 width={2800}
                                 height={1500}
-                                quality={100}
+                                quality={75}
                                 className='w-full h-auto'
                             />
                         </div>
@@ -619,7 +636,7 @@ export default function About() {
                             width={1200}
                             height={800}
                             priority={false}
-                            quality={100}
+                            quality={75}
                             className='w-[85vw] max-w-[1020px] h-auto'
                         />
                     </motion.div>
@@ -685,7 +702,8 @@ export default function About() {
                                                 src='/about/small-yellow-card.webp'
                                                 alt={`${card.title} conductor card`}
                                                 fill
-                                                quality={100}
+                                                sizes='340px'
+                                                quality={75}
                                                 className='object-cover'
                                             />
                                             <div

@@ -43,11 +43,11 @@ const Speakers = () => {
 	return (
 		<section className="relative overflow-hidden bg-black py-16">
 			<div className="pointer-events-none absolute -left-10 -top-4 h-56 w-40 sm:-left-14 sm:h-72 sm:w-52 md:-left-20 md:h-96 md:w-72">
-				<Image src="/speakers/goldenMusicNote3.svg" alt="" fill className="object-contain" />
+				<Image src="/speakers/goldenMusicNote3.svg" alt="" fill sizes="288px" className="object-contain" />
 			</div>
 
 			<div className="pointer-events-none absolute right-0 top-1/2 h-[78rem] w-[78rem] -translate-y-1/2 translate-x-1/2 sm:h-[100rem] sm:w-[100rem]">
-				<Image src="/about/red-ellipse.webp" alt="" fill className="object-contain" />
+				<Image src="/about/red-ellipse.webp" alt="" fill sizes="100rem" className="object-contain" />
 				<div
 					className="absolute inset-0"
 					style={{
@@ -65,11 +65,12 @@ const Speakers = () => {
 						src="/speakers/backgroundTexture.svg"
 						alt=""
 						fill
+						sizes="100rem"
 						className="object-cover opacity-20 mix-blend-overlay"
 					/>
 				</div>
 				<div className="absolute left-1/2 top-1/2 h-[25%] w-[18%] -translate-x-[85%] -translate-y-1/2 opacity-50">
-					<Image src="/speakers/goldenMusicNote2.svg" alt="" fill className="object-contain" />
+					<Image src="/speakers/goldenMusicNote2.svg" alt="" fill sizes="180px" className="object-contain" />
 				</div>
 			</div>
 

@@ -114,6 +114,7 @@ export function HeroSection() {
                     src='/about/tedx-background.webp'
                     alt='Hero background'
                     fill
+                    sizes='100vw'
                     className='object-cover'
                     priority
                 />
@@ -140,7 +141,7 @@ export function HeroSection() {
                 style={{ y: topLeftY, x: topLeftX, rotate: topLeftRot }}
                 className='absolute top-[20%] left-[15%] md:top-1/4 md:left-1/4 -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none'
             >
-                <Image src='/about/mask.webp' alt='Mask' width={120} height={120} priority quality={100} className="w-16 md:w-28 lg:w-32" />
+                <Image src='/about/mask.webp' alt='Mask' width={120} height={120} priority quality={75} className="w-16 md:w-28 lg:w-32" />
             </motion.div>
 
             <motion.div
@@ -149,7 +150,7 @@ export function HeroSection() {
                 style={{ y: topRightY, x: topRightX, rotate: topRightRot }}
                 className='absolute top-[20%] right-[15%] md:top-1/4 md:right-1/4 translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none'
             >
-                <Image src='/about/trumpet.webp' alt='Trumpet' width={120} height={120} priority quality={100} className="w-16 md:w-28 lg:w-32" />
+                <Image src='/about/trumpet.webp' alt='Trumpet' width={120} height={120} priority quality={75} className="w-16 md:w-28 lg:w-32" />
             </motion.div>
 
             <motion.div
@@ -158,7 +159,7 @@ export function HeroSection() {
                 style={{ y: bottomLeftY, x: bottomLeftX, rotate: bottomLeftRot }}
                 className='absolute bottom-[20%] left-[15%] md:bottom-1/4 md:left-1/4 -translate-x-1/2 translate-y-1/2 z-10 pointer-events-none'
             >
-                <Image src='/about/turn-table.webp' alt='Turn table' width={120} height={120} priority quality={100} className="w-16 md:w-28 lg:w-32" />
+                <Image src='/about/turn-table.webp' alt='Turn table' width={120} height={120} priority quality={75} className="w-16 md:w-28 lg:w-32" />
             </motion.div>
 
             <motion.div
@@ -167,7 +168,7 @@ export function HeroSection() {
                 style={{ y: bottomRightY, x: bottomRightX, rotate: bottomRightRot }}
                 className='absolute bottom-[20%] right-[15%] md:bottom-1/4 md:right-1/4 translate-x-1/2 translate-y-1/2 z-10 pointer-events-none'
             >
-                <Image src='/about/crown.webp' alt='Crown' width={120} height={120} priority quality={100} className="w-16 md:w-28 lg:w-32" />
+                <Image src='/about/crown.webp' alt='Crown' width={120} height={120} priority quality={75} className="w-16 md:w-28 lg:w-32" />
             </motion.div>
 
             {/* Layer 3 — Content */}
@@ -181,7 +182,7 @@ export function HeroSection() {
                         <span className='font-westmeath text-5xl md:text-6xl lg:text-7xl text-white font-normal'>
                             Tailoring
                         </span>
-                        <Image src='/about/music-note.webp' alt='Music note' width={30} height={30} priority quality={100} />
+                        <Image src='/about/music-note.webp' alt='Music note' width={30} height={30} priority quality={75} />
                         <span className='font-westmeath text-5xl md:text-6xl lg:text-7xl text-white font-normal'>
                             your
                         </span>
@@ -190,7 +191,7 @@ export function HeroSection() {
                         <span className='font-westmeath text-5xl md:text-6xl lg:text-7xl text-white font-normal'>
                             own
                         </span>
-                        <Image src='/about/single-golden-note.webp' alt='Golden note' width={30} height={30} priority quality={100} />
+                        <Image src='/about/single-golden-note.webp' alt='Golden note' width={30} height={30} priority quality={75} />
                         <span className='font-westmeath text-5xl md:text-6xl lg:text-7xl text-white font-normal'>
                             tapestry
                         </span>
@@ -207,6 +208,7 @@ export function HeroSection() {
                             src='/about/get-ticket-button.webp'
                             alt='Get your ticket now'
                             fill
+                            sizes='(min-width: 768px) 320px, 220px'
                             className='object-contain'
                             priority
                         />
@@ -220,6 +222,7 @@ export function HeroSection() {
                             src='/about/merch-button.webp'
                             alt='Our merch'
                             fill
+                            sizes='(min-width: 768px) 220px, 180px'
                             className='object-contain'
                             priority
                         />

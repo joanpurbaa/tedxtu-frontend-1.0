@@ -147,9 +147,9 @@ export function FaqSection() {
                             src='/about/red-ellipse.webp'
                             alt='Red ellipse decoration'
                             fill
+                            sizes='1700px'
                             className='object-contain'
-                            quality={100}
-                            priority
+                            quality={75}
                         />
                     </div>
                 </div>
@@ -167,8 +167,9 @@ export function FaqSection() {
                             src='/faq/giant-golden-note.webp'
                             alt='Music note decoration'
                             fill
+                            sizes='550px'
                             className='object-contain'
-                            quality={100}
+                            quality={75}
                         />
                     </div>
                 </div>

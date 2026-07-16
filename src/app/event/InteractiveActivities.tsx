@@ -43,7 +43,7 @@ const InteractiveActivities = () => {
 				src={activity.image}
 				alt={activity.name}
 				fill
-				priority
+				sizes="100vw"
 				className="object-cover"
 			/>
 			<div className="absolute inset-0 bg-gradient-to-t from-black via-black/10 to-black/60" />

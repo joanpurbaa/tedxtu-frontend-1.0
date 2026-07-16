@@ -184,7 +184,7 @@ export default function TicketingPage() {
                     className="h-[60px] w-full rounded-2xl border border-white/10 bg-white/5 px-6 text-base font-raleway text-white outline-none backdrop-blur-md transition duration-200 placeholder:font-[family-name:var(--font-raleway)] placeholder:text-white/85 focus:border-[#C58A1C]/80 focus:ring-2 focus:ring-[#C58A1C]/60"
                   />
                   {formErrors.fullName ? (
-                    <p className="mt-2 text-sm text-[#FFB4B4]">{formErrors.fullName}</p>
+                    <p className="mt-2 font-raleway text-sm text-[#FFB4B4]">{formErrors.fullName}</p>
                   ) : null}
                 </div>
 
@@ -206,7 +206,7 @@ export default function TicketingPage() {
                     className="h-[60px] w-full rounded-2xl border border-white/10 bg-white/5 px-6 text-base font-raleway text-white outline-none backdrop-blur-md transition duration-200 placeholder:font-[family-name:var(--font-raleway)] placeholder:text-white/85 focus:border-[#C58A1C]/80 focus:ring-2 focus:ring-[#C58A1C]/60"
                   />
                   {formErrors.email ? (
-                    <p className="mt-2 text-sm text-[#FFB4B4]">{formErrors.email}</p>
+                    <p className="mt-2 font-raleway text-sm text-[#FFB4B4]">{formErrors.email}</p>
                   ) : null}
                 </div>
 
@@ -228,7 +228,7 @@ export default function TicketingPage() {
                     className="h-[60px] w-full rounded-2xl border border-white/10 bg-white/5 px-6 text-base font-raleway text-white outline-none backdrop-blur-md transition duration-200 placeholder:font-[family-name:var(--font-raleway)] placeholder:text-white/85 focus:border-[#C58A1C]/80 focus:ring-2 focus:ring-[#C58A1C]/60"
                   />
                   {formErrors.phone ? (
-                    <p className="mt-2 text-sm text-[#FFB4B4]">{formErrors.phone}</p>
+                    <p className="mt-2 font-raleway text-sm text-[#FFB4B4]">{formErrors.phone}</p>
                   ) : null}
                 </div>
               </div>

@@ -5,7 +5,7 @@ const VenueInfo = () => {
 	return (
 		<section className="relative overflow-hidden bg-black px-4 pt-28 pb-24 sm:px-6 sm:pt-36 sm:pb-32 lg:px-8">
 			<div className="pointer-events-none absolute -right-80 -top-32 h-[48rem] w-[48rem] sm:-right-96 sm:-top-40 sm:h-[64rem] sm:w-[64rem]">
-				<Image src="/about/red-ellipse.webp" alt="" fill className="object-contain" />
+				<Image src="/about/red-ellipse.webp" alt="" fill sizes="64rem" className="object-contain" />
 				<div
 					className="absolute inset-0"
 					style={{
@@ -23,16 +23,17 @@ const VenueInfo = () => {
 						src="/speakers/backgroundTexture.svg"
 						alt=""
 						fill
+						sizes="64rem"
 						className="object-cover opacity-20 mix-blend-overlay"
 					/>
 				</div>
 				<div className="absolute left-[58%] top-1/2 h-[34%] w-[34%] -translate-x-1/2 -translate-y-1/2 -rotate-[38deg] opacity-45">
-					<Image src="/about/golden-note.webp" alt="" fill className="object-contain" />
+					<Image src="/about/golden-note.webp" alt="" fill sizes="350px" className="object-contain" />
 				</div>
 			</div>
 
 			<div className="pointer-events-none absolute -left-80 -bottom-72 h-[58rem] w-[58rem] sm:-left-96 sm:-bottom-[21rem] sm:h-[76rem] sm:w-[76rem]">
-				<Image src="/about/red-ellipse.webp" alt="" fill className="object-contain" />
+				<Image src="/about/red-ellipse.webp" alt="" fill sizes="76rem" className="object-contain" />
 				<div
 					className="absolute inset-0"
 					style={{
@@ -50,11 +51,12 @@ const VenueInfo = () => {
 						src="/speakers/backgroundTexture.svg"
 						alt=""
 						fill
+						sizes="76rem"
 						className="object-cover opacity-20 mix-blend-overlay"
 					/>
 				</div>
 				<div className="absolute left-[42%] top-[55%] h-[36%] w-[36%] -translate-x-1/2 -translate-y-1/2 opacity-45">
-					<Image src="/speakers/goldenMusic.svg" alt="" fill className="object-contain" />
+					<Image src="/speakers/goldenMusic.svg" alt="" fill sizes="450px" className="object-contain" />
 				</div>
 			</div>
 
@@ -123,7 +125,7 @@ const VenueInfo = () => {
 							rel="noopener noreferrer"
 							className="relative inline-flex items-center gap-2 overflow-hidden rounded-full px-6 py-3 text-sm font-bold uppercase tracking-[0.15em] text-white transition duration-300 hover:scale-[1.02]"
 						>
-							<Image src="/speakers/Texture.svg" alt="" fill className="object-cover" />
+							<Image src="/speakers/Texture.svg" alt="" fill sizes="300px" className="object-cover" />
 							<span className="relative z-10">View on Google Maps</span>
 							<ExternalLink className="relative z-10 h-4 w-4" />
 						</a>

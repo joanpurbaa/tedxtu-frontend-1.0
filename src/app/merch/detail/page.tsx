@@ -93,7 +93,7 @@ export default function DetailMerchPage() {
                                     src={MERCHANDISE_DATA.images[selectedImage]}
                                     alt={`${MERCHANDISE_DATA.name} - Fullscreen ${selectedImage + 1}`}
                                     fill
-                                    quality={100}
+                                    quality={75}
                                     className='object-contain'
                                 />
                             </div>
@@ -124,14 +124,15 @@ export default function DetailMerchPage() {
                 )}
             </AnimatePresence>
 
-            <main 
-                className="relative flex-1 w-full bg-black bg-repeat bg-fixed"
-                style={{ 
-                    backgroundImage: `url('/merch/detail-merch/background%20patern.png')`,
-                    backgroundSize: 'cover'
-                }}
-            >
-                <div className='absolute inset-0 bg-black/40 pointer-events-none'></div>
+            <main className="relative flex-1 w-full bg-[#4a1512]">
+                <div
+                    className="absolute inset-0 opacity-15 mix-blend-overlay"
+                    style={{
+                        backgroundImage: "url('/speakers/backgroundTexture.svg')",
+                        backgroundRepeat: 'repeat',
+                        backgroundSize: '60rem 60rem',
+                    }}
+                />
 
                 <section className='relative w-full px-4 sm:px-6 md:px-14 py-12 sm:py-16 md:py-20 flex items-center bg-transparent'>
                     <div className='max-w-7xl mx-auto w-full'>
@@ -158,7 +159,7 @@ export default function DetailMerchPage() {
                                             alt={`${MERCHANDISE_DATA.name} - View ${selectedImage + 1}`}
                                             fill
                                             priority
-                                            quality={100}
+                                            quality={75}
                                             className='object-contain p-8'
                                         />
                                     </motion.div>
