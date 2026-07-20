@@ -6,20 +6,35 @@ function generateOrderId() {
 }
 
 export async function POST(req: NextRequest) {
-  const { fullName, email, phone, tier, price } = await req.json();
+  const body = await req.json();
 
-  if (!fullName || !email || !phone) {
+  if (!body.fullName || !body.email || !body.phone) {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
   }
 
   const ticket = await prisma.ticket.create({
     data: {
       orderId: generateOrderId(),
-      fullName,
-      email,
-      phone,
-      tier: tier ?? "REGULAR",
-      price: price ?? "",
+      fullName: body.fullName,
+      nickname: body.nickname,
+      email: body.email,
+      phone: body.phone,
+      participantStatus: body.participantStatus,
+      studentId: body.studentId || null,
+      faculty: body.faculty || null,
+      institution: body.institution || null,
+      major: body.major || null,
+      tedFamiliarity: body.tedFamiliarity,
+      topics: body.topics ?? [],
+      musicLifestyle: body.musicLifestyle === "yes",
+      environmentShapes: body.environmentShapes === "yes",
+      artsExpression: body.artsExpression === "yes",
+      eventAspect: body.eventAspect ?? [],
+      consentAccurate: body.consentAccurate === "yes",
+      consentDataProcessing: body.consentDataProcessing === "yes",
+      consentUpdates: body.consentUpdates === "yes",
+      tier: body.tier ?? "REGULAR",
+      price: body.price ?? "",
     },
   });
 

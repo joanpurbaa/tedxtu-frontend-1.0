@@ -124,7 +124,7 @@ const TicketSelection = () => {
                             </ul>
 
                             <Link
-                                href='/ticketing'
+                                href={`/ticketing?tier=${encodeURIComponent(ticket.tier)}&price=${encodeURIComponent(ticket.price)}`}
                                 className='mt-8 rounded-full bg-amber-500 px-5 py-3 text-center font-westmeath text-sm uppercase tracking-[0.18em] text-white transition duration-300 hover:scale-[1.02] hover:bg-amber-400 hover:brightness-110'
                             >
                                 RESERVE NOW

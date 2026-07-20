@@ -86,7 +86,7 @@ export default function RootLayout({
                     enableSystem
                     disableTransitionOnChange
                 >
-                    <div className='pt-12 sm:pt-[77px]'>
+                    <div className=''>
                         {children}
                     </div>
                 </ThemeProvider>

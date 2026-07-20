@@ -8,11 +8,34 @@ datasource db {
 }
 
 model Ticket {
-  id          String       @id @default(cuid())
-  orderId     String       @unique
-  fullName    String
-  email       String
-  phone       String
+  id          String   @id @default(cuid())
+  orderId     String   @unique
+
+  // identity
+  fullName          String
+  nickname          String
+  email             String
+  phone             String
+  participantStatus String            // Student / Fresh Graduate / Professional
+  studentId         String?
+  faculty           String?
+  institution       String?
+  major             String?
+
+  // persona (long-answer -> quick choice)
+  tedFamiliarity    String
+  topics            String[] @default([])
+  musicLifestyle    Boolean  @default(false)
+  environmentShapes Boolean  @default(false)
+  artsExpression    Boolean  @default(false)
+  eventAspect       String[] @default([])
+
+  // consent
+  consentAccurate       Boolean @default(false)
+  consentDataProcessing Boolean @default(false)
+  consentUpdates        Boolean @default(false)
+
+  // ticket & payment
   tier        String
   price       String
   paymentName String?
