@@ -1,0 +1,31 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Ticket {
+  id          String       @id @default(cuid())
+  orderId     String       @unique
+  fullName    String
+  email       String
+  phone       String
+  tier        String
+  price       String
+  paymentName String?
+  proofUrl    String?
+  status      TicketStatus @default(PENDING)
+  qrToken     String       @unique @default(cuid())
+  scanned     Boolean      @default(false)
+  scannedAt   DateTime?
+  createdAt   DateTime     @default(now())
+}
+
+enum TicketStatus {
+  PENDING
+  CONFIRMED
+  REJECTED
+}
