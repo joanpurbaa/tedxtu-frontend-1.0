@@ -13,9 +13,11 @@ type FormData = {
   nickname: string;
   email: string;
   phone: string;
+  domisili: string;
   participantStatus: string;
   studentId: string;
   faculty: string;
+  facultyOther: string;
   institution: string;
   major: string;
   tedFamiliarity: string;
@@ -24,6 +26,7 @@ type FormData = {
   environmentShapes: string;
   artsExpression: string;
   eventAspect: string[];
+  eventAspectOther: string;
   consentAccurate: string;
   consentDataProcessing: string;
   consentUpdates: string;
@@ -34,9 +37,11 @@ const initial: FormData = {
   nickname: "",
   email: "",
   phone: "",
+  domisili: "",
   participantStatus: "",
   studentId: "",
   faculty: "",
+  facultyOther: "",
   institution: "",
   major: "",
   tedFamiliarity: "",
@@ -45,6 +50,7 @@ const initial: FormData = {
   environmentShapes: "",
   artsExpression: "",
   eventAspect: [],
+  eventAspectOther: "",
   consentAccurate: "",
   consentDataProcessing: "",
   consentUpdates: "",
@@ -148,17 +154,20 @@ function TicketingFlow() {
     set(e.target.id as keyof FormData, e.target.value as never);
 
   const isStudent = form.participantStatus === "Student";
+  const isProfessional = form.participantStatus === "Professional";
 
   const validateIdentity = () => {
     if (!form.fullName.trim() || form.fullName.trim().length < 3) return "Full name is required.";
     if (!/^\S+@\S+\.\S+$/.test(form.email.trim())) return "Enter a valid email.";
     if (!/^08\d{8,13}$/.test(form.phone.trim())) return "Phone must start with 08.";
     if (!form.nickname.trim()) return "Nickname is required.";
+    if (!form.domisili.trim()) return "Please fill your domicile.";
     if (!form.participantStatus) return "Please select your status.";
     if (isStudent && !form.studentId.trim()) return "Student ID is required.";
     if (isStudent && !form.faculty) return "Please select your faculty.";
+    if (isStudent && form.faculty === "Others" && !form.facultyOther.trim()) return "Please specify your faculty.";
     if (!isStudent && !form.institution.trim()) return "Please fill your institution/organization.";
-    if (!form.major.trim()) return 'Fill Major/Study Programme, or "-" if not applicable.';
+    if (!isProfessional && !form.major.trim()) return 'Fill Major/Study Programme, or "-" if not applicable.';
     return "";
   };
 
@@ -169,6 +178,7 @@ function TicketingFlow() {
     if (!form.environmentShapes) return "Please answer the psychology question.";
     if (!form.artsExpression) return "Please answer the arts question.";
     if (form.eventAspect.length === 0) return "Pick at least one aspect.";
+    if (form.eventAspect.includes("Others") && !form.eventAspectOther.trim()) return "Please specify the aspect you're looking forward to.";
     return "";
   };
 
@@ -284,6 +294,11 @@ function TicketingFlow() {
                   </div>
 
                   <div>
+                    <label htmlFor="domisili" className="mb-2 block font-title text-sm uppercase">Domisili</label>
+                    <input id="domisili" className={inputClass()} value={form.domisili} onChange={onText} placeholder="e.g. Bandung" />
+                  </div>
+
+                  <div>
                     <p className="mb-2 font-title text-sm uppercase">Current Status</p>
                     <div className="flex flex-wrap gap-3">
                       {["Student", "Fresh Graduate", "Professional"].map((s) => (
@@ -305,6 +320,15 @@ function TicketingFlow() {
                             <Chip key={f} active={form.faculty === f} label={f} onClick={() => set("faculty", f)} />
                           ))}
                         </div>
+                        {form.faculty === "Others" && (
+                          <input
+                            id="facultyOther"
+                            className={`${inputClass()} mt-3`}
+                            value={form.facultyOther}
+                            onChange={onText}
+                            placeholder="Please specify your faculty"
+                          />
+                        )}
                       </div>
                     </>
                   ) : (
@@ -314,10 +338,12 @@ function TicketingFlow() {
                     </div>
                   )}
 
-                  <div>
-                    <label htmlFor="major" className="mb-2 block font-title text-sm uppercase">Major / Study Programme</label>
-                    <input id="major" className={inputClass()} value={form.major} onChange={onText} placeholder='Fill "-" if not applicable' />
-                  </div>
+                  {!isProfessional && (
+                    <div>
+                      <label htmlFor="major" className="mb-2 block font-title text-sm uppercase">Major / Study Programme</label>
+                      <input id="major" className={inputClass()} value={form.major} onChange={onText} placeholder='Fill "-" if not applicable' />
+                    </div>
+                  )}
                 </>
               )}
 
@@ -365,6 +391,15 @@ function TicketingFlow() {
                         <Chip key={a} active={form.eventAspect.includes(a)} label={a} onClick={() => set("eventAspect", toggle(form.eventAspect, a))} />
                       ))}
                     </div>
+                    {form.eventAspect.includes("Others") && (
+                      <input
+                        id="eventAspectOther"
+                        className={`${inputClass()} mt-3`}
+                        value={form.eventAspectOther}
+                        onChange={onText}
+                        placeholder="Please specify"
+                      />
+                    )}
                   </div>
                 </>
               )}

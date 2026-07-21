@@ -16,9 +16,11 @@ model Ticket {
   nickname          String
   email             String
   phone             String
+  domisili          String            @default("")
   participantStatus String            // Student / Fresh Graduate / Professional
   studentId         String?
   faculty           String?
+  facultyOther      String?
   institution       String?
   major             String?
 
@@ -29,6 +31,7 @@ model Ticket {
   environmentShapes Boolean  @default(false)
   artsExpression    Boolean  @default(false)
   eventAspect       String[] @default([])
+  eventAspectOther  String?
 
   // consent
   consentAccurate       Boolean @default(false)

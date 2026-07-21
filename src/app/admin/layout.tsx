@@ -2,7 +2,7 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { LayoutDashboard, Ticket, QrCode, LogOut } from 'lucide-react';
 import Image from 'next/image';
 import { Inter } from 'next/font/google';
@@ -24,6 +24,17 @@ export default function AdminLayout({
     children: React.ReactNode;
 }) {
     const pathname = usePathname();
+    const router = useRouter();
+
+    if (pathname === '/admin/login') {
+        return <>{children}</>;
+    }
+
+    async function handleLogout() {
+        await fetch('/api/admin/logout', { method: 'POST' });
+        router.replace('/admin/login');
+        router.refresh();
+    }
 
     return (
         <div className={`${inter.variable} flex min-h-screen bg-[#0a0a0a] text-white font-['Inter']`}>
@@ -69,7 +80,10 @@ export default function AdminLayout({
                 </nav>
 
                 <div className='p-4 border-t border-white/5'>
-                    <button className='flex items-center gap-3 rounded-lg px-4 py-2.5 w-full text-sm font-medium text-white/60 hover:bg-white/5 hover:text-white transition-all'>
+                    <button
+                        onClick={handleLogout}
+                        className='flex items-center gap-3 rounded-lg px-4 py-2.5 w-full text-sm font-medium text-white/60 hover:bg-white/5 hover:text-white transition-all'
+                    >
                         <LogOut className='h-5 w-5 text-white/40' />
                         Logout
                     </button>
