@@ -19,6 +19,7 @@ model Ticket {
   domisili          String            @default("")
   participantStatus String            // Student / Fresh Graduate / Professional
   studentId         String?
+  university        String?
   faculty           String?
   facultyOther      String?
   institution       String?

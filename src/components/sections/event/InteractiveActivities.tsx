@@ -54,7 +54,7 @@ const InteractiveActivities = () => {
 			/>
 
 			<div className="relative z-20 flex min-h-screen w-full flex-col justify-between px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
-				<h2 className="text-center font-westmeath text-2xl uppercase tracking-wide text-white sm:text-3xl md:text-4xl lg:text-5xl">
+				<h2 className="text-center font-westmeath text-2xl uppercase tracking-wide text-white sm:text-3xl md:mt-6 md:text-4xl lg:mt-10 lg:text-5xl">
 					Interactive Activities
 				</h2>
 

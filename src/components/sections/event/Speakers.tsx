@@ -42,11 +42,7 @@ const Speakers = () => {
 
 	return (
 		<section className="relative overflow-hidden bg-black py-16">
-			<div className="pointer-events-none absolute -left-10 -top-4 h-56 w-40 sm:-left-14 sm:h-72 sm:w-52 md:-left-20 md:h-96 md:w-72">
-				<Image src="/speakers/goldenMusicNote3.svg" alt="" fill sizes="288px" className="object-contain" />
-			</div>
-
-			<div className="pointer-events-none absolute right-0 top-1/2 h-[78rem] w-[78rem] -translate-y-1/2 translate-x-1/2 sm:h-[100rem] sm:w-[100rem]">
+			<div className="pointer-events-none absolute right-0 top-1/2 z-0 h-[78rem] w-[78rem] -translate-y-1/2 translate-x-1/2 sm:h-[100rem] sm:w-[100rem]">
 				<Image src="/about/red-ellipse.webp" alt="" fill sizes="100rem" className="object-contain" />
 				<div
 					className="absolute inset-0"
@@ -74,7 +70,13 @@ const Speakers = () => {
 				</div>
 			</div>
 
-			<div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+			<div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-24 bg-gradient-to-b from-black via-black/70 to-transparent sm:h-36 md:h-44" />
+
+			<div className="pointer-events-none absolute -left-10 -top-4 z-20 h-56 w-40 sm:-left-14 sm:h-72 sm:w-52 md:-left-20 md:h-96 md:w-72">
+				<Image src="/speakers/goldenMusicNote3.svg" alt="" fill sizes="288px" className="object-contain" />
+			</div>
+
+			<div className="relative z-20 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
 				<h2 className="mb-10 text-center font-westmeath text-3xl uppercase tracking-wide text-white sm:mb-14 sm:text-4xl lg:text-5xl">
 					Our Speakers
 				</h2>

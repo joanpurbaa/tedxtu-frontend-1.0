@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 
 export interface TicketTier {
@@ -52,25 +53,13 @@ const ticketsData: TicketTier[] = [
 
 const TicketSelection = () => {
     return (
-        <section id='ticket' className='relative overflow-hidden bg-[#4a1512] px-4 py-40 sm:px-6 lg:px-8'>
-            <div
-                className='absolute inset-0 hidden md:block'
-                style={{
-                    backgroundImage:
-                        "url('/speakers/ticketSectionBackground.png')",
-                    backgroundRepeat: 'no-repeat',
-                    backgroundSize: '105%',
-                    backgroundPosition: 'center',
-                }}
-            />
-            <div
-                className='absolute inset-0 md:hidden'
-                style={{
-                    backgroundImage: "url('/Ticket%20section.png')",
-                    backgroundRepeat: 'no-repeat',
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                }}
+        <section id='ticket' className='relative scroll-mt-36 overflow-hidden bg-[#4d0902] px-4 py-40 sm:px-6 lg:px-8'>
+            <Image
+                src='/speakers/fabricTexture.webp'
+                alt=''
+                fill
+                sizes='100vw'
+                className='object-cover opacity-20 mix-blend-overlay'
             />
             <div className='absolute inset-0 bg-black/20' />
             <div

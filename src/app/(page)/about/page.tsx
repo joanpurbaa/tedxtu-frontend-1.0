@@ -541,17 +541,17 @@ export default function About() {
                             <span>MISSION</span>
                         </h2>
 
-                        <div className='space-y-6 md:space-y-8'>
+                        <div className='space-y-4 md:space-y-8'>
                             {/* --- VISION CARD --- */}
-                            <div className='relative w-full rounded-[2.5rem] md:rounded-[3rem] overflow-hidden p-6 sm:p-8 md:p-10 lg:p-12'>
-                                {/* Background Image Mobile - ditarik sedikit agar border bawaan SVG pas di tepi */}
-                                <div className='absolute -inset-1 md:hidden z-0'>
+                            <div className='relative flex w-full aspect-[4/3] flex-col justify-center overflow-hidden p-6 sm:p-8 md:aspect-[1615/388] md:p-10 lg:p-12'>
+                                {/* Background Image Mobile - asset sudah punya rounded border sendiri, no extra CSS rounding */}
+                                <div className='absolute inset-0 md:hidden z-0'>
                                     <Image
                                         src='/about/Vision Section.svg'
                                         alt='Vision background mobile'
                                         fill
                                         sizes='100vw'
-                                        className='object-fill'
+                                        className='object-contain'
                                         priority
                                     />
                                 </div>
@@ -563,17 +563,17 @@ export default function About() {
                                         alt='Vision background desktop'
                                         fill
                                         sizes='100vw'
-                                        className='object-cover'
+                                        className='object-contain'
                                         priority
                                     />
                                 </div>
 
                                 {/* Content Layer */}
-                                <div className='relative z-10 grid grid-cols-1 md:grid-cols-[180px_1fr] lg:grid-cols-[220px_1fr] items-center gap-3 sm:gap-4 md:gap-8 lg:gap-12'>
+                                <div className='relative z-10 grid min-w-0 grid-cols-1 md:grid-cols-[180px_1fr] lg:grid-cols-[220px_1fr] items-center gap-3 sm:gap-4 md:gap-8 lg:gap-12'>
                                     <h3 className='font-westmeath text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-white text-left md:text-center uppercase tracking-wider'>
                                         Vision
                                     </h3>
-                                    <p className='font-raleway text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed text-white/95 text-left'>
+                                    <p className='min-w-0 font-raleway text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed text-white/95 text-left'>
                                         With a 5-year vision, we aim to create a
                                         platform for impactful discussions,
                                         inspire innovative solutions, and
@@ -585,15 +585,15 @@ export default function About() {
                             </div>
 
                             {/* --- MISSION CARD --- */}
-                            <div className='relative w-full rounded-[2.5rem] md:rounded-[3rem] overflow-hidden p-6 sm:p-8 md:p-10 lg:p-12'>
-                                {/* Background Image Mobile */}
-                                <div className='absolute -inset-1 md:hidden z-0'>
+                            <div className='relative flex w-full aspect-[4/3] flex-col justify-center overflow-hidden p-6 sm:p-8 md:aspect-[1615/388] md:p-10 lg:p-12'>
+                                {/* Background Image Mobile - asset sudah punya rounded border sendiri, no extra CSS rounding */}
+                                <div className='absolute inset-0 md:hidden z-0'>
                                     <Image
                                         src='/about/Mission Section.svg'
                                         alt='Mission background mobile'
                                         fill
                                         sizes='100vw'
-                                        className='object-fill'
+                                        className='object-contain'
                                         priority
                                     />
                                 </div>
@@ -605,14 +605,14 @@ export default function About() {
                                         alt='Mission background desktop'
                                         fill
                                         sizes='100vw'
-                                        className='object-cover'
+                                        className='object-contain'
                                         priority
                                     />
                                 </div>
 
                                 {/* Content Layer */}
-                                <div className='relative z-10 grid grid-cols-1 md:grid-cols-[1fr_180px] lg:grid-cols-[1fr_220px] items-center gap-3 sm:gap-4 md:gap-8 lg:gap-12'>
-                                    <p className='order-last md:order-first font-raleway text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed text-white/95 text-left'>
+                                <div className='relative z-10 grid min-w-0 grid-cols-1 md:grid-cols-[1fr_180px] lg:grid-cols-[1fr_220px] items-center gap-3 sm:gap-4 md:gap-8 lg:gap-12'>
+                                    <p className='order-last min-w-0 font-raleway text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed text-white/95 text-left md:order-first'>
                                         To build a sustainable legacy by
                                         leveraging Telkom&apos;s potential
                                         resources, fostering collaboration

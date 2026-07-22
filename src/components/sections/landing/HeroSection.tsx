@@ -228,22 +228,33 @@ export function HeroSection() {
                 className='relative z-20 flex flex-col items-center justify-center gap-8'
             >
                 <h1 className='text-center'>
-                    <div className='flex items-center justify-center gap-4 flex-wrap'>
+                    <div className='flex items-center justify-center'>
                         <span className='font-westmeath text-5xl md:text-6xl lg:text-7xl text-white font-normal'>
                             Creating the
                         </span>
+                    </div>
+                    <div className='mt-2 flex items-center justify-center gap-3 md:gap-4'>
                         <Image
                             src='/about/music-note.webp'
-                            alt='Music note'
+                            alt=''
                             width={30}
                             height={30}
                             priority
                             quality={75}
+                            className='w-5 h-auto md:w-[30px]'
                         />
                         <span className='font-westmeath text-5xl md:text-6xl lg:text-7xl text-white font-normal'>
                             Symphony
                         </span>
-                        <Image src='/about/single-golden-note.webp' alt='Golden note' width={30} height={30} priority quality={75} />
+                        <Image
+                            src='/about/single-golden-note.webp'
+                            alt=''
+                            width={30}
+                            height={30}
+                            priority
+                            quality={75}
+                            className='w-5 h-auto md:w-[30px]'
+                        />
                     </div>
                 </h1>
 

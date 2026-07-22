@@ -22,6 +22,7 @@ export async function POST(req: NextRequest) {
       domisili: body.domisili || "",
       participantStatus: body.participantStatus,
       studentId: body.studentId || null,
+      university: body.university || null,
       faculty: body.faculty || null,
       facultyOther: body.facultyOther || null,
       institution: body.institution || null,

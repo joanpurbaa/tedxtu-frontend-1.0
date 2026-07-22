@@ -63,15 +63,15 @@ const FaqCard = ({
 }) => {
     const isEven = index % 2 === 0;
     const bgImage = isEven
-        ? '/faq/faq-yellow-card.webp'
-        : '/faq/faq-red-card.webp';
+        ? '/faq/faq-yellow-card-crop.webp'
+        : '/faq/faq-red-card-crop.webp';
     const borderColor = isEven ? 'border-[#8A0E04]' : 'border-[#DCA23E]';
-    const bgFallback = isEven ? '#D4930F' : '#7A0A04';
+    const bgFallback = '#0b0503';
 
     return (
         <div
             onClick={onToggle}
-            className={`relative mb-6 cursor-pointer border-[4px] ${borderColor} overflow-hidden w-full hover:scale-[1.01] active:scale-[0.99] transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]`}
+            className={`relative mb-6 cursor-pointer border-[2px] sm:border-[4px] ${borderColor} overflow-hidden w-full hover:scale-[1.01] active:scale-[0.99] transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]`}
             style={{
                 backgroundColor: bgFallback,
                 borderRadius: isOpen ? '48px' : '100px',
@@ -83,7 +83,7 @@ const FaqCard = ({
                 style={{
                     inset: '-2px',
                     backgroundImage: `url(${bgImage})`,
-                    backgroundSize: '130% 130%',
+                    backgroundSize: 'cover',
                     backgroundPosition: 'center',
                     backgroundRepeat: 'no-repeat',
                 }}

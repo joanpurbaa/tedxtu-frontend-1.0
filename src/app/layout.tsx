@@ -78,7 +78,7 @@ export default function RootLayout({
         <html lang='en' suppressHydrationWarning className={westmeath.variable}>
             <body
                 suppressHydrationWarning
-                className={`${geistSans.variable} ${raleway.variable} ${cinzelNormal.variable} ${playfairDisplay.variable} ${geistMono.variable} ${cinzelDecorative.className}  antialiased`}
+                className={`${geistSans.variable} ${raleway.variable} ${cinzelNormal.variable} ${playfairDisplay.variable} ${geistMono.variable} ${cinzelDecorative.className}  antialiased overflow-x-hidden`}
             >
                 <ThemeProvider
                     attribute='class'

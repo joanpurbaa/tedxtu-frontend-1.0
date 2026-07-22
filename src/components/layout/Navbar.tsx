@@ -13,8 +13,7 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import useCountdown from '@/hooks/useCountdown';
-
-const EVENT_START_DATE = '2027-01-16T08:00:00+07:00';
+import { EVENT_START_DATE } from '@/lib/eventDate';
 
 type CountdownProps = {
     targetDate?: Date | string;
@@ -43,24 +42,28 @@ export default function Navbar({
 
     const { totalHours, minutes, seconds, isFinished } =
         useCountdown(targetDate);
+    const days = Math.floor(totalHours / 24);
+    const hours = totalHours % 24;
 
     return (
         <div className='fixed left-0 right-0 top-0 z-50 flex flex-col'>
             <section
                 aria-label='Event countdown'
                 className={cn(
-                    'w-full bg-[url(/countdown-background.webp)] bg-cover bg-center bg-no-repeat px-4 py-3 text-center shadow-[0_10px_24px_rgba(0,0,0,0.65)]',
+                    'relative w-full overflow-hidden bg-[#8A0E04] px-4 py-3 text-center shadow-[0_10px_24px_rgba(0,0,0,0.65)]',
                     className,
                 )}
             >
+                <div className='absolute inset-0 bg-[url(/about/visionPatternRed.webp)] bg-repeat bg-center opacity-90 [background-size:auto_200px]' />
                 <p className='relative z-10 font-raleway text-xs font-black uppercase tracking-[0.12em] text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.85)] sm:text-sm md:text-base'>
                     {isFinished ? (
-                        'OUR EVENT HAS STARTED! COME TO THE VENUE FOR OTS'
+                        'The event starts today'
                     ) : (
                         <>
                             <span>WILL BE START IN : </span>
                             <time dateTime={new Date(targetDate).toISOString()}>
-                                {totalHours}H {formatTime(minutes)}M{' '}
+                                {days}D {formatTime(hours)}H{' '}
+                                {formatTime(minutes)}M{' '}
                                 {formatTime(seconds)}S
                             </time>
                         </>

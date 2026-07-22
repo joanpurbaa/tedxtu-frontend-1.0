@@ -10,21 +10,78 @@ import Footer from '@/components/layout/Footer';
 import Speakers from '@/components/sections/event/Speakers';
 import VenueInfo from '@/components/sections/event/VenueInfo';
 import TicketSelection from '@/components/sections/event/TicketSelection';
+import { EVENT_START_DATE } from '@/lib/eventDate';
 
-const EVENT_START_DATE = '2027-01-16T08:00:00+07:00';
+// Memoized so the hero countdown's 1s tick (isolated in HeroCountdown below)
+// never triggers a re-render of these heavy, image/animation-heavy sections.
+const MemoSpeakers = React.memo(Speakers);
+const MemoInteractiveActivities = React.memo(InteractiveActivities);
+const MemoVenueInfo = React.memo(VenueInfo);
+const MemoTicketSelection = React.memo(TicketSelection);
+const MemoGallery = React.memo(Gallery);
 
 function formatCountdownUnit(value: number) {
     return value.toString().padStart(2, '0');
 }
 
-const EventPage = () => {
-    const [isVisible, setIsVisible] = React.useState(false);
+const COUNTDOWN_UNITS = ['Days', 'Hours', 'Minutes', 'Seconds'] as const;
+
+// Isolated so the 1s countdown tick only re-renders this small block,
+// instead of the whole page (hero + Speakers + InteractiveActivities + VenueInfo + TicketSelection + Gallery).
+const HeroCountdown = () => {
     const { totalHours, minutes, seconds } = useCountdown(EVENT_START_DATE);
     const days = Math.floor(totalHours / 24);
     const hours = totalHours % 24;
+    const values = [days, hours, minutes, seconds];
+
+    return (
+        <div className='mt-24 sm:mt-28 flex items-start justify-center gap-3 sm:gap-6 md:gap-8'>
+            {COUNTDOWN_UNITS.map((label, index) => (
+                <React.Fragment key={label}>
+                    <div className='flex flex-col items-center'>
+                        <div className='relative flex h-14 w-14 items-center justify-center overflow-hidden rounded-2xl sm:h-20 sm:w-20 md:h-24 md:w-24'>
+                            <Image
+                                src='/speakers/Texture.svg'
+                                alt=''
+                                fill
+                                sizes='96px'
+                                className='object-cover'
+                            />
+                            <span className='relative z-10 font-westmeath text-2xl font-bold text-white sm:text-4xl md:text-5xl'>
+                                {formatCountdownUnit(values[index])}
+                            </span>
+                        </div>
+                        <span className='mt-3 font-raleway text-[10px] uppercase tracking-[0.15em] text-white sm:text-xs'>
+                            {label}
+                        </span>
+                    </div>
+                    {index < COUNTDOWN_UNITS.length - 1 && (
+                        <span className='flex h-14 items-center font-westmeath text-2xl font-bold text-white sm:h-20 sm:text-4xl md:h-24 md:text-5xl'>
+                            :
+                        </span>
+                    )}
+                </React.Fragment>
+            ))}
+        </div>
+    );
+};
+
+const EventPage = () => {
+    const [isVisible, setIsVisible] = React.useState(false);
 
     React.useEffect(() => {
         setIsVisible(true);
+    }, []);
+
+    React.useEffect(() => {
+        if (!window.location.hash) return;
+        const id = window.location.hash.slice(1);
+        const target = document.getElementById(id);
+        if (!target) return;
+        const timeout = setTimeout(() => {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+        return () => clearTimeout(timeout);
     }, []);
 
     return (
@@ -35,13 +92,13 @@ const EventPage = () => {
             >
                 <Navbar />
 
-                <div className='absolute inset-0 z-0'>
+                <div className='absolute inset-0 z-0 overflow-hidden'>
                     <Image
-                        src='/speakers/heroBackground.svg'
+                        src='/speakers/heroBackground.webp'
                         alt='Hero background'
                         fill
                         sizes='100vw'
-                        className='object-cover'
+                        className='scale-110 object-cover blur-[3px] sm:blur-[6px]'
                         priority
                     />
                 </div>
@@ -87,38 +144,15 @@ const EventPage = () => {
                             </div>
                         </h1>
 
-                        <div className='mt-24 sm:mt-28 flex items-start justify-center gap-3 sm:gap-6 md:gap-8'>
-                            {[
-                                { value: days, label: 'Days' },
-                                { value: hours, label: 'Hours' },
-                                { value: minutes, label: 'Minutes' },
-                                { value: seconds, label: 'Seconds' },
-                            ].map((unit, index, arr) => (
-                                <React.Fragment key={unit.label}>
-                                    <div className='flex flex-col items-center'>
-                                        <span className='font-westmeath text-2xl font-bold text-white sm:text-4xl md:text-5xl'>
-                                            {formatCountdownUnit(unit.value)}
-                                        </span>
-                                        <span className='mt-3 font-raleway text-[10px] uppercase tracking-[0.15em] text-white sm:text-xs'>
-                                            {unit.label}
-                                        </span>
-                                    </div>
-                                    {index < arr.length - 1 && (
-                                        <span className='font-westmeath text-2xl font-bold text-white sm:text-4xl md:text-5xl'>
-                                            :
-                                        </span>
-                                    )}
-                                </React.Fragment>
-                            ))}
-                        </div>
+                        <HeroCountdown />
                     </div>
                 </div>
             </main>
-            <Speakers />
-            <InteractiveActivities />
-            <VenueInfo />
-            <TicketSelection />
-            <Gallery />
+            <MemoSpeakers />
+            <MemoInteractiveActivities />
+            <MemoVenueInfo />
+            <MemoTicketSelection />
+            <MemoGallery />
             <Footer />
             <BackToTopButton />
         </>

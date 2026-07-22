@@ -16,6 +16,8 @@ type FormData = {
     domisili: string;
     participantStatus: string;
     studentId: string;
+    university: string;
+    universityOther: string;
     faculty: string;
     facultyOther: string;
     institution: string;
@@ -40,6 +42,8 @@ const initial: FormData = {
     domisili: '',
     participantStatus: '',
     studentId: '',
+    university: '',
+    universityOther: '',
     faculty: '',
     facultyOther: '',
     institution: '',
@@ -55,6 +59,8 @@ const initial: FormData = {
     consentDataProcessing: '',
     consentUpdates: '',
 };
+
+const universityOptions = ['Telkom University', 'Others'];
 
 const facultyOptions = [
     'Fakultas Ekonomi dan Bisnis (FEB)',
@@ -107,7 +113,7 @@ function Chip({
         <button
             type='button'
             onClick={onClick}
-            className={`rounded-full border px-4 py-2 text-sm font-raleway transition ${
+            className={`rounded-full border px-4 py-2 text-left text-sm font-raleway transition ${
                 active
                     ? 'border-[#C58A1C] bg-[#C58A1C]/20 text-white'
                     : 'border-white/15 bg-white/5 text-white/70 hover:border-white/30'
@@ -165,6 +171,8 @@ function TicketingFlow() {
 
     const isStudent = form.participantStatus === 'Student';
     const isProfessional = form.participantStatus === 'Professional';
+    const isTelkomStudent = isStudent && form.university === 'Telkom University';
+    const isOtherUniversity = isStudent && form.university === 'Others';
 
     const validateIdentity = () => {
         if (!form.fullName.trim() || form.fullName.trim().length < 3)
@@ -178,8 +186,17 @@ function TicketingFlow() {
         if (!form.participantStatus) return 'Please select your status.';
         if (isStudent && !form.studentId.trim())
             return 'Student ID is required.';
-        if (isStudent && !form.faculty) return 'Please select your faculty.';
-        if (isStudent && form.faculty === 'Others' && !form.facultyOther.trim())
+        if (isStudent && !form.university)
+            return 'Please select your university.';
+        if (isOtherUniversity && !form.universityOther.trim())
+            return 'Please specify your university.';
+        if (isTelkomStudent && !form.faculty)
+            return 'Please select your faculty.';
+        if (
+            isTelkomStudent &&
+            form.faculty === 'Others' &&
+            !form.facultyOther.trim()
+        )
             return 'Please specify your faculty.';
         if (!isStudent && !form.institution.trim())
             return 'Please fill your institution/organization.';
@@ -233,10 +250,19 @@ function TicketingFlow() {
     };
 
     const submitCheckout = async () => {
+        const payload = {
+            ...form,
+            university: isOtherUniversity
+                ? form.universityOther
+                : form.university,
+            tier,
+            price,
+        };
+
         const res = await fetch('/api/checkout', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ ...form, tier, price }),
+            body: JSON.stringify(payload),
         });
 
         if (!res.ok) {
@@ -450,38 +476,91 @@ function TicketingFlow() {
                                             </div>
                                             <div>
                                                 <p className='mb-2 font-title text-sm uppercase'>
-                                                    Faculty
+                                                    University
                                                 </p>
                                                 <div className='flex flex-wrap gap-2'>
-                                                    {facultyOptions.map((f) => (
-                                                        <Chip
-                                                            key={f}
-                                                            active={
-                                                                form.faculty ===
-                                                                f
-                                                            }
-                                                            label={f}
-                                                            onClick={() =>
-                                                                set(
-                                                                    'faculty',
-                                                                    f,
-                                                                )
-                                                            }
-                                                        />
-                                                    ))}
+                                                    {universityOptions.map(
+                                                        (u) => (
+                                                            <Chip
+                                                                key={u}
+                                                                active={
+                                                                    form.university ===
+                                                                    u
+                                                                }
+                                                                label={u}
+                                                                onClick={() => {
+                                                                    set(
+                                                                        'university',
+                                                                        u,
+                                                                    );
+                                                                    set(
+                                                                        'faculty',
+                                                                        '',
+                                                                    );
+                                                                    set(
+                                                                        'facultyOther',
+                                                                        '',
+                                                                    );
+                                                                    set(
+                                                                        'universityOther',
+                                                                        '',
+                                                                    );
+                                                                }}
+                                                            />
+                                                        ),
+                                                    )}
                                                 </div>
-                                                {form.faculty === 'Others' && (
+                                                {isOtherUniversity && (
                                                     <input
-                                                        id='facultyOther'
+                                                        id='universityOther'
                                                         className={`${inputClass()} mt-3`}
                                                         value={
-                                                            form.facultyOther
+                                                            form.universityOther
                                                         }
                                                         onChange={onText}
-                                                        placeholder='Please specify your faculty'
+                                                        placeholder='Please specify your university'
                                                     />
                                                 )}
                                             </div>
+                                            {isTelkomStudent && (
+                                                <div>
+                                                    <p className='mb-2 font-title text-sm uppercase'>
+                                                        Faculty
+                                                    </p>
+                                                    <div className='flex flex-wrap gap-2'>
+                                                        {facultyOptions.map(
+                                                            (f) => (
+                                                                <Chip
+                                                                    key={f}
+                                                                    active={
+                                                                        form.faculty ===
+                                                                        f
+                                                                    }
+                                                                    label={f}
+                                                                    onClick={() =>
+                                                                        set(
+                                                                            'faculty',
+                                                                            f,
+                                                                        )
+                                                                    }
+                                                                />
+                                                            ),
+                                                        )}
+                                                    </div>
+                                                    {form.faculty ===
+                                                        'Others' && (
+                                                        <input
+                                                            id='facultyOther'
+                                                            className={`${inputClass()} mt-3`}
+                                                            value={
+                                                                form.facultyOther
+                                                            }
+                                                            onChange={onText}
+                                                            placeholder='Please specify your faculty'
+                                                        />
+                                                    )}
+                                                </div>
+                                            )}
                                         </>
                                     ) : (
                                         <div>

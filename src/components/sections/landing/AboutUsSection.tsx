@@ -46,7 +46,7 @@ function ScrollBlurParagraph({ words }: { words: WordItem[] }) {
     const ref = useRef<HTMLParagraphElement>(null);
     const { scrollYProgress } = useScroll({
         target: ref,
-        offset: ['start 0.9', 'start 0.35'],
+        offset: ['start 0.9', 'end 0.5'],
     });
 
     return (
