@@ -230,7 +230,7 @@ export function HeroSection() {
                 <h1 className='text-center'>
                     <div className='flex items-center justify-center gap-4 flex-wrap'>
                         <span className='font-westmeath text-5xl md:text-6xl lg:text-7xl text-white font-normal'>
-                            Creating
+                            Creating the
                         </span>
                         <Image
                             src='/about/music-note.webp'
@@ -241,28 +241,14 @@ export function HeroSection() {
                             quality={75}
                         />
                         <span className='font-westmeath text-5xl md:text-6xl lg:text-7xl text-white font-normal'>
-                            The
-                        </span>
-                    </div>
-                    <div className='flex items-center justify-center gap-4 flex-wrap mt-2'>
-                        <Image
-                            className='-rotate-12'
-                            src='/about/single-golden-note.svg'
-                            alt='Golden note'
-                            width={20}
-                            height={20}
-                            priority
-                            quality={75}
-                        />
-                        <span className='font-westmeath text-5xl md:text-6xl lg:text-7xl text-white font-normal'>
                             Symphony
                         </span>
+                        <Image src='/about/single-golden-note.webp' alt='Golden note' width={30} height={30} priority quality={75} />
                     </div>
                 </h1>
 
                 <p className='text-sm sm:text-base md:text-lg lg:text-xl font-raleway italic font-medium text-white/80 px-4 max-w-2xl text-center'>
-                    Every thread has a story. What tapestry do you want to
-                    weave?
+                    Every note has a story. What symphony do you want to create?
                 </p>
 
                 <div className='flex flex-col sm:flex-row justify-center items-center gap-2 px-4 mt-4'>

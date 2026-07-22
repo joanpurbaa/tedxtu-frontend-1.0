@@ -385,7 +385,7 @@ export default function About() {
                         active={introComplete}
                     />
                     <FloatingOrnament
-                        src='/about/turn-table.webp'
+                        src='/about/gramophone.svg'
                         alt='Turn table decoration'
                         className='absolute bottom-[18%] left-[14%] md:bottom-[21%] md:left-[15%] -translate-x-1/2 translate-y-1/2 pointer-events-none'
                         delay={0.3}
