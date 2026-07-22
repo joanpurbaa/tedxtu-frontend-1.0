@@ -101,13 +101,13 @@ export default function AdminLoginPage() {
             <div className='w-full max-w-sm rounded-xl border border-white/5 bg-[#121212] p-8'>
                 <div className='mb-8 flex flex-col items-center text-center'>
                     <Image
-                        src='/logo.webp'
+                        src='/logo-white.svg'
                         alt='TEDx Logo'
-                        width={40}
-                        height={40}
+                        width={100}
+                        height={100}
                         className='mb-4 rounded-lg'
                     />
-                    <h1 className='text-lg font-semibold text-white'>
+                    <h1 className='text-lg font-semibold text-white mt-5'>
                         TEDx Admin
                     </h1>
                     <p className='mt-1 text-sm text-white/40'>

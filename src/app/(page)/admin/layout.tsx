@@ -45,7 +45,7 @@ export default function AdminLayout({
                         className='flex items-center gap-3'
                     >
                         <Image
-                            src='/logo.webp'
+                            src='/logo-white.svg'
                             alt='TEDx Logo'
                             width={32}
                             height={32}
