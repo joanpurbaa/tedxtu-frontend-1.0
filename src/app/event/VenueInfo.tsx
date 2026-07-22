@@ -108,7 +108,7 @@ const VenueInfo = () => {
                 </h3>
 
                 <div className='mt-10 grid gap-8 lg:grid-cols-2 lg:items-center'>
-                    <div className='relative aspect-square w-full overflow-hidden rounded-2xl sm:aspect-[4/3] lg:aspect-square'>
+                    <div className='relative aspect-video w-full max-w-full overflow-hidden rounded-2xl sm:aspect-[4/3] lg:aspect-square'>
                         <iframe
                             src='https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d990.0728673275585!2d107.62956163570743!3d-6.974897593563218!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e9ae8c500001%3A0xe3f57105baec7023!2sGedung%20Damar%20(K)%2C%20Telkom%20University!5e0!3m2!1sid!2sid!4v1784514546441!5m2!1sid!2sid'
                             className='absolute inset-0 h-full w-full rounded-2xl'
