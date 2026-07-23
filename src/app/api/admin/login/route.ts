@@ -1,14 +1,37 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { ADMIN_SESSION_COOKIE, createAdminSessionToken } from '@/lib/adminSession';
+import {
+    ADMIN_SESSION_COOKIE,
+    createAdminSessionToken,
+} from '@/lib/adminSession';
+
+function normalize(value: string | undefined | null) {
+    return (value ?? '').trim();
+}
 
 export async function POST(req: NextRequest) {
-    const { username, password } = await req.json();
+    const body = await req.json().catch(() => null);
 
     if (
-        typeof username !== 'string' ||
-        typeof password !== 'string' ||
-        username !== process.env.ADMIN_USER ||
-        password !== process.env.ADMIN_PASS
+        !body ||
+        typeof body.username !== 'string' ||
+        typeof body.password !== 'string'
+    ) {
+        return NextResponse.json(
+            { error: 'Invalid request body' },
+            { status: 400 },
+        );
+    }
+
+    const username = normalize(body.username);
+    const password = normalize(body.password);
+    const expectedUser = normalize(process.env.ADMIN_USER);
+    const expectedPass = normalize(process.env.ADMIN_PASS);
+
+    if (
+        !expectedUser ||
+        !expectedPass ||
+        username !== expectedUser ||
+        password !== expectedPass
     ) {
         return NextResponse.json(
             { error: 'Invalid username or password' },
