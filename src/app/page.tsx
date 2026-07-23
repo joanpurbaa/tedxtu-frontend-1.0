@@ -9,10 +9,12 @@ export default function Home() {
     return (
         <>
             <Navbar />
-            <HeroSection />
-            <AboutUsSection />
-            <EventSection />
-            <FaqSection />
+            <main className='relative w-full overflow-x-clip overflow-y-visible'>
+                <HeroSection />
+                <AboutUsSection />
+                <EventSection />
+                <FaqSection />
+            </main>
             <Footer />
         </>
     );
