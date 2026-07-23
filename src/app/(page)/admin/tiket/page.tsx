@@ -51,7 +51,7 @@ export default function TiketPage() {
     const [filterStatus, setFilterStatus] = useState<string>('all');
 
     const load = async () => {
-        const res = await fetch('/api/admin/orders');
+        const res = await fetch('/api/orders');
         setTickets(await res.json());
         setLoading(false);
     };
@@ -61,7 +61,7 @@ export default function TiketPage() {
     }, []);
 
     const act = async (id: string, action: 'confirm' | 'reject') => {
-        await fetch(`/api/admin/orders/${id}`, {
+        await fetch(`/api/orders/${id}`, {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ action }),

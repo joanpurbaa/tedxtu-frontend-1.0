@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { ADMIN_SESSION_COOKIE, verifyAdminSessionToken } from '@/lib/adminSession';
 
-const PUBLIC_PATHS = ['/admin/login', '/api/admin/login', '/api/admin/logout'];
+const PUBLIC_PATHS = ['/admin/login', '/api/login', '/api/logout'];
 
 export async function middleware(req: NextRequest) {
     const { pathname } = req.nextUrl;
@@ -31,5 +31,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-    matcher: ['/admin/:path*', '/api/admin/:path*'],
+    matcher: ['/admin/:path*', '/api/:path*'],
 };

@@ -35,7 +35,7 @@ export default function ScanPage() {
                 async (decodedText) => {
                     setScanning(false);
                     try {
-                        const res = await fetch('/api/admin/scan', {
+                        const res = await fetch('/api/scan', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({ token: decodedText }),

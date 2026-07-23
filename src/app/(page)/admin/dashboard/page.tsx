@@ -64,7 +64,7 @@ export default function DashboardPage() {
     const [stats, setStats] = useState<Stats | null>(null);
 
     useEffect(() => {
-        fetch('/api/admin/stats')
+        fetch('/api/stats')
             .then((r) => r.json())
             .then(setStats);
     }, []);
