@@ -1,9 +1,8 @@
-// app/admin/layout.tsx
 'use client';
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { LayoutDashboard, Ticket, QrCode, LogOut } from 'lucide-react';
+import { LayoutDashboard, Ticket, QrCode, LogOut, Users } from 'lucide-react';
 import Image from 'next/image';
 import { Inter } from 'next/font/google';
 
@@ -14,6 +13,7 @@ const inter = Inter({
 
 const nav = [
     { href: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    { href: '/admin/audience', label: 'Audience Data', icon: Users },
     { href: '/admin/tiket', label: 'Tickets', icon: Ticket },
     { href: '/admin/scan', label: 'Scan', icon: QrCode },
 ];
@@ -37,7 +37,9 @@ export default function AdminLayout({
     }
 
     return (
-        <div className={`${inter.variable} flex min-h-screen bg-[#0a0a0a] text-white font-['Inter']`}>
+        <div
+            className={`${inter.variable} flex min-h-screen bg-[#0a0a0a] text-white font-['Inter']`}
+        >
             <aside className='w-64 shrink-0 bg-[#121212] border-r border-white/5 flex flex-col'>
                 <div className='p-6 border-b border-white/5'>
                     <Link
