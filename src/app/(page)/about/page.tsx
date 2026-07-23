@@ -134,7 +134,7 @@ export default function About() {
             desc: 'The backbone of our organization. Keeping the team grounded, the spirit alive, and every document in order.',
         },
         {
-            title: 'LICENSEE &\nCO-LICENSEE',
+            title: 'LICENSEE &\nCO‑LICENSEE',
             desc: 'The conductors of it all. Leading the symphony from the front, steering every note toward one shared vision.',
         },
         {
@@ -166,6 +166,17 @@ export default function About() {
     const [dragStart, setDragStart] = useState<number | null>(null);
     const [isAnimating, setIsAnimating] = useState(true);
     const isTransitioningRef = useRef(false);
+    const [isDesktopCard, setIsDesktopCard] = useState(false);
+
+    useEffect(() => {
+        const mq = window.matchMedia('(min-width: 768px)');
+        const updateIsDesktopCard = () => setIsDesktopCard(mq.matches);
+        updateIsDesktopCard();
+        mq.addEventListener('change', updateIsDesktopCard);
+        return () => mq.removeEventListener('change', updateIsDesktopCard);
+    }, []);
+
+    const cardWidth = isDesktopCard ? 340 : 280;
 
     const clearAllFlickerTimers = () => {
         flickerTimersRef.current.forEach((t) => window.clearTimeout(t));
@@ -307,7 +318,7 @@ export default function About() {
                         }}
                         transition={{ duration: 1.5, ease: 'easeOut' }}
                     >
-                        <div className='w-[140vw] max-w-none'>
+                        <div className='w-[1300px] md:w-[2000px]'>
                             <Image
                                 src='/about/red-ellipse.webp'
                                 alt='Red ellipse decoration'
@@ -425,7 +436,7 @@ export default function About() {
                             height={900}
                             priority={false}
                             quality={75}
-                            className='w-[160vw] max-w-[1800px] h-auto'
+                            className='w-[205vw] max-w-[1800px] h-auto'
                         />
                     </motion.div>
 
@@ -451,7 +462,7 @@ export default function About() {
                             height={900}
                             priority={false}
                             quality={75}
-                            className='w-[160vw] max-w-[1800px] h-auto'
+                            className='w-[205vw] max-w-[1800px] h-auto'
                         />
                     </motion.div>
 
@@ -631,7 +642,7 @@ export default function About() {
 
                 <section className='relative w-full bg-transparent text-white py-12 md:py-16 md:min-h-screen'>
                     <div className='pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'>
-                        <div className='w-[140vw] max-w-none'>
+                        <div className='w-[2000px]'>
                             <Image
                                 src='/about/red-ellipse.webp'
                                 alt='Red ellipse decoration conductors'
@@ -658,7 +669,7 @@ export default function About() {
                             height={800}
                             priority={false}
                             quality={75}
-                            className='w-[85vw] max-w-[1020px] h-auto'
+                            className='w-[1020px] h-auto'
                         />
                     </motion.div>
 
@@ -684,11 +695,14 @@ export default function About() {
                                         : ''
                                 }`}
                                 style={{
-                                    transform: `translateX(calc(50vw - 170px - ${activeCard * 340}px))`,
+                                    transform: `translateX(calc(50vw - ${cardWidth / 2}px - ${activeCard * cardWidth}px))`,
                                 }}
                             >
                                 {conductorCards.map((card, index) => {
                                     const isActive = index === activeCard;
+                                    const isLongTitle = card.title
+                                        .split('\n')
+                                        .some((line) => line.length > 8);
                                     return (
                                         <button
                                             key={`${card.title}-${index}`}
@@ -709,21 +723,21 @@ export default function About() {
                                                 if (delta !== 0)
                                                     navigateCard(delta);
                                             }}
-                                            className={`relative h-[500px] w-[340px] shrink-0 overflow-hidden rounded-3xl cursor-pointer select-none ${
+                                            className={`relative h-[420px] w-[280px] md:h-[500px] md:w-[340px] shrink-0 overflow-hidden rounded-3xl cursor-pointer select-none ${
                                                 isAnimating
                                                     ? 'transition-all duration-500'
                                                     : ''
                                             } ${
                                                 isActive
                                                     ? 'scale-100 brightness-100'
-                                                    : 'scale-90 brightness-50'
+                                                    : 'scale-90 brightness-75'
                                             }`}
                                         >
                                             <Image
                                                 src='/about/small-yellow-card.webp'
                                                 alt={`${card.title} conductor card`}
                                                 fill
-                                                sizes='340px'
+                                                sizes='(min-width: 768px) 340px, 280px'
                                                 quality={75}
                                                 className='object-cover'
                                             />
@@ -734,11 +748,17 @@ export default function About() {
                                                         : ''
                                                 } ${isActive ? 'bg-black/10' : 'bg-black/60'}`}
                                             />
-                                            <div className='relative flex h-full flex-col items-start justify-start px-8 pt-10'>
-                                                <span className='text-left font-westmeath text-5xl md:text-6xl text-white leading-[1.1] whitespace-pre-line'>
+                                            <div className='relative flex h-full flex-col items-start justify-start px-5 pt-6 md:px-8 md:pt-10'>
+                                                <span
+                                                    className={`text-left font-westmeath text-white leading-[1.1] whitespace-pre-line ${
+                                                        isLongTitle
+                                                            ? 'text-[2.75rem] md:text-5xl'
+                                                            : 'text-5xl md:text-6xl'
+                                                    }`}
+                                                >
                                                     {card.title}
                                                 </span>
-                                                <p className='mt-8 text-left font-raleway text-2xl md:text-2xl leading-relaxed text-white/95'>
+                                                <p className='mt-4 md:mt-8 text-left font-raleway text-lg md:text-2xl leading-relaxed text-white/95'>
                                                     {card.desc}
                                                 </p>
                                             </div>
