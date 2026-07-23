@@ -293,7 +293,7 @@ export default function About() {
                 }}
             />
             <Navbar />
-            <main className='relative w-full overflow-x-clip bg-black'>
+            <main className='relative w-full overflow-x-clip overflow-y-visible bg-black'>
                 <section className='relative w-full min-h-[100dvh] flex items-center justify-center overflow-visible bg-black'>
                     <div className='pointer-events-none absolute inset-0 bg-black' />
 
@@ -670,7 +670,7 @@ export default function About() {
 
                     <div className='relative w-full py-12 overflow-hidden'>
                         <div
-                            className='w-full overflow-x-hidden cursor-grab active:cursor-grabbing'
+                            className='w-full overflow-x-hidden overflow-y-visible cursor-grab active:cursor-grabbing'
                             onMouseDown={handleDragStart}
                             onMouseUp={handleDragEnd}
                             onMouseLeave={handleDragEnd}
