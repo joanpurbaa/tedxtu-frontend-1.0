@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Search, Download, ChevronDown, Users } from 'lucide-react';
+import { Search, Download, ChevronDown, Users, X } from 'lucide-react';
 
 type AudienceData = {
     id: string;
@@ -47,6 +47,134 @@ function StatusBadge({ status }: { status: string }) {
     );
 }
 
+function DetailRow({ label, value }: { label: string; value: string }) {
+    return (
+        <div className='flex flex-col gap-0.5 py-2 border-b border-white/5'>
+            <span className='text-xs uppercase tracking-wide text-white/40'>
+                {label}
+            </span>
+            <span className='text-sm text-white'>{value || '-'}</span>
+        </div>
+    );
+}
+
+function DetailModal({
+    item,
+    onClose,
+}: {
+    item: AudienceData;
+    onClose: () => void;
+}) {
+    return (
+        <div
+            onClick={onClose}
+            className='fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4'
+        >
+            <div
+                onClick={(e) => e.stopPropagation()}
+                className='w-full max-w-2xl max-h-[85vh] overflow-y-auto rounded-2xl border border-white/10 bg-[#121212] p-6'
+            >
+                <div className='mb-4 flex items-start justify-between'>
+                    <div>
+                        <h2 className='text-lg font-bold text-white'>
+                            {item.fullName}
+                        </h2>
+                        <p className='text-sm text-white/40'>{item.orderId}</p>
+                    </div>
+                    <button
+                        onClick={onClose}
+                        className='rounded-lg p-1 text-white/60 hover:bg-white/10'
+                    >
+                        <X className='h-5 w-5' />
+                    </button>
+                </div>
+
+                <div className='mb-4 flex flex-wrap gap-2'>
+                    <StatusBadge status={item.status} />
+                    <span className='inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border border-white/10 text-white/60'>
+                        {item.tier}
+                    </span>
+                    <span
+                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${item.scanned ? 'bg-blue-600/20 text-blue-400 border-blue-600/30' : 'bg-white/5 text-white/40 border-white/10'}`}
+                    >
+                        Scanned: {item.scanned ? 'Yes' : 'No'}
+                    </span>
+                </div>
+
+                <div className='grid grid-cols-1 sm:grid-cols-2 gap-x-6'>
+                    <DetailRow label='Nickname' value={item.nickname} />
+                    <DetailRow label='Email' value={item.email} />
+                    <DetailRow label='WhatsApp Number' value={item.phone} />
+                    <DetailRow label='Domicile' value={item.domisili} />
+                    <DetailRow
+                        label='Current Status'
+                        value={item.participantStatus}
+                    />
+                    <DetailRow
+                        label='Student ID (NIM)'
+                        value={item.studentId ?? ''}
+                    />
+                    <DetailRow label='Faculty' value={item.faculty ?? ''} />
+                    <DetailRow
+                        label='Faculty (Others)'
+                        value={item.facultyOther ?? ''}
+                    />
+                    <DetailRow
+                        label='Institution/Organization'
+                        value={item.institution ?? ''}
+                    />
+                    <DetailRow
+                        label='Major/Study Programme'
+                        value={item.major ?? ''}
+                    />
+                    <DetailRow
+                        label='TED/TEDx Familiarity'
+                        value={item.tedFamiliarity}
+                    />
+                    <DetailRow label='Price' value={item.price} />
+                </div>
+
+                <DetailRow
+                    label='Topics of Interest'
+                    value={item.topics.join(', ')}
+                />
+                <DetailRow
+                    label='Music is a big part of daily life'
+                    value={item.musicLifestyle ? 'Yes' : 'No'}
+                />
+                <DetailRow
+                    label='Environment shapes who you are'
+                    value={item.environmentShapes ? 'Yes' : 'No'}
+                />
+                <DetailRow
+                    label='Emotions expressed through arts'
+                    value={item.artsExpression ? 'Yes' : 'No'}
+                />
+                <DetailRow
+                    label='Aspect looking forward to'
+                    value={item.eventAspect.join(', ')}
+                />
+                <DetailRow
+                    label='Aspect (Others)'
+                    value={item.eventAspectOther ?? ''}
+                />
+                <DetailRow
+                    label='Scanned At'
+                    value={
+                        item.scannedAt
+                            ? new Date(item.scannedAt).toLocaleString()
+                            : ''
+                    }
+                />
+                <DetailRow
+                    label='Created At'
+                    value={new Date(item.createdAt).toLocaleString()}
+                />
+            </div>
+        </div>
+    );
+}
+
 export default function AudiencePage() {
     const [data, setData] = useState<AudienceData[]>([]);
     const [loading, setLoading] = useState(true);
@@ -54,6 +182,7 @@ export default function AudiencePage() {
     const [filterTier, setFilterTier] = useState('all');
     const [filterStatus, setFilterStatus] = useState('all');
     const [exporting, setExporting] = useState(false);
+    const [selected, setSelected] = useState<AudienceData | null>(null);
 
     const loadData = async () => {
         setLoading(true);
@@ -188,26 +317,17 @@ export default function AudiencePage() {
                                         <th className='px-4 py-3 text-left text-xs font-medium text-white/40 uppercase tracking-wider whitespace-nowrap hidden md:table-cell'>
                                             Email
                                         </th>
-                                        <th className='px-4 py-3 text-left text-xs font-medium text-white/40 uppercase tracking-wider whitespace-nowrap hidden lg:table-cell'>
-                                            Status
-                                        </th>
                                         <th className='px-4 py-3 text-left text-xs font-medium text-white/40 uppercase tracking-wider whitespace-nowrap hidden sm:table-cell'>
                                             Tier
-                                        </th>
-                                        <th className='px-4 py-3 text-left text-xs font-medium text-white/40 uppercase tracking-wider whitespace-nowrap hidden xl:table-cell'>
-                                            Institution
-                                        </th>
-                                        <th className='px-4 py-3 text-left text-xs font-medium text-white/40 uppercase tracking-wider whitespace-nowrap hidden 2xl:table-cell'>
-                                            Familiarity
-                                        </th>
-                                        <th className='px-4 py-3 text-left text-xs font-medium text-white/40 uppercase tracking-wider whitespace-nowrap'>
-                                            Topics
                                         </th>
                                         <th className='px-4 py-3 text-left text-xs font-medium text-white/40 uppercase tracking-wider whitespace-nowrap'>
                                             Status
                                         </th>
                                         <th className='px-4 py-3 text-left text-xs font-medium text-white/40 uppercase tracking-wider whitespace-nowrap'>
                                             Scanned
+                                        </th>
+                                        <th className='px-4 py-3 text-left text-xs font-medium text-white/40 uppercase tracking-wider whitespace-nowrap'>
+                                            Action
                                         </th>
                                     </tr>
                                 </thead>
@@ -231,42 +351,10 @@ export default function AudiencePage() {
                                             <td className='px-4 py-3 text-white/60 hidden md:table-cell whitespace-nowrap'>
                                                 {item.email}
                                             </td>
-                                            <td className='px-4 py-3 hidden lg:table-cell whitespace-nowrap'>
-                                                <span className='text-xs text-white/60'>
-                                                    {item.participantStatus}
-                                                </span>
-                                            </td>
                                             <td className='px-4 py-3 hidden sm:table-cell whitespace-nowrap'>
                                                 <span className='text-xs font-medium text-white/80'>
                                                     {item.tier}
                                                 </span>
-                                            </td>
-                                            <td className='px-4 py-3 text-white/60 hidden xl:table-cell whitespace-nowrap'>
-                                                {item.institution || '-'}
-                                            </td>
-                                            <td className='px-4 py-3 text-white/60 hidden 2xl:table-cell whitespace-nowrap text-xs'>
-                                                {item.tedFamiliarity}
-                                            </td>
-                                            <td className='px-4 py-3 whitespace-nowrap'>
-                                                <div className='flex flex-wrap gap-1'>
-                                                    {item.topics
-                                                        .slice(0, 2)
-                                                        .map((topic) => (
-                                                            <span
-                                                                key={topic}
-                                                                className='inline-flex px-1.5 py-0.5 bg-white/5 rounded text-xs text-white/60 border border-white/5'
-                                                            >
-                                                                {topic}
-                                                            </span>
-                                                        ))}
-                                                    {item.topics.length > 2 && (
-                                                        <span className='text-xs text-white/30'>
-                                                            +
-                                                            {item.topics
-                                                                .length - 2}
-                                                        </span>
-                                                    )}
-                                                </div>
                                             </td>
                                             <td className='px-4 py-3 whitespace-nowrap'>
                                                 <StatusBadge
@@ -281,6 +369,16 @@ export default function AudiencePage() {
                                                         ? 'Yes'
                                                         : 'No'}
                                                 </span>
+                                            </td>
+                                            <td className='px-4 py-3 whitespace-nowrap'>
+                                                <button
+                                                    onClick={() =>
+                                                        setSelected(item)
+                                                    }
+                                                    className='rounded-lg border border-white/10 px-3 py-1 text-xs text-white/70 hover:bg-white/10'
+                                                >
+                                                    Detail
+                                                </button>
                                             </td>
                                         </tr>
                                     ))}
@@ -302,6 +400,13 @@ export default function AudiencePage() {
                         {data.length !== 1 ? 's' : ''}
                     </div>
                 </>
+            )}
+
+            {selected && (
+                <DetailModal
+                    item={selected}
+                    onClose={() => setSelected(null)}
+                />
             )}
         </div>
     );
