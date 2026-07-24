@@ -246,15 +246,6 @@ export function HeroSection() {
                         <span className='font-westmeath text-5xl md:text-6xl lg:text-7xl text-white font-normal'>
                             Symphony
                         </span>
-                        <Image
-                            src='/about/single-golden-note.webp'
-                            alt=''
-                            width={30}
-                            height={30}
-                            priority
-                            quality={75}
-                            className='w-5 h-auto md:w-[30px]'
-                        />
                     </div>
                 </h1>
 
