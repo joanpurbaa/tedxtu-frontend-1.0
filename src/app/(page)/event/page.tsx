@@ -98,7 +98,7 @@ const EventPage = () => {
                         alt='Hero background'
                         fill
                         sizes='100vw'
-                        className='scale-110 object-cover blur-[3px] sm:blur-[6px]'
+                        className='scale-105 object-cover blur-[3px] sm:scale-110 sm:blur-[6px]'
                         priority
                     />
                 </div>
