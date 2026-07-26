@@ -94,7 +94,7 @@ const EventPage = () => {
 
                 <div className='absolute inset-0 z-0 overflow-hidden'>
                     <Image
-                        src='/speakers/heroBackground.webp'
+                        src='/speakers/tedx2026-monochrome.webp'
                         alt='Hero background'
                         fill
                         sizes='100vw'
