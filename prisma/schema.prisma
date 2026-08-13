@@ -19,18 +19,20 @@ model Ticket {
   domisili          String            @default("")
   participantStatus String            // Student / Fresh Graduate / Professional
   studentId         String?
-  university        String?
   faculty           String?
-  facultyOther      String?
   institution       String?
   major             String?
+  instagram         String?
+  linkedin          String?
 
   // persona (long-answer -> quick choice)
   tedFamiliarity    String
   topics            String[] @default([])
-  musicLifestyle    Boolean  @default(false)
-  environmentShapes Boolean  @default(false)
-  artsExpression    Boolean  @default(false)
+  topicsOther       String?
+  musicLifestyle    String   @default("")
+  environmentShapes String   @default("")
+  artsExpression    String   @default("")
+  eventTakeaway     String   @default("")
   eventAspect       String[] @default([])
   eventAspectOther  String?
 

@@ -7,26 +7,28 @@ import { Suspense, useState, type ChangeEvent, type FormEvent } from 'react';
 import { useSearchParams } from 'next/navigation';
 import PaymentPage from '../../../components/sections/ticketing/paymentPage';
 import PaymentSuccessPage from '../../../components/sections/ticketing/paymentSuccess';
+import StepProgress from '../../../components/sections/ticketing/StepProgress';
 
 type FormData = {
+    email: string;
     fullName: string;
     nickname: string;
-    email: string;
     phone: string;
     domisili: string;
     participantStatus: string;
     studentId: string;
-    university: string;
-    universityOther: string;
     faculty: string;
-    facultyOther: string;
     institution: string;
     major: string;
+    instagram: string;
+    linkedin: string;
     tedFamiliarity: string;
     topics: string[];
+    topicsOther: string;
     musicLifestyle: string;
     environmentShapes: string;
     artsExpression: string;
+    eventTakeaway: string;
     eventAspect: string[];
     eventAspectOther: string;
     consentAccurate: string;
@@ -35,32 +37,31 @@ type FormData = {
 };
 
 const initial: FormData = {
+    email: '',
     fullName: '',
     nickname: '',
-    email: '',
     phone: '',
     domisili: '',
     participantStatus: '',
     studentId: '',
-    university: '',
-    universityOther: '',
     faculty: '',
-    facultyOther: '',
     institution: '',
     major: '',
+    instagram: '',
+    linkedin: '',
     tedFamiliarity: '',
     topics: [],
+    topicsOther: '',
     musicLifestyle: '',
     environmentShapes: '',
     artsExpression: '',
+    eventTakeaway: '',
     eventAspect: [],
     eventAspectOther: '',
     consentAccurate: '',
     consentDataProcessing: '',
     consentUpdates: '',
 };
-
-const universityOptions = ['Telkom University', 'Others'];
 
 const facultyOptions = [
     'Fakultas Ekonomi dan Bisnis (FEB)',
@@ -93,11 +94,57 @@ const aspectOptions = [
     'Others',
 ];
 
-const steps = ['identity', 'persona', 'consent', 'payment'] as const;
+const steps = ['identity', 'persona', 'payment', 'consent'] as const;
 type Step = (typeof steps)[number] | 'success';
 
 function inputClass() {
     return 'h-[52px] w-full rounded-2xl border border-white/10 bg-white/5 px-5 text-sm font-raleway text-white outline-none backdrop-blur-md transition duration-200 placeholder:text-white/50 focus:border-[#C58A1C]/80 focus:ring-2 focus:ring-[#C58A1C]/60';
+}
+
+function textareaClass() {
+    return 'min-h-[120px] w-full rounded-2xl border border-white/10 bg-white/5 px-5 py-4 text-sm font-raleway text-white outline-none backdrop-blur-md transition duration-200 placeholder:text-white/50 focus:border-[#C58A1C]/80 focus:ring-2 focus:ring-[#C58A1C]/60';
+}
+
+function SubHeader({ children }: { children?: string | null }) {
+    if (!children) return null;
+    return (
+        <p className='mb-2 font-raleway text-xs text-white/50'>{children}</p>
+    );
+}
+
+function Field({
+    id,
+    label,
+    subHeader,
+    value,
+    onChange,
+    placeholder,
+}: {
+    id: string;
+    label: string;
+    subHeader?: string | null;
+    value: string;
+    onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+    placeholder?: string;
+}) {
+    return (
+        <div>
+            <label
+                htmlFor={id}
+                className='mb-2 block font-title text-sm uppercase'
+            >
+                {label}
+            </label>
+            <SubHeader>{subHeader}</SubHeader>
+            <input
+                id={id}
+                className={inputClass()}
+                value={value}
+                onChange={onChange}
+                placeholder={placeholder}
+            />
+        </div>
+    );
 }
 
 function Chip({
@@ -166,41 +213,24 @@ function TicketingFlow() {
     const set = <K extends keyof FormData>(key: K, value: FormData[K]) =>
         setForm((prev) => ({ ...prev, [key]: value }));
 
-    const onText = (e: ChangeEvent<HTMLInputElement>) =>
-        set(e.target.id as keyof FormData, e.target.value as never);
-
-    const isStudent = form.participantStatus === 'Student';
-    const isProfessional = form.participantStatus === 'Professional';
-    const isTelkomStudent = isStudent && form.university === 'Telkom University';
-    const isOtherUniversity = isStudent && form.university === 'Others';
+    const onText = (
+        e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
+    ) => set(e.target.id as keyof FormData, e.target.value as never);
 
     const validateIdentity = () => {
-        if (!form.fullName.trim() || form.fullName.trim().length < 3)
-            return 'Full name is required.';
         if (!/^\S+@\S+\.\S+$/.test(form.email.trim()))
             return 'Enter a valid email.';
-        if (!/^08\d{8,13}$/.test(form.phone.trim()))
-            return 'Phone must start with 08.';
+        if (!form.fullName.trim() || form.fullName.trim().length < 3)
+            return 'Full name is required.';
         if (!form.nickname.trim()) return 'Nickname is required.';
+        if (!/^\+?\d{9,15}$/.test(form.phone.trim()))
+            return 'Enter a valid WhatsApp number.';
         if (!form.domisili.trim()) return 'Please fill your domicile.';
         if (!form.participantStatus) return 'Please select your status.';
-        if (isStudent && !form.studentId.trim())
-            return 'Student ID is required.';
-        if (isStudent && !form.university)
-            return 'Please select your university.';
-        if (isOtherUniversity && !form.universityOther.trim())
-            return 'Please specify your university.';
-        if (isTelkomStudent && !form.faculty)
-            return 'Please select your faculty.';
-        if (
-            isTelkomStudent &&
-            form.faculty === 'Others' &&
-            !form.facultyOther.trim()
-        )
-            return 'Please specify your faculty.';
-        if (!isStudent && !form.institution.trim())
-            return 'Please fill your institution/organization.';
-        if (!isProfessional && !form.major.trim())
+        if (!form.studentId.trim())
+            return 'Fill your Student ID (NIM), or "-" if not applicable.';
+        if (!form.faculty) return 'Please select your faculty.';
+        if (!form.major.trim())
             return 'Fill Major/Study Programme, or "-" if not applicable.';
         return '';
     };
@@ -209,10 +239,16 @@ function TicketingFlow() {
         if (!form.tedFamiliarity)
             return 'Please answer how familiar you are with TED/TEDx.';
         if (form.topics.length === 0) return 'Pick at least one topic.';
-        if (!form.musicLifestyle) return 'Please answer the music question.';
-        if (!form.environmentShapes)
+        if (form.topics.includes('Others') && !form.topicsOther.trim())
+            return 'Please specify the topic you meant.';
+        if (!form.musicLifestyle.trim())
+            return 'Please answer the music question.';
+        if (!form.environmentShapes.trim())
             return 'Please answer the psychology question.';
-        if (!form.artsExpression) return 'Please answer the arts question.';
+        if (!form.artsExpression.trim())
+            return 'Please answer the arts question.';
+        if (!form.eventTakeaway.trim())
+            return 'Please answer the takeaway question.';
         if (form.eventAspect.length === 0) return 'Pick at least one aspect.';
         if (
             form.eventAspect.includes('Others') &&
@@ -245,16 +281,13 @@ function TicketingFlow() {
         setError('');
 
         if (step === 'identity') setStep('persona');
-        else if (step === 'persona') setStep('consent');
-        else if (step === 'consent') submitCheckout();
+        else if (step === 'persona') submitCheckout();
+        else if (step === 'consent') submitConsent();
     };
 
     const submitCheckout = async () => {
         const payload = {
             ...form,
-            university: isOtherUniversity
-                ? form.universityOther
-                : form.university,
             tier,
             price,
         };
@@ -275,11 +308,38 @@ function TicketingFlow() {
         setStep('payment');
     };
 
+    const submitConsent = async () => {
+        if (!orderId) {
+            setError('Something went wrong, please try again.');
+            return;
+        }
+
+        const res = await fetch('/api/checkout', {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                orderId,
+                consentAccurate: form.consentAccurate,
+                consentDataProcessing: form.consentDataProcessing,
+                consentUpdates: form.consentUpdates,
+            }),
+        });
+
+        if (!res.ok) {
+            setError('Something went wrong, please try again.');
+            return;
+        }
+
+        setStep('success');
+    };
+
     if (step === 'payment' && orderId) {
         return (
             <PaymentPage
                 orderId={orderId}
-                onConfirm={() => setStep('success')}
+                tier={tier}
+                price={price}
+                onConfirm={() => setStep('consent')}
             />
         );
     }
@@ -324,114 +384,60 @@ function TicketingFlow() {
                         </p>
                     </div>
 
-                    <div className='mb-6 flex gap-2'>
-                        {['Identity', 'About You', 'Consent'].map(
-                            (label, i) => (
-                                <div
-                                    key={label}
-                                    className={`flex-1 rounded-full py-2 text-center font-raleway text-xs uppercase tracking-wide ${
-                                        i <= stepIndex
-                                            ? 'bg-[#C58A1C] text-black'
-                                            : 'bg-white/10 text-white/50'
-                                    }`}
-                                >
-                                    {label}
-                                </div>
-                            ),
-                        )}
-                    </div>
+                    <StepProgress activeIndex={stepIndex} />
 
                     <form onSubmit={next}>
                         <div className='rounded-[38px] border border-white/15 bg-black/25 px-8 py-8 pb-10 shadow-[0_30px_90px_rgba(0,0,0,0.45)] backdrop-blur-3xl space-y-6'>
                             {step === 'identity' && (
                                 <>
                                     <h2 className='text-center font-title text-3xl uppercase'>
-                                        Personal Data
+                                        Identities
                                     </h2>
 
-                                    <div>
-                                        <label
-                                            htmlFor='fullName'
-                                            className='mb-2 block font-title text-sm uppercase'
-                                        >
-                                            Full Name
-                                        </label>
-                                        <input
-                                            id='fullName'
-                                            className={inputClass()}
-                                            value={form.fullName}
-                                            onChange={onText}
-                                            placeholder='Type your full name'
-                                        />
-                                    </div>
+                                    <Field
+                                        id='email'
+                                        label='Email'
+                                        subHeader='We recommend to use your personal Gmail Account to avoid technical problems'
+                                        value={form.email}
+                                        onChange={onText}
+                                        placeholder='e.g., johndoe@gmail.com'
+                                    />
 
-                                    <div>
-                                        <label
-                                            htmlFor='nickname'
-                                            className='mb-2 block font-title text-sm uppercase'
-                                        >
-                                            What should we call you?
-                                        </label>
-                                        <input
-                                            id='nickname'
-                                            className={inputClass()}
-                                            value={form.nickname}
-                                            onChange={onText}
-                                            placeholder='Nickname'
-                                        />
-                                    </div>
+                                    <Field
+                                        id='fullName'
+                                        label='Full Name'
+                                        value={form.fullName}
+                                        onChange={onText}
+                                        placeholder='e.g., John Doe'
+                                    />
 
-                                    <div>
-                                        <label
-                                            htmlFor='email'
-                                            className='mb-2 block font-title text-sm uppercase'
-                                        >
-                                            Email
-                                        </label>
-                                        <input
-                                            id='email'
-                                            className={inputClass()}
-                                            value={form.email}
-                                            onChange={onText}
-                                            placeholder='name@gmail.com'
-                                        />
-                                    </div>
+                                    <Field
+                                        id='nickname'
+                                        label='What should we call you? (Nickname)'
+                                        value={form.nickname}
+                                        onChange={onText}
+                                        placeholder='e.g., John'
+                                    />
 
-                                    <div>
-                                        <label
-                                            htmlFor='phone'
-                                            className='mb-2 block font-title text-sm uppercase'
-                                        >
-                                            WhatsApp Number
-                                        </label>
-                                        <input
-                                            id='phone'
-                                            className={inputClass()}
-                                            value={form.phone}
-                                            onChange={onText}
-                                            placeholder='08xxxxxxxxxx'
-                                        />
-                                    </div>
+                                    <Field
+                                        id='phone'
+                                        label='Whatsapp Number'
+                                        value={form.phone}
+                                        onChange={onText}
+                                        placeholder='e.g., +6280123456'
+                                    />
 
-                                    <div>
-                                        <label
-                                            htmlFor='domisili'
-                                            className='mb-2 block font-title text-sm uppercase'
-                                        >
-                                            Domisili
-                                        </label>
-                                        <input
-                                            id='domisili'
-                                            className={inputClass()}
-                                            value={form.domisili}
-                                            onChange={onText}
-                                            placeholder='e.g. Bandung'
-                                        />
-                                    </div>
+                                    <Field
+                                        id='domisili'
+                                        label='Domicilies'
+                                        value={form.domisili}
+                                        onChange={onText}
+                                        placeholder='e.g., Bandung'
+                                    />
 
                                     <div>
                                         <p className='mb-2 font-title text-sm uppercase'>
-                                            Current Status
+                                            What is your current status?
                                         </p>
                                         <div className='flex flex-wrap gap-3'>
                                             {[
@@ -457,164 +463,94 @@ function TicketingFlow() {
                                         </div>
                                     </div>
 
-                                    {isStudent ? (
-                                        <>
-                                            <div>
-                                                <label
-                                                    htmlFor='studentId'
-                                                    className='mb-2 block font-title text-sm uppercase'
-                                                >
-                                                    Student ID (NIM)
-                                                </label>
-                                                <input
-                                                    id='studentId'
-                                                    className={inputClass()}
-                                                    value={form.studentId}
-                                                    onChange={onText}
-                                                    placeholder='NIM'
-                                                />
-                                            </div>
-                                            <div>
-                                                <p className='mb-2 font-title text-sm uppercase'>
-                                                    University
-                                                </p>
-                                                <div className='flex flex-wrap gap-2'>
-                                                    {universityOptions.map(
-                                                        (u) => (
-                                                            <Chip
-                                                                key={u}
-                                                                active={
-                                                                    form.university ===
-                                                                    u
-                                                                }
-                                                                label={u}
-                                                                onClick={() => {
-                                                                    set(
-                                                                        'university',
-                                                                        u,
-                                                                    );
-                                                                    set(
-                                                                        'faculty',
-                                                                        '',
-                                                                    );
-                                                                    set(
-                                                                        'facultyOther',
-                                                                        '',
-                                                                    );
-                                                                    set(
-                                                                        'universityOther',
-                                                                        '',
-                                                                    );
-                                                                }}
-                                                            />
-                                                        ),
-                                                    )}
-                                                </div>
-                                                {isOtherUniversity && (
-                                                    <input
-                                                        id='universityOther'
-                                                        className={`${inputClass()} mt-3`}
-                                                        value={
-                                                            form.universityOther
-                                                        }
-                                                        onChange={onText}
-                                                        placeholder='Please specify your university'
-                                                    />
-                                                )}
-                                            </div>
-                                            {isTelkomStudent && (
-                                                <div>
-                                                    <p className='mb-2 font-title text-sm uppercase'>
-                                                        Faculty
-                                                    </p>
-                                                    <div className='flex flex-wrap gap-2'>
-                                                        {facultyOptions.map(
-                                                            (f) => (
-                                                                <Chip
-                                                                    key={f}
-                                                                    active={
-                                                                        form.faculty ===
-                                                                        f
-                                                                    }
-                                                                    label={f}
-                                                                    onClick={() =>
-                                                                        set(
-                                                                            'faculty',
-                                                                            f,
-                                                                        )
-                                                                    }
-                                                                />
-                                                            ),
-                                                        )}
-                                                    </div>
-                                                    {form.faculty ===
-                                                        'Others' && (
-                                                        <input
-                                                            id='facultyOther'
-                                                            className={`${inputClass()} mt-3`}
-                                                            value={
-                                                                form.facultyOther
-                                                            }
-                                                            onChange={onText}
-                                                            placeholder='Please specify your faculty'
-                                                        />
-                                                    )}
-                                                </div>
-                                            )}
-                                        </>
-                                    ) : (
-                                        <div>
-                                            <label
-                                                htmlFor='institution'
-                                                className='mb-2 block font-title text-sm uppercase'
-                                            >
-                                                Institution / Organization
-                                            </label>
-                                            <input
-                                                id='institution'
-                                                className={inputClass()}
-                                                value={form.institution}
-                                                onChange={onText}
-                                                placeholder='e.g. Telkom Indonesia'
-                                            />
-                                        </div>
-                                    )}
+                                    <Field
+                                        id='studentId'
+                                        label='Student ID (NIM)'
+                                        subHeader='If you are not from Telkom University or not a student, please fill "-"'
+                                        value={form.studentId}
+                                        onChange={onText}
+                                    />
 
-                                    {!isProfessional && (
-                                        <div>
-                                            <label
-                                                htmlFor='major'
-                                                className='mb-2 block font-title text-sm uppercase'
-                                            >
-                                                Major / Study Programme
-                                            </label>
-                                            <input
-                                                id='major'
-                                                className={inputClass()}
-                                                value={form.major}
-                                                onChange={onText}
-                                                placeholder='Fill "-" if not applicable'
-                                            />
-                                        </div>
-                                    )}
+                                    <div>
+                                        <label
+                                            htmlFor='faculty'
+                                            className='mb-2 block font-title text-sm uppercase'
+                                        >
+                                            Faculty
+                                        </label>
+                                        <SubHeader>
+                                            If you are not from Telkom
+                                            University or not a student,
+                                            please fill &quot;Others&quot;
+                                        </SubHeader>
+                                        <select
+                                            id='faculty'
+                                            value={form.faculty}
+                                            onChange={onText}
+                                            className={`${inputClass()} appearance-none`}
+                                        >
+                                            <option value='' disabled>
+                                                Select your faculty
+                                            </option>
+                                            {facultyOptions.map((f) => (
+                                                <option key={f} value={f}>
+                                                    {f}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+
+                                    <Field
+                                        id='institution'
+                                        label='Others'
+                                        subHeader="Fill your institution/organization if you're not from Telkom University Student"
+                                        value={form.institution}
+                                        onChange={onText}
+                                        placeholder='e.g., Columbia University, Telkom Indonesia, HIMA Antropologi'
+                                    />
+
+                                    <Field
+                                        id='major'
+                                        label='Major/Study Programme'
+                                        subHeader='If you are not a student, please fill with "-"'
+                                        value={form.major}
+                                        onChange={onText}
+                                    />
+
+                                    <Field
+                                        id='instagram'
+                                        label='Could you drop your Instagram Profile Link?'
+                                        value={form.instagram}
+                                        onChange={onText}
+                                        placeholder='e.g., https://www.instagram.com/tedxtelkomuniversity'
+                                    />
+
+                                    <Field
+                                        id='linkedin'
+                                        label='Could you drop your LinkedIn Account Link?'
+                                        value={form.linkedin}
+                                        onChange={onText}
+                                        placeholder='e.g., https://www.likedin.com/company/tedxtelkom-university/'
+                                    />
                                 </>
                             )}
 
                             {step === 'persona' && (
                                 <>
                                     <h2 className='text-center font-title text-3xl uppercase'>
-                                        Let Us Know You Better 🎶
+                                        Let us know you better! 🎶✨
                                     </h2>
 
                                     <div>
                                         <p className='mb-2 font-title text-sm uppercase'>
-                                            How familiar are you with TED/TEDx?
+                                            How familiar are you with
+                                            TED/TEDx?
                                         </p>
                                         <div className='flex flex-col gap-2'>
                                             {[
                                                 "I'm completely new to it",
-                                                "I've heard of it / watched a few talks before",
-                                                "I know the platform well and I'm a big fan",
+                                                "I've heard of it/watched a few talks before",
+                                                "I know the platform well/watch them regularly and a big fan of it",
                                             ].map((o) => (
                                                 <Chip
                                                     key={o}
@@ -633,7 +569,8 @@ function TicketingFlow() {
 
                                     <div>
                                         <p className='mb-2 font-title text-sm uppercase'>
-                                            What topics interest you most?
+                                            What kind of topics piqued your
+                                            interest the most?
                                         </p>
                                         <div className='flex flex-wrap gap-2'>
                                             {topicOptions.map((t) => (
@@ -655,52 +592,103 @@ function TicketingFlow() {
                                                 />
                                             ))}
                                         </div>
+                                        {form.topics.includes('Others') && (
+                                            <input
+                                                id='topicsOther'
+                                                className={`${inputClass()} mt-3`}
+                                                value={form.topicsOther}
+                                                onChange={onText}
+                                                placeholder='Please specify'
+                                            />
+                                        )}
                                     </div>
 
                                     <div>
-                                        <p className='mb-2 font-title text-sm uppercase'>
-                                            Is music a big part of your daily
-                                            life?
-                                        </p>
-                                        <YesNo
+                                        <label
+                                            htmlFor='musicLifestyle'
+                                            className='mb-2 block font-title text-sm uppercase'
+                                        >
+                                            On a scale of &apos;I would only
+                                            listen to music twice a day&apos;
+                                            to &apos;Music is my whole
+                                            personality&apos;. Where do you
+                                            fall?
+                                        </label>
+                                        <SubHeader>
+                                            Feel free to mention your favorite
+                                            genre of music! 🎶
+                                        </SubHeader>
+                                        <textarea
+                                            id='musicLifestyle'
+                                            className={textareaClass()}
                                             value={form.musicLifestyle}
-                                            onChange={(v) =>
-                                                set('musicLifestyle', v)
-                                            }
+                                            onChange={onText}
                                         />
                                     </div>
 
                                     <div>
-                                        <p className='mb-2 font-title text-sm uppercase'>
-                                            Do you believe your environment
-                                            shapes who you are more than your
-                                            own choices?
-                                        </p>
-                                        <YesNo
+                                        <label
+                                            htmlFor='environmentShapes'
+                                            className='mb-2 block font-title text-sm uppercase'
+                                        >
+                                            Speaking of psychology, do you
+                                            believe who you are today is
+                                            because of your own choices, or
+                                            is it shaped by the people and
+                                            environment around you?
+                                        </label>
+                                        <textarea
+                                            id='environmentShapes'
+                                            className={textareaClass()}
                                             value={form.environmentShapes}
-                                            onChange={(v) =>
-                                                set('environmentShapes', v)
-                                            }
+                                            onChange={onText}
                                         />
                                     </div>
 
                                     <div>
-                                        <p className='mb-2 font-title text-sm uppercase'>
-                                            Do you believe emotions can truly be
-                                            expressed through arts & music?
-                                        </p>
-                                        <YesNo
+                                        <label
+                                            htmlFor='artsExpression'
+                                            className='mb-2 block font-title text-sm uppercase'
+                                        >
+                                            When it comes to arts, music &
+                                            design, do you believe your
+                                            emotions can truly be expressed
+                                            through them?
+                                        </label>
+                                        <textarea
+                                            id='artsExpression'
+                                            className={textareaClass()}
                                             value={form.artsExpression}
-                                            onChange={(v) =>
-                                                set('artsExpression', v)
-                                            }
+                                            onChange={onText}
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label
+                                            htmlFor='eventTakeaway'
+                                            className='mb-2 block font-title text-sm uppercase'
+                                        >
+                                            What is the single biggest
+                                            takeaway or feeling you hope to
+                                            bring home after experiencing the
+                                            TEDxTelkomUniversity Main Event
+                                            this year?
+                                        </label>
+                                        <textarea
+                                            id='eventTakeaway'
+                                            className={textareaClass()}
+                                            value={form.eventTakeaway}
+                                            onChange={onText}
                                         />
                                     </div>
 
                                     <div>
                                         <p className='mb-2 font-title text-sm uppercase'>
-                                            Which aspect are you looking forward
-                                            to the most?
+                                            When attending the
+                                            TEDxTelkomUniversity Main Event,
+                                            which aspect of the experience
+                                            are you looking forward to the
+                                            most?
                                         </p>
                                         <div className='flex flex-wrap gap-2'>
                                             {aspectOptions.map((a) => (
@@ -745,8 +733,10 @@ function TicketingFlow() {
 
                                     <div>
                                         <p className='mb-2 font-raleway text-white/90'>
-                                            I confirm all information submitted
-                                            is true and accurate.
+                                            I hereby confirm that all
+                                            information submitted by me has
+                                            been double-checked and is true
+                                            and accurate.
                                         </p>
                                         <YesNo
                                             value={form.consentAccurate}
@@ -759,7 +749,8 @@ function TicketingFlow() {
                                     <div>
                                         <p className='mb-2 font-raleway text-white/90'>
                                             Do you consent to your data being
-                                            processed by TEDxTelkom University?
+                                            processed by TEDx Telkom
+                                            University?
                                         </p>
                                         <YesNo
                                             value={form.consentDataProcessing}
@@ -812,9 +803,11 @@ function TicketingFlow() {
                                 type='submit'
                                 className='h-[52px] rounded-full bg-[#980B00] px-8 font-title text-sm uppercase text-white transition hover:brightness-110'
                             >
-                                {step === 'consent'
+                                {step === 'persona'
                                     ? 'Continue to Payment'
-                                    : 'Next'}
+                                    : step === 'consent'
+                                      ? 'Submit'
+                                      : 'Next'}
                             </button>
                         </div>
                     </form>

@@ -15,14 +15,17 @@ type AudienceData = {
     participantStatus: string;
     studentId: string | null;
     faculty: string | null;
-    facultyOther: string | null;
     institution: string | null;
     major: string | null;
+    instagram: string | null;
+    linkedin: string | null;
     tedFamiliarity: string;
     topics: string[];
-    musicLifestyle: boolean;
-    environmentShapes: boolean;
-    artsExpression: boolean;
+    topicsOther: string | null;
+    musicLifestyle: string;
+    environmentShapes: string;
+    artsExpression: string;
+    eventTakeaway: string;
     eventAspect: string[];
     eventAspectOther: string | null;
     tier: string;
@@ -116,10 +119,6 @@ function DetailModal({
                     />
                     <DetailRow label='Faculty' value={item.faculty ?? ''} />
                     <DetailRow
-                        label='Faculty (Others)'
-                        value={item.facultyOther ?? ''}
-                    />
-                    <DetailRow
                         label='Institution/Organization'
                         value={item.institution ?? ''}
                     />
@@ -127,6 +126,11 @@ function DetailModal({
                         label='Major/Study Programme'
                         value={item.major ?? ''}
                     />
+                    <DetailRow
+                        label='Instagram'
+                        value={item.instagram ?? ''}
+                    />
+                    <DetailRow label='LinkedIn' value={item.linkedin ?? ''} />
                     <DetailRow
                         label='TED/TEDx Familiarity'
                         value={item.tedFamiliarity}
@@ -139,16 +143,24 @@ function DetailModal({
                     value={item.topics.join(', ')}
                 />
                 <DetailRow
-                    label='Music is a big part of daily life'
-                    value={item.musicLifestyle ? 'Yes' : 'No'}
+                    label='Topics (Others)'
+                    value={item.topicsOther ?? ''}
+                />
+                <DetailRow
+                    label='Music preference / lifestyle'
+                    value={item.musicLifestyle}
                 />
                 <DetailRow
                     label='Environment shapes who you are'
-                    value={item.environmentShapes ? 'Yes' : 'No'}
+                    value={item.environmentShapes}
                 />
                 <DetailRow
                     label='Emotions expressed through arts'
-                    value={item.artsExpression ? 'Yes' : 'No'}
+                    value={item.artsExpression}
+                />
+                <DetailRow
+                    label='Biggest takeaway'
+                    value={item.eventTakeaway}
                 />
                 <DetailRow
                     label='Aspect looking forward to'

@@ -5,9 +5,13 @@ import Navbar from '@/components/layout/Navbar';
 import Image from 'next/image';
 import { Upload } from 'lucide-react';
 import { useEffect, useState, ChangeEvent, DragEvent } from 'react';
+import StepProgress from './StepProgress';
+import { ticketsData } from '@/components/sections/event/TicketSelection';
 
 type Props = {
     orderId: string;
+    tier: string;
+    price: string;
     onConfirm?: () => void;
 };
 
@@ -22,8 +26,9 @@ const formatTime = (seconds: number) => {
         .padStart(2, '0')}`;
 };
 
-export default function PaymentPage({ orderId, onConfirm }: Props) {
+export default function PaymentPage({ orderId, tier, price, onConfirm }: Props) {
     const [timeLeft, setTimeLeft] = useState(7 * 60);
+    const selectedTicket = ticketsData.find((t) => t.tier === tier);
 
     // State untuk data input
     const [paymentName, setPaymentName] = useState<string>('');
@@ -198,6 +203,8 @@ export default function PaymentPage({ orderId, onConfirm }: Props) {
                         </div>
                     </div>
 
+                    <StepProgress activeIndex={2} />
+
                     {/* PAYMENT CARD */}
                     <div
                         className='
@@ -221,10 +228,47 @@ export default function PaymentPage({ orderId, onConfirm }: Props) {
                 uppercase
               '
                         >
-                            Payment
+                            Ticketing Process
                         </h2>
 
                         <div className='space-y-10'>
+                            {/* TICKET PACKAGE */}
+                            <div>
+                                <label className='mb-4 block font-title text-[1.4rem] uppercase'>
+                                    Ticket Package 🎟️
+                                </label>
+                                <div className='rounded-[20px] border border-[#C58A1C] bg-[#C58A1C]/10 px-6 py-5'>
+                                    <div className='flex items-center justify-between gap-4'>
+                                        <div>
+                                            <p className='font-title text-lg uppercase text-white'>
+                                                {tier}
+                                            </p>
+                                            <p className='mt-1 font-raleway text-2xl text-amber-300'>
+                                                {price}
+                                            </p>
+                                        </div>
+                                        <span className='shrink-0 rounded-full bg-[#C58A1C] px-4 py-1 font-raleway text-xs font-bold uppercase tracking-wide text-black'>
+                                            Selected
+                                        </span>
+                                    </div>
+                                    {selectedTicket && (
+                                        <ul className='mt-4 space-y-2 text-left font-raleway text-sm leading-6 text-white/80'>
+                                            {selectedTicket.features.map(
+                                                (feature) => (
+                                                    <li
+                                                        key={feature}
+                                                        className='flex gap-3'
+                                                    >
+                                                        <span className='mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-300' />
+                                                        <span>{feature}</span>
+                                                    </li>
+                                                ),
+                                            )}
+                                        </ul>
+                                    )}
+                                </div>
+                            </div>
+
                             {/* QRIS */}
                             <div className='flex justify-center'>
                                 <div className='relative h-[420px] w-[420px] overflow-hidden rounded-[24px] bg-white'>
@@ -241,15 +285,19 @@ export default function PaymentPage({ orderId, onConfirm }: Props) {
                             <div>
                                 <label
                                     className='
-                    mb-4
+                    mb-2
                     block
                     font-title
                     text-[1.4rem]
                     uppercase
                   '
                                 >
-                                    Payment Evidence
+                                    Payment Proof
                                 </label>
+                                <p className='mb-4 font-raleway text-sm text-white/50'>
+                                    Kindly insert your proof of payment below
+                                    😊
+                                </p>
 
                                 <label
                                     onDragOver={handleDragOver}

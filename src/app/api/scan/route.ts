@@ -26,9 +26,6 @@ export async function GET() {
                     tedFamiliarity: true,
                     topics: true,
                     eventAspect: true,
-                    musicLifestyle: true,
-                    environmentShapes: true,
-                    artsExpression: true,
                 },
             }),
         ]);
@@ -48,13 +45,6 @@ export async function GET() {
         tickets.map((t) => t.tedFamiliarity).filter(Boolean),
     );
 
-    const yesNo = (
-        key: 'musicLifestyle' | 'environmentShapes' | 'artsExpression',
-    ) => ({
-        yes: tickets.filter((t) => t[key]).length,
-        no: tickets.filter((t) => !t[key]).length,
-    });
-
     return NextResponse.json({
         total,
         confirmed,
@@ -68,8 +58,5 @@ export async function GET() {
         tedFamiliarity,
         topics,
         eventAspect,
-        musicLifestyle: yesNo('musicLifestyle'),
-        environmentShapes: yesNo('environmentShapes'),
-        artsExpression: yesNo('artsExpression'),
     });
 }

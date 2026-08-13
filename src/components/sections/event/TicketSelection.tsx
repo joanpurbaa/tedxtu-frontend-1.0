@@ -11,7 +11,7 @@ export interface TicketTier {
     features: string[];
 }
 
-const ticketsData: TicketTier[] = [
+export const ticketsData: TicketTier[] = [
     {
         tier: 'PRE-SALE 1',
         price: 'RP 75K',

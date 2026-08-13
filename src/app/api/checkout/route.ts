@@ -17,20 +17,23 @@ export async function POST(req: NextRequest) {
         nickname: body.nickname,
         email: body.email,
         phone: body.phone,
+        domisili: body.domisili || '',
         participantStatus: body.participantStatus,
         studentId: body.studentId || null,
         faculty: body.faculty || null,
         institution: body.institution || null,
         major: body.major || null,
+        instagram: body.instagram || null,
+        linkedin: body.linkedin || null,
         tedFamiliarity: body.tedFamiliarity,
         topics: body.topics ?? [],
-        musicLifestyle: body.musicLifestyle === 'yes',
-        environmentShapes: body.environmentShapes === 'yes',
-        artsExpression: body.artsExpression === 'yes',
+        topicsOther: body.topicsOther || null,
+        musicLifestyle: body.musicLifestyle ?? '',
+        environmentShapes: body.environmentShapes ?? '',
+        artsExpression: body.artsExpression ?? '',
+        eventTakeaway: body.eventTakeaway ?? '',
         eventAspect: body.eventAspect ?? [],
-        consentAccurate: body.consentAccurate === 'yes',
-        consentDataProcessing: body.consentDataProcessing === 'yes',
-        consentUpdates: body.consentUpdates === 'yes',
+        eventAspectOther: body.eventAspectOther || null,
         tier: body.tier ?? 'REGULAR',
         price: body.price ?? '',
     };
@@ -50,5 +53,30 @@ export async function POST(req: NextRequest) {
                 );
             }
         }
+    }
+}
+
+export async function PATCH(req: NextRequest) {
+    const body = await req.json();
+
+    if (!body.orderId) {
+        return NextResponse.json({ error: 'Missing orderId' }, { status: 400 });
+    }
+
+    try {
+        await prisma.ticket.update({
+            where: { orderId: body.orderId },
+            data: {
+                consentAccurate: body.consentAccurate === 'yes',
+                consentDataProcessing: body.consentDataProcessing === 'yes',
+                consentUpdates: body.consentUpdates === 'yes',
+            },
+        });
+        return NextResponse.json({ ok: true });
+    } catch {
+        return NextResponse.json(
+            { error: 'Something went wrong, please try again' },
+            { status: 500 },
+        );
     }
 }
