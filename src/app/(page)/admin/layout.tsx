@@ -12,7 +12,11 @@ const inter = Inter({
 });
 
 const nav = [
-    { href: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    {
+        href: '/admin/dashboard',
+        label: 'Dashboard',
+        icon: LayoutDashboard,
+    },
     { href: '/admin/audience', label: 'Audience Data', icon: Users },
     { href: '/admin/tiket', label: 'Tickets', icon: Ticket },
     { href: '/admin/scan', label: 'Scan', icon: QrCode },

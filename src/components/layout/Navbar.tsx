@@ -75,7 +75,7 @@ export default function Navbar({
                 className={cn(
                     'flex h-20 w-full justify-end items-center px-4 transition-all duration-300 md:px-14',
                     isScrolled
-                        ? 'lg:bg-black/95 lg:backdrop-blur-md lg:shadow-lg'
+                        ? 'lg:bg-transparent lg:backdrop-blur-md lg:shadow-lg'
                         : 'lg:bg-black/70 lg:backdrop-blur-sm',
                 )}
             >
@@ -172,7 +172,7 @@ export default function Navbar({
                             href={href}
                             prefetch={false}
                             className={cn(
-                                'group inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 text-lg font-westmeath text-white transition-colors hover:text-red-500 focus:text-red-500 focus:outline-none border-b-2',
+                                'group inline-flex h-9 w-max items-center justify-center px-4 py-2 text-lg font-westmeath text-white transition-colors hover:text-red-500 focus:text-red-500 focus:outline-none border-b-4',
                                 isActive(href)
                                     ? 'border-[#8A0E04]'
                                     : 'border-transparent',

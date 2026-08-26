@@ -49,6 +49,7 @@ export default function TiketPage() {
     const [preview, setPreview] = useState<string | null>(null);
     const [search, setSearch] = useState('');
     const [filterStatus, setFilterStatus] = useState<string>('all');
+    const [actingId, setActingId] = useState<string | null>(null);
 
     const load = async () => {
         const res = await fetch('/api/orders');
@@ -61,12 +62,14 @@ export default function TiketPage() {
     }, []);
 
     const act = async (id: string, action: 'confirm' | 'reject') => {
+        setActingId(id);
         await fetch(`/api/orders/${id}`, {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ action }),
         });
-        load();
+        await load();
+        setActingId(null);
     };
 
     const filteredTickets = tickets.filter((t) => {
@@ -225,22 +228,40 @@ export default function TiketPage() {
                                         {t.status === 'PENDING' && (
                                             <div className='flex gap-1'>
                                                 <button
+                                                    disabled={actingId === t.id}
                                                     onClick={() =>
                                                         act(t.id, 'confirm')
                                                     }
-                                                    className='p-1.5 bg-green-600/20 text-green-400 rounded hover:bg-green-600/30 transition-colors border border-green-600/30'
+                                                    className={`p-1.5 rounded transition-colors border ${
+                                                        actingId === t.id
+                                                            ? 'bg-green-600/10 text-green-400/50 border-green-600/20 cursor-wait'
+                                                            : 'bg-green-600/20 text-green-400 hover:bg-green-600/30 border-green-600/30'
+                                                    }`}
                                                     title='Confirm'
                                                 >
-                                                    <Check className='h-4 w-4' />
+                                                    {actingId === t.id ? (
+                                                        <div className='h-4 w-4 animate-spin rounded-full border-2 border-green-400 border-t-transparent' />
+                                                    ) : (
+                                                        <Check className='h-4 w-4' />
+                                                    )}
                                                 </button>
                                                 <button
+                                                    disabled={actingId === t.id}
                                                     onClick={() =>
                                                         act(t.id, 'reject')
                                                     }
-                                                    className='p-1.5 bg-red-600/20 text-red-400 rounded hover:bg-red-600/30 transition-colors border border-red-600/30'
+                                                    className={`p-1.5 rounded transition-colors border ${
+                                                        actingId === t.id
+                                                            ? 'bg-red-600/10 text-red-400/50 border-red-600/20 cursor-wait'
+                                                            : 'bg-red-600/20 text-red-400 hover:bg-red-600/30 border-red-600/30'
+                                                    }`}
                                                     title='Reject'
                                                 >
-                                                    <X className='h-4 w-4' />
+                                                    {actingId === t.id ? (
+                                                        <div className='h-4 w-4 animate-spin rounded-full border-2 border-red-400 border-t-transparent' />
+                                                    ) : (
+                                                        <X className='h-4 w-4' />
+                                                    )}
                                                 </button>
                                             </div>
                                         )}

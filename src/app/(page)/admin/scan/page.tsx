@@ -13,6 +13,7 @@ import {
 
 export default function ScanPage() {
     const scannerRef = useRef<Html5Qrcode | null>(null);
+    const processingRef = useRef(false);
     const [result, setResult] = useState<{
         status: string;
         message: string;
@@ -33,7 +34,12 @@ export default function ScanPage() {
                     aspectRatio: 1,
                 },
                 async (decodedText) => {
+                    if (processingRef.current) return;
+                    processingRef.current = true;
+
+                    scanner.pause(true);
                     setScanning(false);
+
                     try {
                         const res = await fetch('/api/scan', {
                             method: 'POST',
@@ -64,6 +70,7 @@ export default function ScanPage() {
                     setTimeout(() => {
                         setResult(null);
                         setScanning(true);
+                        processingRef.current = false;
                         scanner.resume();
                     }, 3000);
                 },

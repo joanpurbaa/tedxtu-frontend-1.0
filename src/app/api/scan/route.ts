@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
 function tally(list: string[]) {
@@ -7,6 +7,52 @@ function tally(list: string[]) {
     return Object.entries(map)
         .map(([label, count]) => ({ label, count }))
         .sort((a, b) => b.count - a.count);
+}
+
+export async function POST(req: NextRequest) {
+    const { token } = await req.json();
+
+    if (!token) {
+        return NextResponse.json(
+            { status: 'error', message: 'Token is required' },
+            { status: 400 },
+        );
+    }
+
+    const ticket = await prisma.ticket.findUnique({
+        where: { qrToken: token },
+    });
+
+    if (!ticket) {
+        return NextResponse.json({
+            status: 'error',
+            message: 'Invalid ticket',
+        });
+    }
+
+    if (ticket.status !== 'CONFIRMED') {
+        return NextResponse.json({
+            status: 'error',
+            message: `Ticket is ${ticket.status.toLowerCase()}`,
+        });
+    }
+
+    if (ticket.scanned) {
+        return NextResponse.json({
+            status: 'error',
+            message: 'Ticket already scanned',
+        });
+    }
+
+    await prisma.ticket.update({
+        where: { qrToken: token },
+        data: { scanned: true, scannedAt: new Date() },
+    });
+
+    return NextResponse.json({
+        status: 'success',
+        ticket: { fullName: ticket.fullName, orderId: ticket.orderId },
+    });
 }
 
 export async function GET() {

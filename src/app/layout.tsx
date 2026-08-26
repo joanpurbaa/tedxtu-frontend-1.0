@@ -10,6 +10,7 @@ import {
 import { ThemeProvider } from '@/components/theme-provider';
 import localFont from 'next/font/local';
 import './globals.css';
+import { icons } from 'lucide-react';
 
 const westmeath = localFont({
     src: [
@@ -67,6 +68,9 @@ const cinzelNormal = Cinzel({
 export const metadata: Metadata = {
     title: 'TEDxTelkom University',
     description: 'TEDxTelkom University website made with <3',
+    icons: {
+        icon: '/logo-white.svg',
+    },
 };
 
 export default function RootLayout({
@@ -86,9 +90,7 @@ export default function RootLayout({
                     enableSystem
                     disableTransitionOnChange
                 >
-                    <div className=''>
-                        {children}
-                    </div>
+                    <div className=''>{children}</div>
                 </ThemeProvider>
             </body>
         </html>
