@@ -11,43 +11,33 @@ export interface TicketTier {
     features: string[];
 }
 
+const SHARED_FEATURES = [
+    'Entry ticket',
+    'TED Talks experience',
+    'Audience kit',
+    'Freebies (drink and snack)',
+    'Voucher makan 15k',
+];
+
 export const ticketsData: TicketTier[] = [
     {
+        tier: 'EARLY BIRD',
+        price: 'RP 71.900',
+        badgeText: 'Limited',
+        remaining: '60 ticket remaining',
+        features: SHARED_FEATURES,
+    },
+    {
         tier: 'PRE-SALE 1',
-        price: 'RP 75K',
-        // badgeText: 'Save 40%',
-        remaining: '23 ticket remaining',
-        features: [
-            'Main event access',
-            'Welcome kit & program',
-            'Refreshments included',
-            'Certificate of attendance',
-        ],
+        price: 'RP 79.900',
+        remaining: '140 ticket remaining',
+        features: SHARED_FEATURES,
     },
     {
-        tier: 'PRE-SALE 2',
-        price: 'RP 110K',
-        // badgeText: 'Popular',
-        remaining: '23 ticket remaining',
-        features: [
-            'Priority seating (first 5 rows)',
-            'Pre-event speaker meet & greet',
-            'Exclusive souvenir package',
-            'Post-event gala dinner access',
-            'Printed photo with speakers',
-        ],
-    },
-    {
-        tier: 'REGULAR',
-        price: 'RP 150K',
-        remaining: '23 ticket remaining',
-        features: [
-            'All VIP benefits included',
-            'Backstage access pass',
-            'Name in event credits',
-            '2x event tickets included',
-            'Annual sponsor recognition',
-        ],
+        tier: 'NORMAL PRICE',
+        price: 'RP 84.900',
+        remaining: '100 ticket remaining',
+        features: SHARED_FEATURES,
     },
 ];
 

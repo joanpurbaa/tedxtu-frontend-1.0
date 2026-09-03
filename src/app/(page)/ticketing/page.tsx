@@ -345,7 +345,7 @@ function TicketingFlow() {
     }
 
     if (step === 'success') {
-        return <PaymentSuccessPage />;
+        return <PaymentSuccessPage orderId={orderId ?? undefined} tier={tier} />;
     }
 
     const stepIndex = steps.indexOf(step as (typeof steps)[number]);

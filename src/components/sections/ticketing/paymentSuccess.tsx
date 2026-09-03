@@ -5,7 +5,12 @@ import Navbar from '@/components/layout/Navbar';
 import Link from 'next/link';
 import Image from 'next/image';
 
-export default function PaymentSuccessPage() {
+type Props = {
+    orderId?: string;
+    tier?: string;
+};
+
+export default function PaymentSuccessPage({ orderId, tier }: Props) {
     return (
         <>
             <Navbar />
@@ -91,7 +96,7 @@ export default function PaymentSuccessPage() {
                             </div>
 
                             <div className='font-raleway text-lg sm:text-xl font-bold text-white tracking-wide'>
-                                TEDX-70OEZ
+                                {orderId || '-'}
                             </div>
 
                             <div className='font-raleway text-lg sm:text-xl text-white/80'>
@@ -99,7 +104,7 @@ export default function PaymentSuccessPage() {
                             </div>
 
                             <div className='font-raleway text-lg sm:text-xl text-white'>
-                                Presale
+                                {tier || 'Presale'}
                             </div>
 
                             <div className='font-raleway text-lg sm:text-xl text-white/80'>

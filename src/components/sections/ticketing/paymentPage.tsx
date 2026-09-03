@@ -38,6 +38,9 @@ export default function PaymentPage({ orderId, tier, price, onConfirm }: Props) 
     const [fileError, setFileError] = useState<string>('');
     const [nameError, setNameError] = useState<string>('');
 
+    // State untuk indikasi proses upload (mencegah double click)
+    const [uploading, setUploading] = useState<boolean>(false);
+
     // State untuk visual efek drag and drop
     const [isDragging, setIsDragging] = useState<boolean>(false);
 
@@ -104,6 +107,9 @@ export default function PaymentPage({ orderId, tier, price, onConfirm }: Props) 
     };
 
     const handleConfirmPayment = async () => {
+        // Cegah double click: abaikan jika upload sedang berjalan
+        if (uploading) return;
+
         let hasError = false;
 
         if (!selectedFile) {
@@ -122,18 +128,83 @@ export default function PaymentPage({ orderId, tier, price, onConfirm }: Props) 
 
         if (hasError) return;
 
-        const formData = new FormData();
-        formData.append('orderId', orderId);
-        formData.append('paymentName', paymentName);
-        formData.append('file', selectedFile as File);
+        const file = selectedFile;
+        if (!file) return;
 
-        await fetch('/api/payment', { method: 'POST', body: formData });
+        setUploading(true);
 
-        if (onConfirm) {
-            onConfirm();
-            return;
+        try {
+            // 1. Request upload permission (presigned URL) ke Vercel Blob
+            const uploadUrlRes = await fetch('/api/payment/upload-url', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    orderId,
+                    fileName: file.name,
+                    fileType: file.type,
+                    fileSize: file.size,
+                }),
+            });
+
+            const uploadUrlData = await uploadUrlRes.json().catch(() => null);
+
+            if (!uploadUrlRes.ok || !uploadUrlData?.uploadUrl) {
+                setFileError(
+                    uploadUrlData?.error ||
+                        'Gagal meminta izin upload. Silakan coba lagi.',
+                );
+                return;
+            }
+
+            // 2. Upload file langsung ke Vercel Blob
+            const blobRes = await fetch(uploadUrlData.uploadUrl, {
+                method: 'PUT',
+                headers: { 'Content-Type': file.type },
+                body: file,
+            });
+
+            const blobData = await blobRes.json().catch(() => null);
+
+            if (!blobRes.ok || !blobData?.url) {
+                setFileError(
+                    'Gagal mengunggah file ke Vercel Blob. Silakan coba lagi.',
+                );
+                return;
+            }
+
+            // 3. Finalisasi: simpan URL bukti pembayaran
+            const completeRes = await fetch('/api/payment/complete', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    orderId,
+                    proofUrl: blobData.url,
+                    paymentName,
+                }),
+            });
+
+            const completeData = await completeRes.json().catch(() => null);
+
+            if (!completeRes.ok) {
+                setFileError(
+                    completeData?.error ||
+                        'Gagal menyimpan bukti pembayaran. Silakan coba lagi.',
+                );
+                return;
+            }
+
+            if (onConfirm) {
+                onConfirm();
+                return;
+            }
+            alert('Payment confirmed and processing!');
+        } catch {
+            setFileError(
+                'Terjadi kesalahan saat mengunggah. Silakan periksa koneksi dan coba lagi.',
+            );
+        } finally {
+            setUploading(false);
         }
-        alert('Payment confirmed and processing!');
     };
 
     return (
@@ -427,6 +498,7 @@ export default function PaymentPage({ orderId, tier, price, onConfirm }: Props) 
                         <button
                             type='button'
                             onClick={handleConfirmPayment}
+                            disabled={uploading}
                             className='
                 h-[60px]
                 w-[240px]
@@ -439,9 +511,11 @@ export default function PaymentPage({ orderId, tier, price, onConfirm }: Props) 
                 transition
                 hover:brightness-110
                 cursor-pointer
+                disabled:cursor-not-allowed
+                disabled:opacity-60
               '
                         >
-                            Confirm
+                            {uploading ? 'Uploading…' : 'Confirm'}
                         </button>
                     </div>
                 </section>

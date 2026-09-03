@@ -15,17 +15,21 @@ interface Speaker {
 	supportingPhoto1?: string | null;
 	supportingPhoto2?: string | null;
 	supportingPhoto3?: string | null;
+	revealedAt?: string | null;
 }
 
 const LOCKED_NAME = '???';
-const LOCKED_DESCRIPTION = 'Stay tuned for more information.';
 
-// Always render 6 speaker slots. Revealed speakers (from the API, in reveal order)
-// fill the slots from the front; the remaining slots show a placeholder.
-const SLOT_COUNT = 6;
+// When no speaker has been revealed yet, we show a single "secret guest" card
+// using the hidden male silhouette asset, so the section never feels empty.
+const HIDDEN_SILHOUETTE = '/speakers/Asset_Hidden_Speaker_Male.png';
 
 const isImageUrl = (src?: string | null) =>
 	!!src && (src.startsWith('http://') || src.startsWith('https://') || src.startsWith('data:'));
+
+// A single displayable item. Either a real (revealed) speaker, or the special
+// "secret guest" card (only when 0 speakers are revealed).
+type Item = { type: 'unknown' } | { type: 'speaker'; speaker: Speaker };
 
 const Speakers = () => {
 	const [speakers, setSpeakers] = useState<Speaker[]>([]);
@@ -36,8 +40,8 @@ const Speakers = () => {
 		let cancelled = false;
 		fetch('/api/speakers')
 			.then((res) => res.json())
-			.then((data: Speaker[]) => {
-				if (!cancelled) setSpeakers(data);
+			.then((data: { total: number; speakers: Speaker[] }) => {
+				if (!cancelled) setSpeakers(data.speakers ?? []);
 			})
 			.catch(() => {})
 			.finally(() => {
@@ -48,21 +52,35 @@ const Speakers = () => {
 		};
 	}, []);
 
-	// Build the 6 slots: revealed speakers first (in API order), then placeholders.
-	const slotCount = Math.max(SLOT_COUNT, speakers.length);
-	const slots: (Speaker | null)[] = Array.from({ length: slotCount }, (_, i) => speakers[i] ?? null);
+	const revealedCount = speakers.length;
+	// Carousel only appears once more than one speaker has been revealed.
+	const showCarousel = revealedCount > 1;
 
-	// Clamp the index whenever the slot count changes.
+	// Build the list of items to display:
+	//   - 0 revealed  -> a single "secret guest" card.
+	//   - 1 revealed  -> just that speaker (no carousel).
+	//   - 2+ revealed -> the carousel, sized to the number of revealed speakers
+	//                    (2 -> 2 slides, 3 -> 3 slides, ... up to 6). No pad.
+	let items: Item[];
+	if (revealedCount === 0) {
+		items = [{ type: 'unknown' }];
+	} else if (revealedCount === 1) {
+		items = [{ type: 'speaker', speaker: speakers[0] }];
+	} else {
+		items = speakers.map((speaker) => ({ type: 'speaker' as const, speaker }));
+	}
+
+	// Clamp the index whenever the number of items changes.
 	useEffect(() => {
-		setIndex(([prev]) => [slots.length > 0 ? prev % slots.length : 0, 0]);
-	}, [slots.length]);
+		setIndex(([prev]) => [items.length > 0 ? prev % items.length : 0, 0]);
+	}, [items.length]);
 
 	const navigate = (dir: 'prev' | 'next') => {
 		setIndex(([prev]) => {
 			const nextIndex =
 				dir === 'next'
-					? (prev + 1) % slots.length
-					: (prev - 1 + slots.length) % slots.length;
+					? (prev + 1) % items.length
+					: (prev - 1 + items.length) % items.length;
 			return [nextIndex, dir === 'next' ? 1 : -1];
 		});
 	};
@@ -80,23 +98,36 @@ const Speakers = () => {
 		);
 	}
 
-	const raw = slots[index];
-	const isPlaceholder = !raw;
-	const speaker = raw ?? ({} as Speaker);
-	// A speaker is only "revealed" once it has a real image URL (data: or http(s):).
-	// The seeded placeholder value ("placeholder") is NOT a valid image, so those
-	// keep showing the placeholder frame instead of crashing the URL parser.
-	const isRevealed = !isPlaceholder && isImageUrl(speaker.mainPhoto);
-	const mainPhoto = isRevealed ? speaker.mainPhoto ?? '' : '';
-	const displayedName = (isRevealed ? speaker.name : LOCKED_NAME) || LOCKED_NAME;
-	const displayedDescription = isRevealed ? speaker.description : LOCKED_DESCRIPTION;
-	const thumbnails = [
-		speaker.supportingPhoto1,
-		speaker.supportingPhoto2,
-		speaker.supportingPhoto3,
-	].filter((src): src is string => !!src);
-	const hasThumbnails = isRevealed && thumbnails.length > 0;
-	const progress = ((index + 1) / slots.length) * 100;
+	const current = items[index];
+	const isUnknown = current?.type === 'unknown';
+
+	const speaker = current?.type === 'speaker' ? current.speaker : ({} as Speaker);
+
+	// A real photo only exists for revealed speakers that carry a valid image URL.
+	const hasImage = current?.type === 'speaker' && isImageUrl(speaker.mainPhoto);
+	// Main photo: hidden silhouette for the "secret guest", real photo for revealed
+	// speakers.
+	const photoSrc = isUnknown ? HIDDEN_SILHOUETTE : hasImage ? speaker.mainPhoto ?? '' : null;
+
+	// While no speaker is revealed we only show the hidden silhouette photo — no
+	// name, title/topic or description. Once at least one speaker is revealed the
+	// full info block appears.
+	const photoAlt = isUnknown ? 'Hidden speaker' : speaker.name || LOCKED_NAME;
+
+	const displayedName = speaker.name || LOCKED_NAME;
+	const displayedDescription = speaker.description;
+	const displayedTitle = speaker.title;
+
+	const thumbnails = hasImage
+		? [
+				speaker.supportingPhoto1,
+				speaker.supportingPhoto2,
+				speaker.supportingPhoto3,
+		  ].filter((src): src is string => !!src && isImageUrl(src))
+		: [];
+	const hasThumbnails = thumbnails.length > 0;
+
+	const progress = items.length > 0 ? ((index + 1) / items.length) * 100 : 0;
 
 	return (
 		<section className="relative overflow-hidden bg-black py-16">
@@ -140,7 +171,7 @@ const Speakers = () => {
 				</h2>
 
 				<div className="grid gap-12 lg:grid-cols-2 lg:items-center lg:gap-16">
-					<div className="relative mx-auto -mt-8 w-full max-w-md sm:-mt-10">
+					<div className={`relative mx-auto -mt-8 w-full max-w-md sm:-mt-10 ${isUnknown ? 'lg:col-span-2' : ''}`}>
 						<AnimatePresence mode="wait" custom={direction}>
 							<motion.div
 								key={index}
@@ -158,19 +189,19 @@ const Speakers = () => {
 										WebkitMaskImage: 'linear-gradient(to bottom, black 72%, transparent 92%)',
 									}}
 								>
-									{isRevealed ? (
+									{photoSrc ? (
 										<div className="relative aspect-[3/4] w-full overflow-hidden">
-											{mainPhoto.startsWith('data:') ? (
+											{photoSrc.startsWith('data:') ? (
 												// eslint-disable-next-line @next/next/no-img-element
 												<img
-													src={mainPhoto}
-													alt={displayedName}
+													src={photoSrc}
+													alt={photoAlt}
 													className="h-full w-full object-cover"
 												/>
 											) : (
 												<Image
-													src={mainPhoto}
-													alt={displayedName}
+													src={photoSrc}
+													alt={photoAlt}
 													fill
 													sizes="(max-width: 768px) 75vw, 400px"
 													className="object-cover"
@@ -205,104 +236,104 @@ const Speakers = () => {
 					</div>
 
 					<div>
-						<div className="relative overflow-hidden">
-							<AnimatePresence mode="wait" custom={direction}>
-								<motion.div
-									key={index}
-									custom={direction}
-									initial={{ x: direction >= 0 ? 60 : -60, opacity: 0 }}
-									animate={{ x: 0, opacity: 1 }}
-									exit={{ x: direction >= 0 ? -60 : 60, opacity: 0 }}
-									transition={{ duration: 0.4, ease: 'easeInOut' }}
-								>
-									<h3 className="font-westmeath text-2xl text-amber-300 sm:text-3xl">
-										{displayedName}
-									</h3>
-									{isRevealed && speaker.title && (
-										<p className="mt-2 font-raleway text-sm font-medium uppercase tracking-wide text-white/50 sm:text-base">
-											{speaker.title}
-										</p>
-									)}
-									<p className="mt-4 font-raleway text-sm leading-6 text-white/80 sm:text-base">
-										{displayedDescription}
-									</p>
-								</motion.div>
-							</AnimatePresence>
-						</div>
+						{!isUnknown && (
+							<>
+								<div className="relative overflow-hidden">
+									<AnimatePresence mode="wait" custom={direction}>
+										<motion.div
+											key={index}
+											custom={direction}
+											initial={{ x: direction >= 0 ? 60 : -60, opacity: 0 }}
+											animate={{ x: 0, opacity: 1 }}
+											exit={{ x: direction >= 0 ? -60 : 60, opacity: 0 }}
+											transition={{ duration: 0.4, ease: 'easeInOut' }}
+										>
+											<h3 className="font-westmeath text-2xl text-amber-300 sm:text-3xl">
+												{displayedName}
+											</h3>
+											{displayedTitle && (
+												<p className="mt-2 font-raleway text-sm font-medium uppercase tracking-wide text-white/50 sm:text-base">
+													{displayedTitle}
+												</p>
+											)}
+											<p className="mt-4 font-raleway text-sm leading-6 text-white/80 sm:text-base">
+												{displayedDescription}
+											</p>
+										</motion.div>
+									</AnimatePresence>
+								</div>
 
-						<div className="relative mt-10 overflow-hidden">
-							<AnimatePresence mode="wait" custom={direction}>
-								<motion.div
-									key={index}
-									custom={direction}
-									initial={{ x: direction >= 0 ? 60 : -60, opacity: 0 }}
-									animate={{ x: 0, opacity: 1 }}
-									exit={{ x: direction >= 0 ? -60 : 60, opacity: 0 }}
-									transition={{ duration: 0.4, ease: 'easeInOut' }}
-									className="flex items-end gap-6"
-								>
-									{hasThumbnails
-										? thumbnails.map((src) => (
-												<div key={src} className="w-1/3">
-													<div className="relative aspect-square w-full overflow-hidden">
-														{src.startsWith('data:') ? (
-															// eslint-disable-next-line @next/next/no-img-element
-															<img src={src} alt="" className="h-full w-full object-cover" />
-														) : (
-															<Image
-																src={src}
-																alt=""
-																fill
-																sizes="100px"
-																className="object-cover"
-															/>
-														)}
+								{hasThumbnails && (
+									<div className="relative mt-10 overflow-hidden">
+										<AnimatePresence mode="wait" custom={direction}>
+											<motion.div
+												key={index}
+												custom={direction}
+												initial={{ x: direction >= 0 ? 60 : -60, opacity: 0 }}
+												animate={{ x: 0, opacity: 1 }}
+												exit={{ x: direction >= 0 ? -60 : 60, opacity: 0 }}
+												transition={{ duration: 0.4, ease: 'easeInOut' }}
+												className="flex items-end gap-6"
+											>
+												{thumbnails.map((src) => (
+													<div key={src} className="w-1/3">
+														<div className="relative aspect-square w-full overflow-hidden">
+															{src.startsWith('data:') ? (
+																// eslint-disable-next-line @next/next/no-img-element
+																<img src={src} alt="" className="h-full w-full object-cover" />
+															) : (
+																<Image
+																	src={src}
+																	alt=""
+																	fill
+																	sizes="100px"
+																	className="object-cover"
+																/>
+															)}
+														</div>
 													</div>
-												</div>
-										  ))
-										: [0, 1, 2].map((i) => (
-												<div key={i} className="w-1/3">
-													<div className="flex aspect-square w-full items-center justify-center bg-[#181818]">
-														<UserRound className="h-12 w-12 text-white/15" strokeWidth={1} />
-													</div>
-												</div>
-										  ))}
-								</motion.div>
-							</AnimatePresence>
-						</div>
+												))}
+											</motion.div>
+										</AnimatePresence>
+									</div>
+								)}
+							</>
+						)}
 					</div>
 				</div>
 			</div>
 
-			<div className="relative mx-auto mt-12 max-w-6xl px-4 sm:mt-16 sm:px-6 lg:px-8">
-				<div className="relative h-1 w-full overflow-hidden rounded-full bg-white">
-					<div
-						className="absolute inset-y-0 left-0 rounded-full bg-red-600 transition-all duration-500 ease-out"
-						style={{ width: `${progress}%` }}
-					/>
-					<div
-						className="absolute top-1/2 h-2.5 w-2.5 -translate-y-1/2 rounded-full bg-red-600 transition-all duration-500 ease-out"
-						style={{ left: `calc(${progress}% - 5px)` }}
-					/>
-				</div>
+			{showCarousel && (
+				<div className="relative mx-auto mt-12 max-w-6xl px-4 sm:mt-16 sm:px-6 lg:px-8">
+					<div className="relative h-1 w-full overflow-hidden rounded-full bg-white">
+						<div
+							className="absolute inset-y-0 left-0 rounded-full bg-red-600 transition-all duration-500 ease-out"
+							style={{ width: `${progress}%` }}
+						/>
+						<div
+							className="absolute top-1/2 h-2.5 w-2.5 -translate-y-1/2 rounded-full bg-red-600 transition-all duration-500 ease-out"
+							style={{ left: `calc(${progress}% - 5px)` }}
+						/>
+					</div>
 
-				<div className="mt-5 flex items-center justify-center gap-6">
-					<button
-						onClick={() => navigate('prev')}
-						aria-label="Previous speaker"
-						className="text-white transition-transform duration-300 hover:-translate-x-1"
-					>
-						<ArrowLeft className="h-6 w-6 sm:h-7 sm:w-7" />
-					</button>
-					<button
-						onClick={() => navigate('next')}
-						aria-label="Next speaker"
-						className="text-white transition-transform duration-300 hover:translate-x-1"
-					>
-						<ArrowRight className="h-6 w-6 sm:h-7 sm:w-7" />
-					</button>
+					<div className="mt-5 flex items-center justify-center gap-6">
+						<button
+							onClick={() => navigate('prev')}
+							aria-label="Previous speaker"
+							className="text-white transition-transform duration-300 hover:-translate-x-1"
+						>
+							<ArrowLeft className="h-6 w-6 sm:h-7 sm:w-7" />
+						</button>
+						<button
+							onClick={() => navigate('next')}
+							aria-label="Next speaker"
+							className="text-white transition-transform duration-300 hover:translate-x-1"
+						>
+							<ArrowRight className="h-6 w-6 sm:h-7 sm:w-7" />
+						</button>
+					</div>
 				</div>
-			</div>
+			)}
 		</section>
 	);
 };
