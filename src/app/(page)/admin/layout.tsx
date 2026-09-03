@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { LayoutDashboard, Ticket, QrCode, LogOut, Users } from 'lucide-react';
+import { LayoutDashboard, Ticket, QrCode, LogOut, Users, Mic } from 'lucide-react';
 import Image from 'next/image';
 import { Inter } from 'next/font/google';
 
@@ -19,6 +19,7 @@ const nav = [
     },
     { href: '/admin/audience', label: 'Audience Data', icon: Users },
     { href: '/admin/tiket', label: 'Tickets', icon: Ticket },
+    { href: '/admin/speakers', label: 'Speakers', icon: Mic },
     { href: '/admin/scan', label: 'Scan', icon: QrCode },
 ];
 

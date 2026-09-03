@@ -1,44 +1,102 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight, UserRound } from 'lucide-react';
 
 interface Speaker {
-	name: string;
-	description: string;
-	image: string;
+	id: string;
+	isLocked: boolean;
+	name?: string | null;
+	title?: string | null;
+	description?: string | null;
+	mainPhoto?: string | null;
+	supportingPhoto1?: string | null;
+	supportingPhoto2?: string | null;
+	supportingPhoto3?: string | null;
 }
 
-const speakers: Speaker[] = Array.from({ length: 4 }).map(() => ({
-	name: "Speaker's Name",
-	description:
-		'Lorem ipsum dolor sit amet consectetur adipiscing elit. Adipiscing elit quisque faucibus ex sapien vitae pellentesque.',
-	image: '/speakers/keonho_uniform-removebg-preview 1.png',
-}));
+const LOCKED_NAME = '???';
+const LOCKED_DESCRIPTION = 'Stay tuned for more information.';
 
-const baseThumbnails = ['/speakers/keonho1.svg', '/speakers/keonho2.svg', '/speakers/keonho3.svg'];
+// Always render 6 speaker slots. Revealed speakers (from the API, in reveal order)
+// fill the slots from the front; the remaining slots show a placeholder.
+const SLOT_COUNT = 6;
 
-const thumbnailSets = Array.from({ length: 4 }).map((_, i) =>
-	baseThumbnails.map((_, slot) => baseThumbnails[(slot + i) % baseThumbnails.length])
-);
+const isImageUrl = (src?: string | null) =>
+	!!src && (src.startsWith('http://') || src.startsWith('https://') || src.startsWith('data:'));
 
 const Speakers = () => {
+	const [speakers, setSpeakers] = useState<Speaker[]>([]);
+	const [loading, setLoading] = useState(true);
 	const [[index, direction], setIndex] = useState<[number, number]>([0, 0]);
-	const speaker = speakers[index];
-	const thumbnails = thumbnailSets[index];
-	const progress = ((index + 1) / speakers.length) * 100;
+
+	useEffect(() => {
+		let cancelled = false;
+		fetch('/api/speakers')
+			.then((res) => res.json())
+			.then((data: Speaker[]) => {
+				if (!cancelled) setSpeakers(data);
+			})
+			.catch(() => {})
+			.finally(() => {
+				if (!cancelled) setLoading(false);
+			});
+		return () => {
+			cancelled = true;
+		};
+	}, []);
+
+	// Build the 6 slots: revealed speakers first (in API order), then placeholders.
+	const slotCount = Math.max(SLOT_COUNT, speakers.length);
+	const slots: (Speaker | null)[] = Array.from({ length: slotCount }, (_, i) => speakers[i] ?? null);
+
+	// Clamp the index whenever the slot count changes.
+	useEffect(() => {
+		setIndex(([prev]) => [slots.length > 0 ? prev % slots.length : 0, 0]);
+	}, [slots.length]);
 
 	const navigate = (dir: 'prev' | 'next') => {
 		setIndex(([prev]) => {
 			const nextIndex =
 				dir === 'next'
-					? (prev + 1) % speakers.length
-					: (prev - 1 + speakers.length) % speakers.length;
+					? (prev + 1) % slots.length
+					: (prev - 1 + slots.length) % slots.length;
 			return [nextIndex, dir === 'next' ? 1 : -1];
 		});
 	};
+
+	if (loading) {
+		return (
+			<section className="relative overflow-hidden bg-black py-16">
+				<div className="relative z-20 mx-auto max-w-6xl px-4 text-center sm:px-6 lg:px-8">
+					<h2 className="mb-10 text-center font-westmeath text-3xl uppercase tracking-wide text-white sm:mb-14 sm:text-4xl lg:text-5xl">
+						Our Speakers
+					</h2>
+					<p className="font-raleway text-sm text-white/50">Loading speakers...</p>
+				</div>
+			</section>
+		);
+	}
+
+	const raw = slots[index];
+	const isPlaceholder = !raw;
+	const speaker = raw ?? ({} as Speaker);
+	// A speaker is only "revealed" once it has a real image URL (data: or http(s):).
+	// The seeded placeholder value ("placeholder") is NOT a valid image, so those
+	// keep showing the placeholder frame instead of crashing the URL parser.
+	const isRevealed = !isPlaceholder && isImageUrl(speaker.mainPhoto);
+	const mainPhoto = isRevealed ? speaker.mainPhoto ?? '' : '';
+	const displayedName = (isRevealed ? speaker.name : LOCKED_NAME) || LOCKED_NAME;
+	const displayedDescription = isRevealed ? speaker.description : LOCKED_DESCRIPTION;
+	const thumbnails = [
+		speaker.supportingPhoto1,
+		speaker.supportingPhoto2,
+		speaker.supportingPhoto3,
+	].filter((src): src is string => !!src);
+	const hasThumbnails = isRevealed && thumbnails.length > 0;
+	const progress = ((index + 1) / slots.length) * 100;
 
 	return (
 		<section className="relative overflow-hidden bg-black py-16">
@@ -100,14 +158,35 @@ const Speakers = () => {
 										WebkitMaskImage: 'linear-gradient(to bottom, black 72%, transparent 92%)',
 									}}
 								>
-									<Image
-										src={speaker.image}
-										alt={speaker.name}
-										width={470}
-										height={620}
-										className="h-auto w-full object-contain"
-										priority
-									/>
+									{isRevealed ? (
+										<div className="relative aspect-[3/4] w-full overflow-hidden">
+											{mainPhoto.startsWith('data:') ? (
+												// eslint-disable-next-line @next/next/no-img-element
+												<img
+													src={mainPhoto}
+													alt={displayedName}
+													className="h-full w-full object-cover"
+												/>
+											) : (
+												<Image
+													src={mainPhoto}
+													alt={displayedName}
+													fill
+													sizes="(max-width: 768px) 75vw, 400px"
+													className="object-cover"
+													priority
+												/>
+											)}
+										</div>
+									) : (
+										<div className="flex aspect-[3/4] w-full flex-col items-center justify-center gap-2 bg-[#181818]">
+											<UserRound
+												className="h-28 w-28 text-white/20 sm:h-32 sm:w-32"
+												strokeWidth={1}
+											/>
+											<span className="font-westmeath text-5xl text-white/30 sm:text-6xl">?</span>
+										</div>
+									)}
 								</div>
 								<div
 									className="absolute left-1/2 z-20 -translate-x-1/2"
@@ -137,10 +216,15 @@ const Speakers = () => {
 									transition={{ duration: 0.4, ease: 'easeInOut' }}
 								>
 									<h3 className="font-westmeath text-2xl text-amber-300 sm:text-3xl">
-										{speaker.name}
+										{displayedName}
 									</h3>
+									{isRevealed && speaker.title && (
+										<p className="mt-2 font-raleway text-sm font-medium uppercase tracking-wide text-white/50 sm:text-base">
+											{speaker.title}
+										</p>
+									)}
 									<p className="mt-4 font-raleway text-sm leading-6 text-white/80 sm:text-base">
-										{speaker.description}
+										{displayedDescription}
 									</p>
 								</motion.div>
 							</AnimatePresence>
@@ -157,17 +241,32 @@ const Speakers = () => {
 									transition={{ duration: 0.4, ease: 'easeInOut' }}
 									className="flex items-end gap-6"
 								>
-									{thumbnails.map((src) => (
-										<div key={src} className="w-1/3">
-											<Image
-												src={src}
-												alt=""
-												width={139}
-												height={139}
-												className="h-auto w-full object-contain"
-											/>
-										</div>
-									))}
+									{hasThumbnails
+										? thumbnails.map((src) => (
+												<div key={src} className="w-1/3">
+													<div className="relative aspect-square w-full overflow-hidden">
+														{src.startsWith('data:') ? (
+															// eslint-disable-next-line @next/next/no-img-element
+															<img src={src} alt="" className="h-full w-full object-cover" />
+														) : (
+															<Image
+																src={src}
+																alt=""
+																fill
+																sizes="100px"
+																className="object-cover"
+															/>
+														)}
+													</div>
+												</div>
+										  ))
+										: [0, 1, 2].map((i) => (
+												<div key={i} className="w-1/3">
+													<div className="flex aspect-square w-full items-center justify-center bg-[#181818]">
+														<UserRound className="h-12 w-12 text-white/15" strokeWidth={1} />
+													</div>
+												</div>
+										  ))}
 								</motion.div>
 							</AnimatePresence>
 						</div>
