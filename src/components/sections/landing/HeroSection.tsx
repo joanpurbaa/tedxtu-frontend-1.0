@@ -271,7 +271,7 @@ export function HeroSection() {
                         </span>
                     </Link>
 
-                    <Link
+                    {/* <Link
                         href='/merch'
                         className='relative group flex items-center justify-center w-[180px] h-[60px] md:w-[220px] md:h-[62px] transition-transform hover:scale-105 active:scale-95'
                     >
@@ -286,7 +286,7 @@ export function HeroSection() {
                         <span className='relative z-10 font-westmeath text-white text-lg md:text-xl leading-none uppercase tracking-tight -mt-1 md:-mt-2'>
                             Our merch
                         </span>
-                    </Link>
+                    </Link> */}
                 </div>
             </motion.div>
         </motion.main>

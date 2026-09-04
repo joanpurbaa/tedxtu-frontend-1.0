@@ -28,7 +28,7 @@ const Gallery = () => {
   return (
     <div className="relative w-full overflow-hidden bg-black pt-12 pb-24 sm:pt-16 sm:pb-32 md:pt-20 md:pb-40">
       <div className="absolute inset-0 opacity-15">
-        <Image src="/speakers/Texture.svg" alt="" fill sizes="100vw" className="object-cover" />
+        <Image src="/speakers/Texture.webp" alt="" fill sizes="100vw" className="object-cover" />
       </div>
       <div className="absolute inset-0 bg-gradient-to-b from-black via-black/90 to-black" />
 
@@ -50,7 +50,7 @@ const Gallery = () => {
           <div
             className="h-full w-full opacity-20 mix-blend-overlay"
             style={{
-              backgroundImage: "url('/speakers/backgroundTexture.svg')",
+              backgroundImage: "url('/speakers/backgroundTexture.webp')",
               backgroundRepeat: 'repeat',
               backgroundSize: '48rem 48rem',
             }}

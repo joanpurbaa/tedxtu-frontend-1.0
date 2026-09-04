@@ -141,7 +141,7 @@ export default function DetailMerchPage() {
                     className='absolute inset-0 opacity-15 mix-blend-overlay'
                     style={{
                         backgroundImage:
-                            "url('/speakers/backgroundTexture.svg')",
+                            "url('/speakers/backgroundTexture.webp')",
                         backgroundRepeat: 'repeat',
                         backgroundSize: '60rem 60rem',
                     }}

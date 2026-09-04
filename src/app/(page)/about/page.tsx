@@ -558,7 +558,7 @@ export default function About() {
                                 {/* Background Image Mobile - asset sudah punya rounded border sendiri, no extra CSS rounding */}
                                 <div className='absolute inset-0 md:hidden z-0'>
                                     <Image
-                                        src='/about/Vision Section.svg'
+                                        src='/about/Vision Section.webp'
                                         alt='Vision background mobile'
                                         fill
                                         sizes='100vw'
@@ -600,7 +600,7 @@ export default function About() {
                                 {/* Background Image Mobile - asset sudah punya rounded border sendiri, no extra CSS rounding */}
                                 <div className='absolute inset-0 md:hidden z-0'>
                                     <Image
-                                        src='/about/Mission Section.svg'
+                                        src='/about/Mission Section.webp'
                                         alt='Mission background mobile'
                                         fill
                                         sizes='100vw'

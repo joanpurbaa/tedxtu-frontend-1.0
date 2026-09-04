@@ -143,7 +143,7 @@ export default function Merch() {
                 <section className='relative z-10 w-full bg-transparent text-white px-4 sm:px-8 md:px-12 lg:px-16 pb-32 pt-4'>
                     <div className='pointer-events-none absolute left-0 bottom-0 z-[5] overflow-hidden blur-md -translate-x-1/3'>
                         <Image
-                            src='/about/Mist.webp'
+                            src='/about/Mist.svg'
                             alt='Mist decoration'
                             width={1200}
                             height={800}
@@ -152,7 +152,7 @@ export default function Merch() {
                     </div>
                     <div className='pointer-events-none absolute right-0 bottom-0 z-[5] overflow-hidden blur-md translate-x-1/3'>
                         <Image
-                            src='/about/Mist.webp'
+                            src='/about/Mist.svg'
                             alt='Mist decoration'
                             width={1200}
                             height={800}

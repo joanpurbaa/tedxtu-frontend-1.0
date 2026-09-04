@@ -26,7 +26,7 @@ const VenueInfo = () => {
                     }}
                 >
                     <Image
-                        src='/speakers/backgroundTexture.svg'
+                        src='/speakers/backgroundTexture.webp'
                         alt=''
                         fill
                         sizes='64rem'
@@ -66,7 +66,7 @@ const VenueInfo = () => {
                     }}
                 >
                     <Image
-                        src='/speakers/backgroundTexture.svg'
+                        src='/speakers/backgroundTexture.webp'
                         alt=''
                         fill
                         sizes='76rem'
@@ -162,7 +162,7 @@ const VenueInfo = () => {
                             className='relative inline-flex items-center gap-2 overflow-hidden rounded-full px-6 py-3 text-sm font-bold uppercase tracking-[0.15em] text-white transition duration-300 hover:scale-[1.02]'
                         >
                             <Image
-                                src='/speakers/Texture.svg'
+                                src='/speakers/Texture.webp'
                                 alt=''
                                 fill
                                 sizes='300px'

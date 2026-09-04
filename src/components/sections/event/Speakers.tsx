@@ -147,7 +147,7 @@ const Speakers = () => {
 					}}
 				>
 					<Image
-						src="/speakers/backgroundTexture.svg"
+						src="/speakers/backgroundTexture.webp"
 						alt=""
 						fill
 						sizes="100rem"
