@@ -27,8 +27,8 @@ export const ticketsData: TicketTier[] = [
         tier: 'EARLY BIRD',
         price: 'RP 71.900',
         remaining: '60 ticket remaining',
-        releaseDate: new Date('2026-09-05T00:00:00Z'),
-        endDate: new Date('2026-09-13T00:00:00Z'),
+        releaseDate: new Date('2026-09-04T17:00:00Z'),  // 00:00 WIB 5 Sep
+        endDate: new Date('2026-09-12T17:00:00Z'),        // 00:00 WIB 13 Sep (tersedia hingga 12 Sep)
         quantity: 60,
         features: SHARED_FEATURES,
     },
@@ -36,8 +36,8 @@ export const ticketsData: TicketTier[] = [
         tier: 'PRE-SALE 1',
         price: 'RP 79.900',
         remaining: '140 ticket remaining',
-        releaseDate: new Date('2026-09-14T00:00:00Z'),
-        endDate: new Date('2026-09-22T00:00:00Z'),
+        releaseDate: new Date('2026-09-13T17:00:00Z'),  // 00:00 WIB 14 Sep
+        endDate: new Date('2026-09-21T17:00:00Z'),        // 00:00 WIB 22 Sep (tersedia hingga 21 Sep)
         quantity: 140,
         features: SHARED_FEATURES,
     },
@@ -45,7 +45,7 @@ export const ticketsData: TicketTier[] = [
         tier: 'NORMAL PRICE',
         price: 'RP 84.900',
         remaining: '100 ticket remaining',
-        releaseDate: new Date('2026-09-22T00:00:00Z'),
+        releaseDate: new Date('2026-09-21T17:00:00Z'),  // 00:00 WIB 22 Sep
         endDate: null,
         quantity: 100,
         features: SHARED_FEATURES,
