@@ -149,7 +149,7 @@ const EventPage = () => {
                 </div>
             </main>
             <MemoSpeakers />
-            <MemoInteractiveActivities />
+            {/* <MemoInteractiveActivities /> */}
             <MemoVenueInfo />
             <MemoTicketSelection />
             <MemoGallery />

@@ -29,7 +29,7 @@ export async function GET(req: NextRequest) {
 
     const tickets = await prisma.ticket.findMany({
         where,
-        orderBy: { createdAt: 'asc' },
+        orderBy: { createdAt: 'desc' },
         select: {
             id: true,
             orderId: true,
