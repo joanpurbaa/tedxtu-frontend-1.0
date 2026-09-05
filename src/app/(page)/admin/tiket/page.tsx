@@ -2,7 +2,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Search, Eye, Check, X, ChevronDown, Download } from 'lucide-react';
+import { Search, Eye, Check, X, ChevronDown, Download, Trash2 } from 'lucide-react';
 
 type Ticket = {
     id: string;
@@ -16,7 +16,27 @@ type Ticket = {
     proofUrl: string | null;
     status: 'PENDING' | 'CONFIRMED' | 'REJECTED';
     scanned: boolean;
+    createdAt: string;
 };
+
+function formatPurchasedAt(iso: string): string {
+    const d = new Date(iso);
+    const time = new Intl.DateTimeFormat('en-GB', {
+        timeZone: 'Asia/Jakarta',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+    }).format(d);
+    const day = new Intl.DateTimeFormat('en-GB', {
+        timeZone: 'Asia/Jakarta',
+        day: 'numeric',
+    }).format(d);
+    const month = new Intl.DateTimeFormat('en-GB', {
+        timeZone: 'Asia/Jakarta',
+        month: 'long',
+    }).format(d);
+    return `${time} ${day} ${month}`;
+}
 
 function StatusBadge({ status }: { status: string }) {
     const colors = {
@@ -50,6 +70,8 @@ export default function TiketPage() {
     const [search, setSearch] = useState('');
     const [filterStatus, setFilterStatus] = useState<string>('all');
     const [actingId, setActingId] = useState<string | null>(null);
+    const [deleteTarget, setDeleteTarget] = useState<Ticket | null>(null);
+    const [deleting, setDeleting] = useState(false);
 
     const load = async () => {
         const res = await fetch('/api/orders');
@@ -70,6 +92,20 @@ export default function TiketPage() {
         });
         await load();
         setActingId(null);
+    };
+
+    const confirmDelete = async () => {
+        if (!deleteTarget) return;
+        setDeleting(true);
+        try {
+            await fetch(`/api/orders/${deleteTarget.id}`, {
+                method: 'DELETE',
+            });
+            await load();
+            setDeleteTarget(null);
+        } finally {
+            setDeleting(false);
+        }
     };
 
     const filteredTickets = tickets.filter((t) => {
@@ -142,6 +178,9 @@ export default function TiketPage() {
                                 <th className='px-4 py-3 text-left text-xs font-medium text-white/40 uppercase tracking-wider'>
                                     Order ID
                                 </th>
+                                <th className='px-4 py-3 text-left text-xs font-medium text-white/40 uppercase tracking-wider whitespace-nowrap'>
+                                    Purchased
+                                </th>
                                 <th className='px-4 py-3 text-left text-xs font-medium text-white/40 uppercase tracking-wider'>
                                     Name
                                 </th>
@@ -179,6 +218,11 @@ export default function TiketPage() {
                                 >
                                     <td className='px-4 py-3 font-mono text-xs text-white/60'>
                                         {t.orderId}
+                                    </td>
+                                    <td className='px-4 py-3 whitespace-nowrap'>
+                                        <span className='text-xs text-white/60'>
+                                            {formatPurchasedAt(t.createdAt)}
+                                        </span>
                                     </td>
                                     <td className='px-4 py-3 font-medium text-white'>
                                         {t.fullName}
@@ -225,51 +269,57 @@ export default function TiketPage() {
                                         <ScanBadge scanned={t.scanned} />
                                     </td>
                                     <td className='px-4 py-3'>
-                                        {t.status === 'PENDING' && (
-                                            <div className='flex gap-1'>
-                                                <button
-                                                    disabled={actingId === t.id}
-                                                    onClick={() =>
-                                                        act(t.id, 'confirm')
-                                                    }
-                                                    className={`p-1.5 rounded transition-colors border ${
-                                                        actingId === t.id
-                                                            ? 'bg-green-600/10 text-green-400/50 border-green-600/20 cursor-wait'
-                                                            : 'bg-green-600/20 text-green-400 hover:bg-green-600/30 border-green-600/30'
-                                                    }`}
-                                                    title='Confirm'
-                                                >
-                                                    {actingId === t.id ? (
-                                                        <div className='h-4 w-4 animate-spin rounded-full border-2 border-green-400 border-t-transparent' />
-                                                    ) : (
-                                                        <Check className='h-4 w-4' />
-                                                    )}
-                                                </button>
-                                                <button
-                                                    disabled={actingId === t.id}
-                                                    onClick={() =>
-                                                        act(t.id, 'reject')
-                                                    }
-                                                    className={`p-1.5 rounded transition-colors border ${
-                                                        actingId === t.id
-                                                            ? 'bg-red-600/10 text-red-400/50 border-red-600/20 cursor-wait'
-                                                            : 'bg-red-600/20 text-red-400 hover:bg-red-600/30 border-red-600/30'
-                                                    }`}
-                                                    title='Reject'
-                                                >
-                                                    {actingId === t.id ? (
-                                                        <div className='h-4 w-4 animate-spin rounded-full border-2 border-red-400 border-t-transparent' />
-                                                    ) : (
-                                                        <X className='h-4 w-4' />
-                                                    )}
-                                                </button>
-                                            </div>
-                                        )}
-                                        {t.status !== 'PENDING' && (
-                                            <span className='text-xs text-white/30'>
-                                                -
-                                            </span>
-                                        )}
+                                        <div className='flex items-center gap-1'>
+                                            {t.status === 'PENDING' && (
+                                                <>
+                                                    <button
+                                                        disabled={actingId === t.id}
+                                                        onClick={() =>
+                                                            act(t.id, 'confirm')
+                                                        }
+                                                        className={`p-1.5 rounded transition-colors border ${
+                                                            actingId === t.id
+                                                                ? 'bg-green-600/10 text-green-400/50 border-green-600/20 cursor-wait'
+                                                                : 'bg-green-600/20 text-green-400 hover:bg-green-600/30 border-green-600/30'
+                                                        }`}
+                                                        title='Confirm'
+                                                    >
+                                                        {actingId === t.id ? (
+                                                            <div className='h-4 w-4 animate-spin rounded-full border-2 border-green-400 border-t-transparent' />
+                                                        ) : (
+                                                            <Check className='h-4 w-4' />
+                                                        )}
+                                                    </button>
+                                                    <button
+                                                        disabled={actingId === t.id}
+                                                        onClick={() =>
+                                                            act(t.id, 'reject')
+                                                        }
+                                                        className={`p-1.5 rounded transition-colors border ${
+                                                            actingId === t.id
+                                                                ? 'bg-red-600/10 text-red-400/50 border-red-600/20 cursor-wait'
+                                                                : 'bg-red-600/20 text-red-400 hover:bg-red-600/30 border-red-600/30'
+                                                        }`}
+                                                        title='Reject'
+                                                    >
+                                                        {actingId === t.id ? (
+                                                            <div className='h-4 w-4 animate-spin rounded-full border-2 border-red-400 border-t-transparent' />
+                                                        ) : (
+                                                            <X className='h-4 w-4' />
+                                                        )}
+                                                    </button>
+                                                </>
+                                            )}
+                                            <button
+                                                onClick={() =>
+                                                    setDeleteTarget(t)
+                                                }
+                                                className='p-1.5 rounded transition-colors border border-red-600/30 bg-red-600/20 text-red-400 hover:bg-red-600/30'
+                                                title='Delete'
+                                            >
+                                                <Trash2 className='h-4 w-4' />
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                             ))}
@@ -300,6 +350,60 @@ export default function TiketPage() {
                         >
                             <X className='h-5 w-5' />
                         </button>
+                    </div>
+                </div>
+            )}
+
+            {deleteTarget && (
+                <div
+                    onClick={() => !deleting && setDeleteTarget(null)}
+                    className='fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4'
+                >
+                    <div
+                        onClick={(e) => e.stopPropagation()}
+                        className='w-full max-w-md rounded-2xl border border-white/10 bg-[#121212] p-6'
+                    >
+                        <div className='flex items-center gap-2 text-red-400'>
+                            <Trash2 className='h-5 w-5' />
+                            <h2 className='text-lg font-bold text-white'>
+                                Delete Ticket
+                            </h2>
+                        </div>
+                        <p className='mt-3 text-sm leading-6 text-white/60'>
+                            Hapus tiket{' '}
+                            <span className='font-mono text-white'>
+                                {deleteTarget.orderId}
+                            </span>{' '}
+                            milik <span className='text-white'>{deleteTarget.fullName}</span>? Menghapus data ini tidak dapat dibatalkan.
+                        </p>
+                        {deleteTarget.proofUrl && (
+                            <p className='mt-2 text-xs text-white/40'>
+                                Note: bukti pembayaran & status tiket akan ikut terhapus.
+                            </p>
+                        )}
+                        <div className='mt-6 flex justify-end gap-2'>
+                            <button
+                                disabled={deleting}
+                                onClick={() => setDeleteTarget(null)}
+                                className='px-4 py-2 rounded-lg text-sm text-white/70 hover:bg-white/10 disabled:opacity-50'
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                disabled={deleting}
+                                onClick={confirmDelete}
+                                className='inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-white bg-red-600 hover:bg-red-700 disabled:opacity-50'
+                            >
+                                {deleting ? (
+                                    <>
+                                        <div className='h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent' />
+                                        Deleting...
+                                    </>
+                                ) : (
+                                    'Delete'
+                                )}
+                            </button>
+                        </div>
                     </div>
                 </div>
             )}
