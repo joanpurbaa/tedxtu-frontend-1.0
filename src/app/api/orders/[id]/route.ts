@@ -31,6 +31,14 @@ export async function PATCH(
         return NextResponse.json(ticket);
     }
 
+    if (action === 'reset-join') {
+        const ticket = await prisma.ticket.update({
+            where: { id },
+            data: { joinedGroup: false, joinedAt: null },
+        });
+        return NextResponse.json(ticket);
+    }
+
     return NextResponse.json({ error: 'Invalid action' }, { status: 400 });
 }
 

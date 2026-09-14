@@ -50,6 +50,8 @@ model Ticket {
   qrToken     String       @unique @default(cuid())
   scanned     Boolean      @default(false)
   scannedAt   DateTime?
+  joinedGroup Boolean      @default(false)
+  joinedAt    DateTime?
   createdAt   DateTime     @default(now())
 
   qrCodeBase64 String? @db.Text

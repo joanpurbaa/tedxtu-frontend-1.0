@@ -1,4 +1,8 @@
 import { prisma } from '@/lib/prisma';
+import { Inter } from 'next/font/google';
+import JoinGroupSection from '@/components/sections/ticket/JoinGroupSection';
+
+const inter = Inter({ subsets: ['latin'] });
 
 export default async function TicketPage({
     params,
@@ -19,7 +23,9 @@ export default async function TicketPage({
     }
 
     return (
-        <main className='min-h-screen bg-black text-white flex flex-col items-center justify-center p-8 gap-4'>
+        <main
+            className={`${inter.className} min-h-screen bg-black text-white flex flex-col items-center justify-center p-8 gap-4`}
+        >
             <h1 className='text-2xl font-bold'>{ticket.fullName}</h1>
             <p className='text-white/70'>Order ID: {ticket.orderId}</p>
             <div className='bg-white p-4 rounded-2xl'>
@@ -36,6 +42,12 @@ export default async function TicketPage({
                     ? 'Already scanned at venue'
                     : 'Show this QR at the entrance'}
             </p>
+            {ticket && (
+                <JoinGroupSection
+                    token={ticket.qrToken}
+                    initialJoined={ticket.joinedGroup}
+                />
+            )}
         </main>
     );
 }

@@ -2,7 +2,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Search, Eye, Check, X, ChevronDown, Download, Trash2, QrCode as QrIcon } from 'lucide-react';
+import { Search, Eye, Check, X, ChevronDown, Download, Trash2, QrCode as QrIcon, RotateCcw } from 'lucide-react';
 
 type Ticket = {
     id: string;
@@ -17,6 +17,7 @@ type Ticket = {
     qrToken: string | null;
     status: 'PENDING' | 'CONFIRMED' | 'REJECTED';
     scanned: boolean;
+    joinedGroup: boolean;
     createdAt: string;
 };
 
@@ -64,6 +65,16 @@ function ScanBadge({ scanned }: { scanned: boolean }) {
     );
 }
 
+function GroupBadge({ joined }: { joined: boolean }) {
+    return (
+        <span
+            className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${joined ? 'bg-emerald-600/20 text-emerald-400 border-emerald-600/30' : 'bg-white/5 text-white/40 border-white/10'}`}
+        >
+            {joined ? 'Yes' : 'No'}
+        </span>
+    );
+}
+
 export default function TiketPage() {
     const [tickets, setTickets] = useState<Ticket[]>([]);
     const [loading, setLoading] = useState(true);
@@ -85,7 +96,10 @@ export default function TiketPage() {
         load();
     }, []);
 
-    const act = async (id: string, action: 'confirm' | 'reject') => {
+    const act = async (
+        id: string,
+        action: 'confirm' | 'reject' | 'reset-join',
+    ) => {
         setActingId(id);
         await fetch(`/api/orders/${id}`, {
             method: 'PATCH',
@@ -211,6 +225,9 @@ export default function TiketPage() {
                                     Scanned
                                 </th>
                                 <th className='px-4 py-3 text-left text-xs font-medium text-white/40 uppercase tracking-wider'>
+                                    Group
+                                </th>
+                                <th className='px-4 py-3 text-left text-xs font-medium text-white/40 uppercase tracking-wider'>
                                     Action
                                 </th>
                             </tr>
@@ -287,6 +304,27 @@ export default function TiketPage() {
                                     </td>
                                     <td className='px-4 py-3'>
                                         <ScanBadge scanned={t.scanned} />
+                                    </td>
+                                    <td className='px-4 py-3'>
+                                        <div className='flex items-center gap-1.5'>
+                                            <GroupBadge joined={t.joinedGroup} />
+                                            {t.joinedGroup && (
+                                                <button
+                                                    disabled={actingId === t.id}
+                                                    onClick={() =>
+                                                        act(t.id, 'reset-join')
+                                                    }
+                                                    className={`p-1 rounded transition-colors border ${
+                                                        actingId === t.id
+                                                            ? 'bg-white/10 text-white/40 border-white/10 cursor-wait'
+                                                            : 'bg-white/10 text-white/60 hover:bg-white/20 border-white/10'
+                                                    }`}
+                                                    title='Reset join status'
+                                                >
+                                                    <RotateCcw className='h-3 w-3' />
+                                                </button>
+                                            )}
+                                        </div>
                                     </td>
                                     <td className='px-4 py-3'>
                                         <div className='flex items-center gap-1'>
