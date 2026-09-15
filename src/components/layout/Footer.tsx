@@ -55,9 +55,9 @@ export default function Footer() {
                             {/* <Link href='/recruitment' className='font-raleway text-sm sm:text-base text-white/80 hover:text-red-500 transition-colors'>
                                 Recruitment
                             </Link> */}
-                            {/* <Link href='/merch' className='font-raleway text-sm sm:text-base text-white/80 hover:text-red-500 transition-colors'>
+                            <Link href='/merch' className='font-raleway text-sm sm:text-base text-white/80 hover:text-red-500 transition-colors'>
                                 Merch
-                            </Link> */}
+                            </Link>
                         </nav>
                     </div>
 

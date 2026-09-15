@@ -11,6 +11,7 @@ import { ThemeProvider } from '@/components/theme-provider';
 import localFont from 'next/font/local';
 import './globals.css';
 import { icons } from 'lucide-react';
+import PublicPointerSpotlight from '@/components/ui/publicPointerSpotlight';
 
 const westmeath = localFont({
     src: [
@@ -90,6 +91,7 @@ export default function RootLayout({
                     enableSystem
                     disableTransitionOnChange
                 >
+                    <PublicPointerSpotlight />
                     <div className=''>{children}</div>
                 </ThemeProvider>
             </body>

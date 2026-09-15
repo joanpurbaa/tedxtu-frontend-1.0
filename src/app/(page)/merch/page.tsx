@@ -5,21 +5,30 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Footer from '@/components/layout/Footer';
 import BackToTopButton from '@/components/ui/backToTopButton';
+import { motion } from 'framer-motion';
 
 const merch = [
-    { name: 'T-Shirt', price: 100000, img: '/merch/tshirt.webp' },
-    { name: 'Shirt 2026', price: 100000, img: '/merch/shirt-2026.webp' },
-    { name: 'Baseball Cap', price: 100000, img: '/merch/baseballCap.webp' },
-    { name: 'Hat 2026', price: 100000, img: '/merch/hat-2026.webp' },
-    { name: 'Keychain', price: 100000, img: '/merch/keychain.webp' },
-    { name: 'Keychain 2026', price: 100000, img: '/merch/keychain-2026.webp' },
-    { name: 'Lanyard 2026', price: 100000, img: '/merch/lanyard-2026.webp' },
-    { name: 'Hand Fan', price: 100000, img: '/merch/handfan.webp' },
-    { name: 'Sticker Pack', price: 100000, img: '/merch/stickerPack.webp' },
-    { name: 'Bobbins Kit', price: 100000, img: '/merch/bobbinskit.webp' },
-    { name: 'Fabric Kit', price: 100000, img: '/merch/fabricKit.webp' },
-    { name: 'Stitches Kit', price: 100000, img: '/merch/stitchesKit.webp' },
-    { name: 'Tapestry Kit', price: 100000, img: '/merch/tapestryKit.webp' },
+    { id: 'cap', name: 'Cap', price: 60000, img: '/merch/cap/Cap Mockup-Maroon.png' },
+    { id: 'keychain', name: 'Keychain', price: 10000, img: '/merch/keychain/tedxlogo.png' },
+    { id: 'enamel', name: 'Enamel Pin', price: 20000, img: '/merch/enamel/enamel1.png' },
+    {
+        id: 'notebook',
+        name: 'Notebook',
+        price: 15000,
+        img: '/merch/notebook/Notebook Tampak Depan.png',
+    },
+    {
+        id: 'totebag',
+        name: 'Totebag',
+        price: 30000,
+        img: '/merch/totebag/Tote Bag Mockup-Black-Variant 1.png',
+    },
+    {
+        id: 'tshirt',
+        name: 'T-Shirt',
+        price: 85000,
+        img: '/merch/Tshirt/Tshirt-Mockup-White-Variant1.png',
+    },
 ];
 
 export default function Merch() {
@@ -50,9 +59,12 @@ export default function Merch() {
                         />
                     </div>
 
-                    <div
+                    <motion.div
                         className='absolute z-10'
                         style={{ top: '20%', left: '15%' }}
+                        initial={{ opacity: 0, scale: 0.7, rotate: -12 }}
+                        animate={{ opacity: 1, scale: 1, rotate: [0, -5, 0] }}
+                        transition={{ opacity: { duration: 0.5 }, scale: { duration: 0.6 }, rotate: { duration: 4, repeat: Infinity, ease: 'easeInOut' } }}
                     >
                         <Image
                             src='/about/mask.webp'
@@ -63,11 +75,14 @@ export default function Merch() {
                             quality={75}
                             className='w-[44px] sm:w-[60px] md:w-[72px] lg:w-[90px] xl:w-[100px] h-auto'
                         />
-                    </div>
+                    </motion.div>
 
-                    <div
+                    <motion.div
                         className='absolute z-10'
                         style={{ top: '20%', right: '15%' }}
+                        initial={{ opacity: 0, scale: 0.7, rotate: 12 }}
+                        animate={{ opacity: 1, scale: 1, rotate: [0, 5, 0] }}
+                        transition={{ opacity: { duration: 0.5, delay: 0.1 }, scale: { duration: 0.6, delay: 0.1 }, rotate: { duration: 4.5, repeat: Infinity, ease: 'easeInOut' } }}
                     >
                         <Image
                             src='/about/trumpet.webp'
@@ -78,14 +93,17 @@ export default function Merch() {
                             quality={75}
                             className='w-[44px] sm:w-[60px] md:w-[72px] lg:w-[90px] xl:w-[100px] h-auto'
                         />
-                    </div>
+                    </motion.div>
 
-                    <div
+                    <motion.div
                         className='absolute z-10'
                         style={{ bottom: '20%', left: '15%' }}
+                        initial={{ opacity: 0, scale: 0.7, rotate: -12 }}
+                        animate={{ opacity: 1, scale: 1, y: [0, -10, 0], rotate: [0, -8, 0] }}
+                        transition={{ opacity: { duration: 0.5, delay: 0.2 }, scale: { duration: 0.6, delay: 0.2 }, y: { duration: 3.8, repeat: Infinity, ease: 'easeInOut' }, rotate: { duration: 4, repeat: Infinity, ease: 'easeInOut' } }}
                     >
                         <Image
-                            src='/about/turn-table.webp'
+                            src='/about/gramophone.svg'
                             alt='Turn table decoration'
                             width={100}
                             height={100}
@@ -93,11 +111,14 @@ export default function Merch() {
                             quality={75}
                             className='w-[44px] sm:w-[60px] md:w-[72px] lg:w-[90px] xl:w-[100px] h-auto'
                         />
-                    </div>
+                    </motion.div>
 
-                    <div
+                    <motion.div
                         className='absolute z-10'
                         style={{ bottom: '20%', right: '15%' }}
+                        initial={{ opacity: 0, scale: 0.7, rotate: 12 }}
+                        animate={{ opacity: 1, scale: 1, y: [0, -8, 0], rotate: [20, 28, 20] }}
+                        transition={{ opacity: { duration: 0.5, delay: 0.3 }, scale: { duration: 0.6, delay: 0.3 }, y: { duration: 4.2, repeat: Infinity, ease: 'easeInOut' }, rotate: { duration: 4.5, repeat: Infinity, ease: 'easeInOut' } }}
                     >
                         <Image
                             src='/about/crown.webp'
@@ -109,13 +130,22 @@ export default function Merch() {
                             className='w-[44px] sm:w-[60px] md:w-[72px] lg:w-[90px] xl:w-[100px] h-auto'
                             style={{ transform: 'rotate(20deg)' }}
                         />
-                    </div>
+                    </motion.div>
 
-                    <div className='relative z-10 text-center w-full max-w-5xl mx-auto px-4'>
+                    <motion.div
+                        className='relative z-10 text-center w-full max-w-5xl mx-auto px-4'
+                        initial={{ opacity: 0, y: 24 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.7, delay: 0.2, ease: 'easeOut' }}
+                    >
                         <div className='flex flex-wrap items-center justify-center gap-2 sm:gap-3 md:gap-4'>
-                            <span className='font-westmeath text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white font-bold leading-tight'>
+                            <motion.span
+                                className='font-westmeath text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white font-bold leading-tight'
+                                animate={{ y: [0, -4, 0] }}
+                                transition={{ duration: 2.8, repeat: Infinity, ease: 'easeInOut' }}
+                            >
                                 OUR
-                            </span>
+                            </motion.span>
                             <Image
                                 src='/about/music-note.webp'
                                 alt='Music note'
@@ -126,9 +156,13 @@ export default function Merch() {
                                 className='w-7 sm:w-8 md:w-9 h-auto'
                                 style={{ transform: 'rotate(18deg)' }}
                             />
-                            <span className='font-westmeath text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white font-bold leading-tight'>
+                            <motion.span
+                                className='font-westmeath text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white font-bold leading-tight'
+                                animate={{ y: [0, 4, 0] }}
+                                transition={{ duration: 3.2, repeat: Infinity, ease: 'easeInOut', delay: 0.2 }}
+                            >
                                 MERCHANDISE
-                            </span>
+                            </motion.span>
                         </div>
 
                         <p className='font-raleway text-sm sm:text-base md:text-lg lg:text-xl text-white/80 max-w-2xl mx-auto mt-4 sm:mt-5 md:mt-6'>
@@ -137,7 +171,7 @@ export default function Merch() {
                             a souvenir — it&apos;s a statement. Wear the story,
                             carry the idea.
                         </p>
-                    </div>
+                    </motion.div>
                 </section>
 
                 <section className='relative z-10 w-full bg-transparent text-white px-4 sm:px-8 md:px-12 lg:px-16 pb-32 pt-4'>
@@ -165,35 +199,45 @@ export default function Merch() {
                     <div className='relative z-10 w-full max-w-6xl mx-auto'>
                         <div className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-8'>
                             {merch.map((item, index) => (
-                                <Link
+                                <motion.div
                                     key={index}
-                                    href='/merch/detail'
-                                    className='flex flex-col items-start w-full group cursor-pointer'
+                                    initial={{ opacity: 0, y: 24, scale: 0.96 }}
+                                    whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                                    viewport={{ once: true, amount: 0.2 }}
+                                    transition={{ duration: 0.45, delay: (index % 4) * 0.08, ease: 'easeOut' }}
+                                    whileHover={{ y: -8, rotate: index % 2 === 0 ? -1.5 : 1.5 }}
+                                    whileTap={{ scale: 0.97 }}
+                                    className='w-full'
                                 >
-                                    <div className='relative w-full aspect-square flex justify-center items-center mb-2'>
-                                        <Image
-                                            src={item.img}
-                                            alt={item.name}
-                                            fill
-                                            quality={90}
-                                            className='object-contain object-center group-hover:scale-105 transition-transform duration-300'
-                                            style={{ mixBlendMode: 'multiply' }}
-                                        />
-                                    </div>
+                                    <Link
+                                        href={`/merch/detail?product=${item.id}`}
+                                        className='flex flex-col items-start w-full group cursor-pointer'
+                                    >
+                                        <div className='relative mx-auto mb-2 h-44 w-full max-w-[240px] flex items-center justify-center sm:h-52 md:h-60'>
+                                            <Image
+                                                src={item.img}
+                                                alt={item.name}
+                                                fill
+                                                quality={90}
+                                                className='object-contain object-center p-4 group-hover:scale-105 transition-transform duration-300'
+                                                style={{ mixBlendMode: 'multiply' }}
+                                            />
+                                        </div>
 
-                                    <div className='text-left px-1'>
-                                        <h3 className='font-westmeath text-sm sm:text-base md:text-lg text-white font-bold leading-snug group-hover:text-[#FFB41E] transition-colors duration-300'>
-                                            {item.name}
-                                        </h3>
-                                        <p
-                                            className='font-westmeath text-xs sm:text-sm md:text-base mt-0.5'
-                                            style={{ color: '#DCA23E' }}
-                                        >
-                                            Rp
-                                            {item.price.toLocaleString('id-ID')}
-                                        </p>
-                                    </div>
-                                </Link>
+                                        <div className='text-left px-1'>
+                                            <h3 className='font-westmeath text-sm sm:text-base md:text-lg text-white font-bold leading-snug group-hover:text-[#FFB41E] transition-colors duration-300'>
+                                                {item.name}
+                                            </h3>
+                                            <p
+                                                className='font-westmeath text-xs sm:text-sm md:text-base mt-0.5'
+                                                style={{ color: '#DCA23E' }}
+                                            >
+                                                Rp
+                                                {item.price.toLocaleString('id-ID')}
+                                            </p>
+                                        </div>
+                                    </Link>
+                                </motion.div>
                             ))}
                         </div>
                     </div>

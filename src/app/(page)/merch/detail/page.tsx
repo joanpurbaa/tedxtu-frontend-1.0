@@ -1,72 +1,134 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import BackToTopButton from '@/components/ui/backToTopButton';
 import Image from 'next/image';
-import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Minus, ChevronLeft, ChevronRight, X } from 'lucide-react';
 
-const MERCHANDISE_DATA = {
-    id: 1,
-    name: 'MIAMI SHIRT 2026',
-    price: 100000,
-    description:
-        'Limited edition TEDxTelkom University merchandise featuring exclusive Miami-inspired design.',
-    mainImage: '/merch/detail-merch/miamiShirt.png',
-    images: [
-        '/merch/detail-merch/miamiShirt.png',
-        '/merch/detail-merch/shirtVector.png',
-        '/merch/detail-merch/shirtDetail.png',
-    ],
-    sizes: ['S', 'M', 'L', 'XL'],
-};
-
-const SUGGESTED_MERCH = [
-    { id: 1, name: 'T-Shirt', price: 100000, img: '/merch/tshirt.webp' },
-    { id: 2, name: 'Shirt 2026', price: 100000, img: '/merch/shirt-2026.webp' },
+const MERCH_PRODUCTS = [
     {
-        id: 3,
-        name: 'Baseball Cap',
-        price: 100000,
-        img: '/merch/baseballCap.webp',
+        id: 'cap',
+        name: 'Cap',
+        price: 60000,
+        description: 'TEDxTelkom University cap available in black and maroon.',
+        images: [
+            '/merch/cap/Cap Mockup-Maroon.png',
+            '/merch/cap/Cap Mockup-Black.png',
+        ],
+        sizes: [],
     },
-    { id: 4, name: 'Hat 2026', price: 100000, img: '/merch/hat-2026.webp' },
+    {
+        id: 'keychain',
+        name: 'Keychain',
+        price: 10000,
+        description: 'A small TEDxTelkom University keepsake for your everyday carry.',
+        images: ['/merch/keychain/tedxlogo.png', '/merch/keychain/x1.png'],
+        sizes: [],
+    },
+    {
+        id: 'enamel',
+        name: 'Enamel Pin',
+        price: 20000,
+        description: 'Collectible enamel pins made to add a little TEDx energy anywhere.',
+        images: ['/merch/enamel/enamel1.png', '/merch/enamel/enamel2.png'],
+        sizes: [],
+    },
+    {
+        id: 'notebook',
+        name: 'Notebook',
+        price: 15000,
+        description: 'A compact notebook for ideas worth putting on paper.',
+        images: [
+            '/merch/notebook/Notebook Tampak Depan.png',
+            '/merch/notebook/Notebook Tampak Belakang.png',
+        ],
+        imageLabels: ['Front', 'Back'],
+        sizes: [],
+    },
+    {
+        id: 'totebag',
+        name: 'Totebag',
+        price: 30000,
+        description: 'A sturdy everyday tote for carrying your ideas with you.',
+        images: [
+            '/merch/totebag/Tote Bag Mockup-Black-Variant 1.png',
+            '/merch/totebag/Tote Bag Mockup-Black-Variant 2.png',
+        ],
+        sizes: [],
+    },
+    {
+        id: 'tshirt',
+        name: 'T-Shirt',
+        price: 85000,
+        description: 'TEDxTelkom University T-Shirt available in multiple designs.',
+        images: [
+            '/merch/Tshirt/Tshirt-Mockup-Black-Variant1.png',
+            '/merch/Tshirt/Tshirt-Mockup-White-Variant1.png',
+            '/merch/Tshirt/Tshirt-Mockup-White-Variant2-WithMaroonRinger.png',
+        ],
+        sizes: ['S', 'M', 'L', 'XL'],
+    },
 ];
 
 export default function DetailMerchPage() {
+    const [selectedProduct, setSelectedProduct] = useState(MERCH_PRODUCTS[0]);
     const [selectedImage, setSelectedImage] = useState(0);
     const [selectedSize, setSelectedSize] = useState<string | null>(null);
     const [quantity, setQuantity] = useState(1);
     const [isFullscreenOpen, setIsFullscreenOpen] = useState(false);
 
     const handleAddToCart = () => {
-        if (!selectedSize) {
+        if (selectedProduct.sizes.length > 0 && !selectedSize) {
             alert('Please select a size');
             return;
         }
         console.log('Added to cart:', {
-            product: MERCHANDISE_DATA.name,
+            product: selectedProduct.name,
             size: selectedSize,
             quantity,
         });
     };
+
+    const selectProduct = (product: (typeof MERCH_PRODUCTS)[number]) => {
+        setSelectedProduct(product);
+        setSelectedImage(0);
+        setSelectedSize(null);
+        window.history.replaceState(null, '', `/merch/detail?product=${product.id}`);
+    };
+
+    useEffect(() => {
+        const productId = new URLSearchParams(window.location.search).get(
+            'product',
+        );
+        const product = MERCH_PRODUCTS.find((item) => item.id === productId);
+
+        if (product) {
+            setSelectedProduct(product);
+            setSelectedImage(0);
+            setSelectedSize(null);
+        }
+    }, []);
 
     const incrementQuantity = () => setQuantity((prev) => prev + 1);
     const decrementQuantity = () =>
         setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
 
     const handleNextImage = () => {
-        setSelectedImage((prev) => (prev + 1) % MERCHANDISE_DATA.images.length);
+        setSelectedImage((prev) => (prev + 1) % selectedProduct.images.length);
     };
+
+    const selectedImageLabel =
+        selectedProduct.imageLabels?.[selectedImage] ??
+        `View ${selectedImage + 1}`;
 
     const handlePrevImage = () => {
         setSelectedImage(
             (prev) =>
-                (prev - 1 + MERCHANDISE_DATA.images.length) %
-                MERCHANDISE_DATA.images.length,
+                (prev - 1 + selectedProduct.images.length) %
+                selectedProduct.images.length,
         );
     };
 
@@ -101,8 +163,8 @@ export default function DetailMerchPage() {
 
                             <div className='relative w-[80vw] h-[80vh] flex items-center justify-center'>
                                 <Image
-                                    src={MERCHANDISE_DATA.images[selectedImage]}
-                                    alt={`${MERCHANDISE_DATA.name} - Fullscreen ${selectedImage + 1}`}
+                                    src={selectedProduct.images[selectedImage]}
+                                    alt={`${selectedProduct.name} - ${selectedImageLabel}`}
                                     fill
                                     quality={75}
                                     className='object-contain'
@@ -129,14 +191,14 @@ export default function DetailMerchPage() {
 
                             <div className='absolute bottom-8 left-1/2 -translate-x-1/2 text-white font-westmeath text-lg'>
                                 {selectedImage + 1} /{' '}
-                                {MERCHANDISE_DATA.images.length}
+                                {selectedProduct.images.length}
                             </div>
                         </motion.div>
                     </motion.div>
                 )}
             </AnimatePresence>
 
-            <main className='relative flex-1 w-full bg-[#4a1512]'>
+            <main className='relative flex-1 w-full bg-[#4a1512] pt-32 sm:pt-36'>
                 <div
                     className='absolute inset-0 opacity-15 mix-blend-overlay'
                     style={{
@@ -158,7 +220,7 @@ export default function DetailMerchPage() {
                             >
                                 <button
                                     onClick={() => setIsFullscreenOpen(true)}
-                                    className='relative w-full max-w-sm h-96 rounded-2xl overflow-hidden bg-black/40 border border-[#FFB41E]/30 flex items-center justify-center mx-auto hover:border-[#FFB41E]/60 transition-all cursor-pointer'
+                                    className='relative mx-auto h-[26rem] w-full max-w-[28rem] rounded-2xl overflow-hidden bg-black/40 border border-[#FFB41E]/30 flex items-center justify-center hover:border-[#FFB41E]/60 transition-all cursor-pointer'
                                 >
                                     <motion.div
                                         key={selectedImage}
@@ -169,21 +231,21 @@ export default function DetailMerchPage() {
                                     >
                                         <Image
                                             src={
-                                                MERCHANDISE_DATA.images[
+                                                selectedProduct.images[
                                                     selectedImage
                                                 ]
                                             }
-                                            alt={`${MERCHANDISE_DATA.name} - View ${selectedImage + 1}`}
+                                            alt={`${selectedProduct.name} - ${selectedImageLabel}`}
                                             fill
                                             priority
                                             quality={75}
-                                            className='object-contain p-8'
+                                            className='object-contain p-10'
                                         />
                                     </motion.div>
                                 </button>
 
                                 <div className='flex gap-4 justify-center'>
-                                    {MERCHANDISE_DATA.images.map((img, idx) => (
+                                    {selectedProduct.images.map((img, idx) => (
                                         <motion.button
                                             key={idx}
                                             whileHover={{ scale: 1.05 }}
@@ -191,6 +253,7 @@ export default function DetailMerchPage() {
                                             onClick={() =>
                                                 setSelectedImage(idx)
                                             }
+                                            aria-label={`${selectedProduct.name} - ${selectedProduct.imageLabels?.[idx] ?? `View ${idx + 1}`}`}
                                             className={`relative w-20 h-20 md:w-24 md:h-24 rounded-lg overflow-hidden border-2 transition-all ${
                                                 selectedImage === idx
                                                     ? 'border-[#FFB41E] bg-black/60'
@@ -199,7 +262,7 @@ export default function DetailMerchPage() {
                                         >
                                             <Image
                                                 src={img}
-                                                alt={`Thumbnail ${idx + 1}`}
+                                                alt={`${selectedProduct.name} - ${selectedProduct.imageLabels?.[idx] ?? `View ${idx + 1}`}`}
                                                 fill
                                                 className='object-contain p-2'
                                             />
@@ -215,24 +278,29 @@ export default function DetailMerchPage() {
                                 className='flex flex-col justify-center gap-8'
                             >
                                 <h1 className='font-westmeath text-3xl md:text-4xl lg:text-5xl font-bold text-white uppercase tracking-wide'>
-                                    {MERCHANDISE_DATA.name}
+                                    {selectedProduct.name}
                                 </h1>
 
                                 <div className='flex items-baseline'>
                                     <span className='font-westmeath text-2xl md:text-3xl lg:text-4xl font-bold text-[#FFB41E]'>
                                         Rp
-                                        {MERCHANDISE_DATA.price.toLocaleString(
+                                        {selectedProduct.price.toLocaleString(
                                             'id-ID',
                                         )}
                                     </span>
                                 </div>
 
-                                <div className='space-y-4'>
-                                    <label className='font-westmeath text-lg text-white block'>
-                                        SIZE
-                                    </label>
-                                    <div className='flex gap-3 flex-wrap'>
-                                        {MERCHANDISE_DATA.sizes.map((size) => (
+                                <p className='font-raleway text-white/75 text-base leading-relaxed'>
+                                    {selectedProduct.description}
+                                </p>
+
+                                {selectedProduct.sizes.length > 0 && (
+                                    <div className='space-y-4'>
+                                        <label className='font-westmeath text-lg text-white block'>
+                                            SIZE
+                                        </label>
+                                        <div className='flex gap-3 flex-wrap'>
+                                            {selectedProduct.sizes.map((size) => (
                                             <motion.button
                                                 key={size}
                                                 whileHover={{ scale: 1.05 }}
@@ -248,9 +316,10 @@ export default function DetailMerchPage() {
                                             >
                                                 {size}
                                             </motion.button>
-                                        ))}
+                                            ))}
+                                        </div>
                                     </div>
-                                </div>
+                                )}
 
                                 <div className='space-y-4'>
                                     <label className='font-westmeath text-lg text-white block'>
@@ -307,22 +376,23 @@ export default function DetailMerchPage() {
                         </div>
 
                         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8'>
-                            {SUGGESTED_MERCH.map((item) => (
-                                <Link
+                            {MERCH_PRODUCTS.map((item) => (
+                                <motion.button
                                     key={item.id}
-                                    href='/merch/detail'
-                                    className='group'
+                                    type='button'
+                                    onClick={() => selectProduct(item)}
+                                    className={`group text-left ${selectedProduct.id === item.id ? 'ring-2 ring-[#FFB41E]' : ''}`}
                                 >
                                     <motion.div
                                         whileHover={{ scale: 1.02, y: -5 }}
                                         className='flex flex-col items-center p-5 rounded-2xl border border-[#FFB41E]/40 hover:border-[#FFB41E] transition-all h-full'
                                     >
-                                        <div className='relative w-full aspect-square flex justify-center items-center rounded-xl overflow-hidden mb-4'>
+                                        <div className='relative h-52 w-full flex justify-center items-center rounded-xl overflow-hidden mb-4 sm:h-56 md:h-64'>
                                             <Image
-                                                src={item.img}
+                                                src={item.images[0]}
                                                 alt={item.name}
                                                 fill
-                                                className='object-cover group-hover:scale-110 transition-transform duration-500'
+                                                className='object-contain p-5 group-hover:scale-105 transition-transform duration-500'
                                             />
                                         </div>
                                         <div className='text-center w-full'>
@@ -336,11 +406,13 @@ export default function DetailMerchPage() {
                                                 )}
                                             </p>
                                         </div>
-                                        <div className='mt-4 w-full py-2 bg-[#FFB41E] text-black font-westmeath font-normal rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 text-center'>
-                                            QUICK VIEW
+                                        <div className='mt-4 w-full py-2 bg-[#FFB41E] text-black font-westmeath font-normal rounded-lg transition-all duration-300 text-center'>
+                                            {selectedProduct.id === item.id
+                                                ? 'SELECTED'
+                                                : 'VIEW PRODUCT'}
                                         </div>
                                     </motion.div>
-                                </Link>
+                                </motion.button>
                             ))}
                         </div>
                     </div>
