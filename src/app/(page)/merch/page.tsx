@@ -14,7 +14,7 @@ const merch = [
     {
         id: 'notebook',
         name: 'Notebook',
-        price: 15000,
+        price: 23000,
         img: '/merch/notebook/Notebook Tampak Depan.png',
     },
     {

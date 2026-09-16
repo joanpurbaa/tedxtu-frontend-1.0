@@ -39,7 +39,7 @@ const MERCH_PRODUCTS = [
     {
         id: 'notebook',
         name: 'Notebook',
-        price: 15000,
+        price: 23000,
         description: 'A compact notebook for ideas worth putting on paper.',
         images: [
             '/merch/notebook/Notebook Tampak Depan.png',
