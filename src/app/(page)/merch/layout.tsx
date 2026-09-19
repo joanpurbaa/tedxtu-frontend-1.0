@@ -3,11 +3,11 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
     title: 'Merchandise | TEDxTelkom University',
     description:
-        'Official TEDxTelkom University merchandise — caps, keychains, notebooks, totes, T-shirts and curated bundle packs. Available for purchase only at the main event.',
+        'Official TEDxTelkom University merchandise, including caps, keychains, notebooks, totes, T-shirts and bundle packs. You can only buy it at the main event on the day itself.',
     openGraph: {
         title: 'Merchandise | TEDxTelkom University',
         description:
-            'Official TEDxTelkom University merchandise and bundle packs. Available for purchase only at the main event.',
+            'Official TEDxTelkom University merchandise and bundle packs. You can only buy it at the main event on the day itself.',
         type: 'website',
     },
 };

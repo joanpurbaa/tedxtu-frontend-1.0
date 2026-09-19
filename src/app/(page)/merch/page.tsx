@@ -352,8 +352,8 @@ export default function Merch() {
                                 className='w-4 sm:w-5 h-auto'
                             />
                             <p className='font-westmeath text-sm sm:text-base md:text-lg tracking-wide text-[#DCA23E]'>
-                                ONE NIGHT ONLY — AT THE MAIN EVENT
-                            </p>
+                                    BUY AT THE MAIN EVENT
+                                </p>
                         </div>
                     </motion.div>
                 </section>
