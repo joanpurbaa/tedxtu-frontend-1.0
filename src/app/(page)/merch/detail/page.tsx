@@ -15,8 +15,8 @@ const MERCH_PRODUCTS = [
         price: 60000,
         description: 'TEDxTelkom University cap available in black and maroon.',
         images: [
-            '/merch/cap/Cap Mockup-Maroon.png',
-            '/merch/cap/Cap Mockup-Black.png',
+            '/merch/cap/Cap Mockup-Maroon.webp',
+            '/merch/cap/Cap Mockup-Black.webp',
         ],
         sizes: [],
     },
@@ -25,7 +25,7 @@ const MERCH_PRODUCTS = [
         name: 'Keychain',
         price: 10000,
         description: 'A small TEDxTelkom University keepsake for your everyday carry.',
-        images: ['/merch/keychain/tedxlogo.png', '/merch/keychain/x1.png'],
+        images: ['/merch/keychain/tedxlogo.webp', '/merch/keychain/x1.webp'],
         sizes: [],
     },
     {
@@ -33,7 +33,7 @@ const MERCH_PRODUCTS = [
         name: 'Enamel Pin',
         price: 20000,
         description: 'Collectible enamel pins made to add a little TEDx energy anywhere.',
-        images: ['/merch/enamel/enamel1.png', '/merch/enamel/enamel2.png'],
+        images: ['/merch/enamel/enamel1.webp', '/merch/enamel/enamel2.webp'],
         sizes: [],
     },
     {
@@ -42,8 +42,8 @@ const MERCH_PRODUCTS = [
         price: 23000,
         description: 'A compact notebook for ideas worth putting on paper.',
         images: [
-            '/merch/notebook/Notebook Tampak Depan.png',
-            '/merch/notebook/Notebook Tampak Belakang.png',
+            '/merch/notebook/Notebook Tampak Depan.webp',
+            '/merch/notebook/Notebook Tampak Belakang.webp',
         ],
         imageLabels: ['Front', 'Back'],
         sizes: [],
@@ -54,8 +54,8 @@ const MERCH_PRODUCTS = [
         price: 30000,
         description: 'A sturdy everyday tote for carrying your ideas with you.',
         images: [
-            '/merch/totebag/Tote Bag Mockup-Black-Variant 1.png',
-            '/merch/totebag/Tote Bag Mockup-Black-Variant 2.png',
+            '/merch/totebag/Tote Bag Mockup-Black-Variant 1.webp',
+            '/merch/totebag/Tote Bag Mockup-Black-Variant 2.webp',
         ],
         sizes: [],
     },
@@ -65,9 +65,9 @@ const MERCH_PRODUCTS = [
         price: 85000,
         description: 'TEDxTelkom University T-Shirt available in multiple designs.',
         images: [
-            '/merch/Tshirt/Tshirt-Mockup-Black-Variant1.png',
-            '/merch/Tshirt/Tshirt-Mockup-White-Variant1.png',
-            '/merch/Tshirt/Tshirt-Mockup-White-Variant2-WithMaroonRinger.png',
+            '/merch/Tshirt/Tshirt-Mockup-Black-Variant1.webp',
+            '/merch/Tshirt/Tshirt-Mockup-White-Variant1.webp',
+            '/merch/Tshirt/Tshirt-Mockup-White-Variant2-WithMaroonRinger.webp',
         ],
         sizes: ['S', 'M', 'L', 'XL'],
     },
