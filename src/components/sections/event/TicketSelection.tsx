@@ -20,7 +20,7 @@ const SHARED_FEATURES = [
     'TED Talks experience',
     'Audience kit',
     'Freebies (drink and snack)',
-    'Voucher makan 15k',
+    'Meal voucher 15k',
 ];
 
 export const ticketsData: TicketTier[] = [
