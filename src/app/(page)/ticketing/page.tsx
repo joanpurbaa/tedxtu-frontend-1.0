@@ -4,7 +4,7 @@ import Footer from '@/components/layout/Footer';
 import Navbar from '@/components/layout/Navbar';
 import Image from 'next/image';
 import { Suspense, useState, type ChangeEvent, type FormEvent } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import PaymentPage from '../../../components/sections/ticketing/paymentPage';
 import PaymentSuccessPage from '../../../components/sections/ticketing/paymentSuccess';
 import StepProgress, {
@@ -235,17 +235,34 @@ function TicketingFlow() {
         | 'persona'
         | 'party'
         | 'payment'
-        | 'consent';
+        | 'consent'
+        | 'success';
     const allSteps: readonly StepName[] = isNormal
         ? isBundling
             ? ['bundle', 'identity', 'persona', 'party', 'payment', 'consent']
             : ['bundle', 'identity', 'persona', 'payment', 'consent']
         : [...baseSteps];
-    type Step = StepName | 'success';
+    type Step = StepName;
 
-    const [step, setStep] = useState<Step>(
-        tier === 'NORMAL PRICE' ? 'bundle' : 'identity',
-    );
+    const initialStep: Step =
+        tier === 'NORMAL PRICE' ? 'bundle' : 'identity';
+    const rawStep = searchParams.get('step');
+    const step: Step =
+        rawStep &&
+        (allSteps.includes(rawStep as Step) || rawStep === 'success')
+            ? (rawStep as Step)
+            : initialStep;
+
+    const router = useRouter();
+
+    const goStep = (s: Step) => {
+        const params = new URLSearchParams();
+        if (tier) params.set('tier', tier);
+        if (price) params.set('price', price);
+        params.set('step', s);
+        router.push(`/ticketing?${params.toString()}`, { scroll: false });
+    };
+
     const [form, setForm] = useState<FormData>(initial);
     const [orderId, setOrderId] = useState<string | null>(null);
     const [error, setError] = useState('');
@@ -385,7 +402,7 @@ function TicketingFlow() {
         }
 
         if (step === 'consent') submitConsent();
-        else setStep(nextStep);
+        else goStep(nextStep);
     };
 
     const submitConsent = async () => {
@@ -410,7 +427,7 @@ function TicketingFlow() {
             return;
         }
 
-        setStep('success');
+        goStep('success');
     };
 
     if (tierHardSoldOut) {
@@ -447,7 +464,7 @@ function TicketingFlow() {
                 labels={stepLabels}
                 onConfirm={(newOrderId) => {
                     setOrderId(newOrderId);
-                    setStep('consent');
+                    goStep('consent');
                 }}
             />
         );
@@ -1115,7 +1132,7 @@ function TicketingFlow() {
                                 <button
                                     type='button'
                                     onClick={() =>
-                                        setStep(
+                                        goStep(
                                             allSteps[
                                                 Math.max(0, stepIndex - 1)
                                             ],
