@@ -7,11 +7,21 @@ import { Upload } from 'lucide-react';
 import { useEffect, useState, useRef, ChangeEvent, DragEvent } from 'react';
 import StepProgress from './StepProgress';
 import { ticketsData } from '@/components/sections/event/TicketSelection';
+import {
+    BUNDLE_MEMBER_COUNT,
+    BUNDLE_PRICES,
+    formatBundlePrice,
+    type BundleType,
+} from '@/lib/ticketPricing';
 
 type Props = {
     tier: string;
     price: string;
     formData: Record<string, string | string[]>;
+    bundleType?: BundleType;
+    members?: { name: string; email: string; phone: string }[];
+    activeIndex?: number;
+    labels?: string[];
     onConfirm?: (orderId: string) => void;
 };
 
@@ -26,9 +36,30 @@ const formatTime = (seconds: number) => {
         .padStart(2, '0')}`;
 };
 
-export default function PaymentPage({ tier, price, formData, onConfirm }: Props) {
+export default function PaymentPage({
+    tier,
+    price,
+    formData,
+    bundleType,
+    members,
+    activeIndex = 2,
+    labels,
+    onConfirm,
+}: Props) {
     const [timeLeft, setTimeLeft] = useState(7 * 60);
     const selectedTicket = ticketsData.find((t) => t.tier === tier);
+
+    const isBundling = !!bundleType && bundleType !== 'SOLO';
+    const bundleLabel =
+        bundleType === 'DUO'
+            ? 'Bundling Duo'
+            : bundleType === 'FOUR'
+              ? 'Bundling 4 People'
+              : null;
+    const bundleTotal =
+        isBundling && bundleType ? BUNDLE_PRICES[bundleType] : null;
+    const bundlePeople =
+        isBundling && bundleType ? BUNDLE_MEMBER_COUNT[bundleType] : null;
 
     // State untuk data input
     const [paymentName, setPaymentName] = useState<string>('');
@@ -148,7 +179,19 @@ export default function PaymentPage({ tier, price, formData, onConfirm }: Props)
                 const checkoutRes = await fetch('/api/checkout', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ ...formData, tier, price }),
+                    body: JSON.stringify({
+                        ...formData,
+                        tier,
+                        price,
+                        bundleType: bundleType ?? 'SOLO',
+                        members: isBundling
+                            ? (members ?? []).map((m) => ({
+                                  name: m.name,
+                                  email: m.email,
+                                  phone: m.phone,
+                              }))
+                            : [],
+                    }),
                 });
 
                 const checkoutData = await checkoutRes.json().catch(() => null);
@@ -308,7 +351,7 @@ export default function PaymentPage({ tier, price, formData, onConfirm }: Props)
                         </div>
                     </div>
 
-                    <StepProgress activeIndex={2} />
+                    <StepProgress activeIndex={activeIndex} labels={labels} />
 
                     {/* PAYMENT CARD */}
                     <div
@@ -346,16 +389,43 @@ export default function PaymentPage({ tier, price, formData, onConfirm }: Props)
                                     <div className='flex items-center justify-between gap-4'>
                                         <div>
                                             <p className='font-title text-lg uppercase text-white'>
-                                                {tier}
+                                                {isBundling && bundleLabel
+                                                    ? `Normal Price — ${bundleLabel}`
+                                                    : tier}
                                             </p>
                                             <p className='mt-1 font-raleway text-2xl text-amber-300'>
-                                                {price}
+                                                {bundleTotal && bundleType
+                                                    ? formatBundlePrice(
+                                                          bundleType,
+                                                      )
+                                                    : price}
                                             </p>
+                                            {bundleTotal && bundlePeople ? (
+                                                <p className='mt-1 font-raleway text-sm text-white/60'>
+                                                    {bundlePeople} People —
+                                                    one payment for the whole
+                                                    bundle
+                                                </p>
+                                            ) : (
+                                                <p className='mt-1 font-raleway text-sm text-white/60'>
+                                                    1 Person — 1 Ticket
+                                                </p>
+                                            )}
                                         </div>
                                         <span className='shrink-0 rounded-full bg-[#C58A1C] px-4 py-1 font-raleway text-xs font-bold uppercase tracking-wide text-black'>
                                             Selected
                                         </span>
                                     </div>
+                                    {bundleTotal && (
+                                        <div className='mt-4 flex justify-between border-t border-amber-300/20 pt-3 font-raleway text-sm text-white/80'>
+                                            <span>Total</span>
+                                            <span className='font-bold text-amber-300'>
+                                                {formatBundlePrice(
+                                                    bundleType ?? 'DUO',
+                                                )}
+                                            </span>
+                                        </div>
+                                    )}
                                     {selectedTicket && (
                                         <ul className='mt-4 space-y-2 text-left font-raleway text-sm leading-6 text-white/80'>
                                             {selectedTicket.features.map(

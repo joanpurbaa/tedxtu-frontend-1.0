@@ -30,13 +30,26 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const updated = await prisma.ticket.update({
-    where: { orderId },
-    data: {
-      ...(paymentName ? { paymentName } : {}),
-      proofUrl,
-    },
-  });
+  const proofData = {
+    ...(paymentName ? { paymentName } : {}),
+    proofUrl,
+  };
 
-  return NextResponse.json({ ok: true, orderId: updated.orderId });
+  // Satu pembayaran untuk satu bundle: bukti juga dihubungkan ke seluruh
+  // tiket anggota dalam grup yang sama sehingga jumlah terbitut sesuai
+  // (stok dihitung per orang).
+  if (ticket.bundleGroupId) {
+    await prisma.ticket.updateMany({
+      where: { bundleGroupId: ticket.bundleGroupId },
+      data: proofData,
+    });
+  } else {
+    const updated = await prisma.ticket.update({
+      where: { orderId },
+      data: proofData,
+    });
+    return NextResponse.json({ ok: true, orderId: updated.orderId });
+  }
+
+  return NextResponse.json({ ok: true, orderId: ticket.orderId });
 }

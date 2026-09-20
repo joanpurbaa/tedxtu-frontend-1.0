@@ -1,12 +1,14 @@
 import QRCode from 'qrcode';
 import { prisma } from '@/lib/prisma';
 import { GROUP_INVITE_LINK } from '@/lib/group';
+import { BUNDLE_MEMBER_LINK } from '@/lib/ticketPricing';
 
 export async function sendTicketWhatsapp(
     phone: string,
     fullName: string,
     orderId: string,
     qrToken: string,
+    opts?: { isBundlingMember?: boolean },
 ) {
     const target = phone.startsWith('0') ? '62' + phone.slice(1) : phone;
     const ticketUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/ticket/${qrToken}`;
@@ -19,11 +21,15 @@ export async function sendTicketWhatsapp(
         data: { qrCodeBase64 },
     });
 
+    const bundleMemberNote = opts?.isBundlingMember
+        ? `\n\n🎟️ Kamu terdaftar sebagai MEMBER bundling 👥\nLengkapi data dirimu di link berikut:\n${BUNDLE_MEMBER_LINK}`
+        : '';
+
     const form = new FormData();
     form.append('target', target);
     form.append(
         'message',
-        `👋 Hi *${fullName}*, tiket TEDx kamu sudah dikonfirmasi!\n\nOrder ID: ${orderId}\n\n🤩 Lihat & tunjukin e-tiket QR kamu di sini:\n${ticketUrl}\n\nStep selanjutnya :\n1️⃣ Join grup peserta TEDx berikut\n${GROUP_INVITE_LINK}\n\n2️⃣ Klik link e-tiket QR kamu, dan klik tombol *"Saya Sudah Join Grup"*\n\nTerima kasih!!! 😍`,
+        `👋 Hi *${fullName}*, tiket TEDx kamu sudah dikonfirmasi!\n\nOrder ID: ${orderId}\n\n🤩 Lihat & tunjukin e-tiket QR kamu di sini:\n${ticketUrl}\n\nStep selanjutnya :\n1️⃣ Join grup peserta TEDx berikut\n${GROUP_INVITE_LINK}\n\n2️⃣ Klik link e-tiket QR kamu, dan klik tombol *"Saya Sudah Join Grup"*\n\nTerima kasih!!! 😍${bundleMemberNote}`,
     );
 
     const res = await fetch('https://api.fonnte.com/send', {

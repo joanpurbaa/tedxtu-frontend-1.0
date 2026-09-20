@@ -8,9 +8,14 @@ import Image from 'next/image';
 type Props = {
     orderId?: string;
     tier?: string;
+    bundleLabel?: string;
 };
 
-export default function PaymentSuccessPage({ orderId, tier }: Props) {
+export default function PaymentSuccessPage({
+    orderId,
+    tier,
+    bundleLabel,
+}: Props) {
     return (
         <>
             <Navbar />
@@ -104,7 +109,7 @@ export default function PaymentSuccessPage({ orderId, tier }: Props) {
                             </div>
 
                             <div className='font-raleway text-lg sm:text-xl text-white'>
-                                {tier || 'Presale'}
+                                {bundleLabel || tier || 'Presale'}
                             </div>
 
                             <div className='font-raleway text-lg sm:text-xl text-white/80'>

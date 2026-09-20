@@ -7,8 +7,15 @@ import { Suspense, useState, type ChangeEvent, type FormEvent } from 'react';
 import { useSearchParams } from 'next/navigation';
 import PaymentPage from '../../../components/sections/ticketing/paymentPage';
 import PaymentSuccessPage from '../../../components/sections/ticketing/paymentSuccess';
-import StepProgress from '../../../components/sections/ticketing/StepProgress';
+import StepProgress, {
+    ticketingSteps,
+} from '../../../components/sections/ticketing/StepProgress';
 import { ticketsData } from '../../../components/sections/event/TicketSelection';
+import {
+    BUNDLE_MEMBER_COUNT,
+    formatBundlePrice,
+    type BundleType,
+} from '@/lib/ticketPricing';
 
 type FormData = {
     email: string;
@@ -35,6 +42,12 @@ type FormData = {
     consentAccurate: string;
     consentDataProcessing: string;
     consentUpdates: string;
+};
+
+type BundleMember = {
+    name: string;
+    email: string;
+    phone: string;
 };
 
 const initial: FormData = {
@@ -94,9 +107,6 @@ const aspectOptions = [
     'Entertainment',
     'Others',
 ];
-
-const steps = ['identity', 'persona', 'payment', 'consent'] as const;
-type Step = (typeof steps)[number] | 'success';
 
 function inputClass() {
     return 'h-[52px] w-full rounded-2xl border border-white/10 bg-white/5 px-5 text-sm font-raleway text-white outline-none backdrop-blur-md transition duration-200 placeholder:text-white/50 focus:border-[#C58A1C]/80 focus:ring-2 focus:ring-[#C58A1C]/60';
@@ -208,10 +218,68 @@ function TicketingFlow() {
     const selectedTicket = ticketsData.find((t) => t.tier === tier);
     const tierHardSoldOut = selectedTicket?.soldOut === true;
 
-    const [step, setStep] = useState<Step>('identity');
+    const [regType, setRegType] = useState<'INDIVIDUAL' | 'BUNDLING' | null>(
+        null,
+    );
+    const [bundleType, setBundleType] = useState<BundleType>('DUO');
+    const [bundleMembers, setBundleMembers] = useState<BundleMember[]>([]);
+
+    const isNormal = tier === 'NORMAL PRICE';
+    const isBundling = regType === 'BUNDLING' && isNormal;
+
+    const baseSteps = ['identity', 'persona', 'payment', 'consent'] as const;
+    type StepName =
+        | 'bundle'
+        | 'identity'
+        | 'persona'
+        | 'party'
+        | 'payment'
+        | 'consent';
+    const allSteps: readonly StepName[] = isNormal
+        ? isBundling
+            ? [
+                  'bundle',
+                  'identity',
+                  'persona',
+                  'party',
+                  'payment',
+                  'consent',
+              ]
+            : ['bundle', 'identity', 'persona', 'payment', 'consent']
+        : [...baseSteps];
+    type Step = StepName | 'success';
+
+    const [step, setStep] = useState<Step>(
+        tier === 'NORMAL PRICE' ? 'bundle' : 'identity',
+    );
     const [form, setForm] = useState<FormData>(initial);
     const [orderId, setOrderId] = useState<string | null>(null);
     const [error, setError] = useState('');
+
+    const initMembers = (bt: BundleType) =>
+        Array.from({ length: Math.max(0, BUNDLE_MEMBER_COUNT[bt] - 1) }, () => ({
+            name: '',
+            email: '',
+            phone: '',
+        }));
+
+    const setMember = (i: number, key: keyof BundleMember, value: string) =>
+        setBundleMembers((prev) =>
+            prev.map((m, idx) =>
+                idx === i ? { ...m, [key]: value } : m,
+            ),
+        );
+
+    const stepLabels = isNormal
+        ? isBundling
+            ? [
+                  'Registration',
+                  ...ticketingSteps.slice(0, 2),
+                  'Party',
+                  ...ticketingSteps.slice(2),
+              ]
+            : ['Registration', ...ticketingSteps]
+        : undefined;
 
     const set = <K extends keyof FormData>(key: K, value: FormData[K]) =>
         setForm((prev) => ({ ...prev, [key]: value }));
@@ -270,11 +338,34 @@ function TicketingFlow() {
         return '';
     };
 
+    const validateBundle = () => {
+        if (!regType) return 'Choose your registration type (Individual or Bundling).';
+        if (regType === 'BUNDLING' && !bundleType)
+            return 'Choose a bundle type (Duo or 4 People).';
+        return '';
+    };
+
+    const validateParty = () => {
+        if (!isBundling) return '';
+        const count = BUNDLE_MEMBER_COUNT[bundleType] - 1;
+        for (let i = 0; i < count; i++) {
+            const m = bundleMembers[i];
+            if (!m?.name.trim()) return `Enter member ${i + 1} name.`;
+            if (!/^\S+@\S+\.\S+$/.test(m.email.trim()))
+                return `Enter a valid email for member ${i + 1}.`;
+            if (!/^\+?\d{9,15}$/.test(m.phone.trim()))
+                return `Enter a valid WhatsApp number for member ${i + 1}.`;
+        }
+        return '';
+    };
+
     const next = (e: FormEvent) => {
         e.preventDefault();
         let msg = '';
+        if (step === 'bundle') msg = validateBundle();
         if (step === 'identity') msg = validateIdentity();
         if (step === 'persona') msg = validatePersona();
+        if (step === 'party') msg = validateParty();
         if (step === 'consent') msg = validateConsent();
 
         if (msg) {
@@ -283,9 +374,20 @@ function TicketingFlow() {
         }
         setError('');
 
-        if (step === 'identity') setStep('persona');
-        else if (step === 'persona') setStep('payment');
-        else if (step === 'consent') submitConsent();
+        const idx = allSteps.indexOf(step as (typeof allSteps)[number]);
+        const nextStep = allSteps[idx + 1];
+
+        // Pastikan slot member selalu siap saat memasuki step 'party',
+        // walau user tidak menekan chip bundle terlebih dahulu.
+        if (
+            nextStep === 'party' &&
+            bundleMembers.length !== BUNDLE_MEMBER_COUNT[bundleType] - 1
+        ) {
+            setBundleMembers(initMembers(bundleType));
+        }
+
+        if (step === 'consent') submitConsent();
+        else setStep(nextStep);
     };
 
     const submitConsent = async () => {
@@ -341,6 +443,10 @@ function TicketingFlow() {
                 tier={tier}
                 price={price}
                 formData={form}
+                bundleType={isBundling ? bundleType : undefined}
+                members={isBundling ? bundleMembers : undefined}
+                activeIndex={allSteps.indexOf('payment')}
+                labels={stepLabels}
                 onConfirm={(newOrderId) => {
                     setOrderId(newOrderId);
                     setStep('consent');
@@ -350,10 +456,22 @@ function TicketingFlow() {
     }
 
     if (step === 'success') {
-        return <PaymentSuccessPage orderId={orderId ?? undefined} tier={tier} />;
+        const successBundleLabel =
+            isBundling && bundleType === 'DUO'
+                ? 'Normal Price — Bundling Duo'
+                : isBundling && bundleType === 'FOUR'
+                  ? 'Normal Price — Bundling 4 People'
+                  : undefined;
+        return (
+            <PaymentSuccessPage
+                orderId={orderId ?? undefined}
+                tier={tier}
+                bundleLabel={successBundleLabel}
+            />
+        );
     }
 
-    const stepIndex = steps.indexOf(step as (typeof steps)[number]);
+    const stepIndex = allSteps.indexOf(step as (typeof allSteps)[number]);
 
     return (
         <>
@@ -389,10 +507,106 @@ function TicketingFlow() {
                         </p>
                     </div>
 
-                    <StepProgress activeIndex={stepIndex} />
+                    <StepProgress activeIndex={stepIndex} labels={stepLabels} />
 
                     <form onSubmit={next}>
                         <div className='rounded-[38px] border border-white/15 bg-black/25 px-8 py-8 pb-10 shadow-[0_30px_90px_rgba(0,0,0,0.45)] backdrop-blur-3xl space-y-6'>
+                            {step === 'bundle' && (
+                                <>
+                                    <h2 className='text-center font-title text-3xl uppercase'>
+                                        Registration Type
+                                    </h2>
+                                    <p className='text-center font-raleway text-sm text-white/50'>
+                                        Normal Price — how are you registering
+                                        for this ticket?
+                                    </p>
+
+                                    <div>
+                                        <p className='mb-2 font-title text-sm uppercase'>
+                                            Registration Type
+                                        </p>
+                                        <div className='flex flex-wrap gap-3'>
+                                            <Chip
+                                                active={regType === 'INDIVIDUAL'}
+                                                label={`Individual — ${formatBundlePrice('SOLO')}`}
+                                                onClick={() =>
+                                                    setRegType('INDIVIDUAL')
+                                                }
+                                            />
+                                            <Chip
+                                                active={regType === 'BUNDLING'}
+                                                label='Bundling'
+                                                onClick={() => {
+                                                    setRegType('BUNDLING');
+                                                    setBundleMembers(
+                                                        initMembers(
+                                                            bundleType,
+                                                        ),
+                                                    );
+                                                }}
+                                            />
+                                        </div>
+                                    </div>
+
+                                    {regType === 'BUNDLING' && (
+                                        <>
+                                            <div>
+                                                <p className='mb-2 font-title text-sm uppercase'>
+                                                    Choose Your Bundle
+                                                </p>
+                                                <div className='flex flex-wrap gap-3'>
+                                                    {(
+                                                        [
+                                                            ['DUO', 'Duo', 2],
+                                                            [
+                                                                'FOUR',
+                                                                '4 People',
+                                                                4,
+                                                            ],
+                                                        ] as const
+                                                    ).map(
+                                                        ([
+                                                            bt,
+                                                            label,
+                                                            people,
+                                                        ]) => (
+                                                            <Chip
+                                                                key={bt}
+                                                                active={
+                                                                    bundleType ===
+                                                                    bt
+                                                                }
+                                                                label={`${label} (${
+                                                                    people
+                                                                } People) — ${formatBundlePrice(
+                                                                    bt,
+                                                                )}`}
+                                                                onClick={() => {
+                                                                    setBundleType(
+                                                                        bt,
+                                                                    );
+                                                                    setBundleMembers(
+                                                                        initMembers(
+                                                                            bt,
+                                                                        ),
+                                                                    );
+                                                                }}
+                                                            />
+                                                        ),
+                                                    )}
+                                                </div>
+                                                <SubHeader>
+                                                    Belum tersedia paket untuk
+                                                    3 orang. Harga dihitung
+                                                    otomatis oleh sistem dan
+                                                    diverifikasi saat checkout.
+                                                </SubHeader>
+                                            </div>
+                                        </>
+                                    )}
+                                </>
+                            )}
+
                             {step === 'identity' && (
                                 <>
                                     <h2 className='text-center font-title text-3xl uppercase'>
@@ -730,6 +944,104 @@ function TicketingFlow() {
                                 </>
                             )}
 
+                            {step === 'party' && (
+                                <>
+                                    <h2 className='text-center font-title text-3xl uppercase'>
+                                        Party of Bundle
+                                    </h2>
+                                    <p className='text-center font-raleway text-sm text-white/50'>
+                                        Lengkapi data anggota bundling lainnya.{" "}
+                                        {BUNDLE_MEMBER_COUNT[bundleType] - 1}{' '}
+                                        member
+                                        {BUNDLE_MEMBER_COUNT[bundleType] - 1 >
+                                        1
+                                            ? 's'
+                                            : ''}{' '}
+                                        dibutuhkan — {bundleType === 'DUO'
+                                            ? '2 People'
+                                            : '4 People'}{' '}
+                                        total.
+                                    </p>
+
+                                    {bundleMembers.map((m, i) => (
+                                        <div
+                                            key={i}
+                                            className='space-y-4 rounded-3xl border border-white/10 bg-white/5 p-5'
+                                        >
+                                            <p className='font-title text-sm uppercase'>
+                                                Member {i + 1} of{' '}
+                                                {BUNDLE_MEMBER_COUNT[bundleType] -
+                                                    1}
+                                            </p>
+                                            <div>
+                                                <label
+                                                    htmlFor={`member-name-${i}`}
+                                                    className='mb-2 block font-title text-sm uppercase'
+                                                >
+                                                    Full Name
+                                                </label>
+                                                <input
+                                                    id={`member-name-${i}`}
+                                                    className={inputClass()}
+                                                    value={m.name}
+                                                    onChange={(e) =>
+                                                        setMember(
+                                                            i,
+                                                            'name',
+                                                            e.target.value,
+                                                        )
+                                                    }
+                                                    placeholder='e.g., Jane Doe'
+                                                />
+                                            </div>
+                                            <div>
+                                                <label
+                                                    htmlFor={`member-email-${i}`}
+                                                    className='mb-2 block font-title text-sm uppercase'
+                                                >
+                                                    Email
+                                                </label>
+                                                <input
+                                                    id={`member-email-${i}`}
+                                                    type='email'
+                                                    className={inputClass()}
+                                                    value={m.email}
+                                                    onChange={(e) =>
+                                                        setMember(
+                                                            i,
+                                                            'email',
+                                                            e.target.value,
+                                                        )
+                                                    }
+                                                    placeholder='e.g., jane@gmail.com'
+                                                />
+                                            </div>
+                                            <div>
+                                                <label
+                                                    htmlFor={`member-phone-${i}`}
+                                                    className='mb-2 block font-title text-sm uppercase'
+                                                >
+                                                    WhatsApp Number
+                                                </label>
+                                                <input
+                                                    id={`member-phone-${i}`}
+                                                    className={inputClass()}
+                                                    value={m.phone}
+                                                    onChange={(e) =>
+                                                        setMember(
+                                                            i,
+                                                            'phone',
+                                                            e.target.value,
+                                                        )
+                                                    }
+                                                    placeholder='e.g., +6280123456'
+                                                />
+                                            </div>
+                                        </div>
+                                    ))}
+                                </>
+                            )}
+
                             {step === 'consent' && (
                                 <>
                                     <h2 className='text-center font-title text-3xl uppercase'>
@@ -789,12 +1101,14 @@ function TicketingFlow() {
                         </div>
 
                         <div className='mt-5 flex justify-between'>
-                            {step !== 'identity' ? (
+                            {step !== 'identity' && step !== 'bundle' ? (
                                 <button
                                     type='button'
                                     onClick={() =>
                                         setStep(
-                                            steps[Math.max(0, stepIndex - 1)],
+                                            allSteps[
+                                                Math.max(0, stepIndex - 1)
+                                            ],
                                         )
                                     }
                                     className='h-[52px] rounded-full border border-white/20 px-6 font-title text-sm uppercase text-white/70'
@@ -808,7 +1122,7 @@ function TicketingFlow() {
                                 type='submit'
                                 className='h-[52px] rounded-full bg-[#980B00] px-8 font-title text-sm uppercase text-white transition hover:brightness-110'
                             >
-                                {step === 'persona'
+                                {step === 'party' || step === 'persona'
                                     ? 'Continue to Payment'
                                     : step === 'consent'
                                       ? 'Submit'

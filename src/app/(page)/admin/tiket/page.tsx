@@ -18,6 +18,10 @@ type Ticket = {
     status: 'PENDING' | 'CONFIRMED' | 'REJECTED';
     scanned: boolean;
     joinedGroup: boolean;
+    bundleGroupId: string | null;
+    bundleType: string;
+    bundleRole: string;
+    totalAmount: number | null;
     createdAt: string;
 };
 
@@ -72,6 +76,31 @@ function GroupBadge({ joined }: { joined: boolean }) {
         >
             {joined ? 'Yes' : 'No'}
         </span>
+    );
+}
+
+function BundleBadge({ t }: { t: Ticket }) {
+    if (t.bundleType === 'SOLO') {
+        return <span className='text-xs text-white/30'>-</span>;
+    }
+    const isMember = t.bundleRole === 'MEMBER';
+    return (
+        <div className='flex flex-col gap-1'>
+            <span
+                className={`w-fit inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium border whitespace-nowrap ${
+                    isMember
+                        ? 'bg-amber-600/20 text-amber-400 border-amber-600/30'
+                        : 'bg-purple-600/20 text-purple-400 border-purple-600/30'
+                }`}
+            >
+                BUNDLING {t.bundleType} • {t.bundleRole}
+            </span>
+            {t.bundleGroupId && (
+                <span className='text-[11px] font-mono text-white/40'>
+                    #{(t.bundleGroupId || '').slice(0, 6).toUpperCase()}
+                </span>
+            )}
+        </div>
     );
 }
 
@@ -209,6 +238,9 @@ export default function TiketPage() {
                                 <th className='px-4 py-3 text-left text-xs font-medium text-white/40 uppercase tracking-wider hidden sm:table-cell'>
                                     Tier
                                 </th>
+                                <th className='px-4 py-3 text-left text-xs font-medium text-white/40 uppercase tracking-wider hidden lg:table-cell'>
+                                    Bundle
+                                </th>
                                 <th className='px-4 py-3 text-left text-xs font-medium text-white/40 uppercase tracking-wider hidden xl:table-cell'>
                                     Payment
                                 </th>
@@ -248,6 +280,12 @@ export default function TiketPage() {
                                     </td>
                                     <td className='px-4 py-3 font-medium text-white'>
                                         {t.fullName}
+                                        {t.bundleRole === 'MEMBER' &&
+                                            t.status === 'PENDING' && (
+                                                <span className='mt-0.5 block text-[11px] text-amber-400/80'>
+                                                    Waiting for Primary Approval
+                                                </span>
+                                            )}
                                     </td>
                                     <td className='px-4 py-3 text-white/60 hidden md:table-cell'>
                                         {t.email}
@@ -261,6 +299,9 @@ export default function TiketPage() {
                                         <span className='text-xs font-medium text-white/80'>
                                             {t.tier}
                                         </span>
+                                    </td>
+                                    <td className='px-4 py-3 hidden lg:table-cell'>
+                                        <BundleBadge t={t} />
                                     </td>
                                     <td className='px-4 py-3 hidden xl:table-cell'>
                                         <span className='text-xs text-white/60'>
@@ -328,45 +369,59 @@ export default function TiketPage() {
                                     </td>
                                     <td className='px-4 py-3'>
                                         <div className='flex items-center gap-1'>
-                                            {t.status === 'PENDING' && (
-                                                <>
-                                                    <button
-                                                        disabled={actingId === t.id}
-                                                        onClick={() =>
-                                                            act(t.id, 'confirm')
-                                                        }
-                                                        className={`p-1.5 rounded transition-colors border ${
-                                                            actingId === t.id
-                                                                ? 'bg-green-600/10 text-green-400/50 border-green-600/20 cursor-wait'
-                                                                : 'bg-green-600/20 text-green-400 hover:bg-green-600/30 border-green-600/30'
-                                                        }`}
-                                                        title='Confirm'
-                                                    >
-                                                        {actingId === t.id ? (
-                                                            <div className='h-4 w-4 animate-spin rounded-full border-2 border-green-400 border-t-transparent' />
-                                                        ) : (
-                                                            <Check className='h-4 w-4' />
-                                                        )}
-                                                    </button>
-                                                    <button
-                                                        disabled={actingId === t.id}
-                                                        onClick={() =>
-                                                            act(t.id, 'reject')
-                                                        }
-                                                        className={`p-1.5 rounded transition-colors border ${
-                                                            actingId === t.id
-                                                                ? 'bg-red-600/10 text-red-400/50 border-red-600/20 cursor-wait'
-                                                                : 'bg-red-600/20 text-red-400 hover:bg-red-600/30 border-red-600/30'
-                                                        }`}
-                                                        title='Reject'
-                                                    >
-                                                        {actingId === t.id ? (
-                                                            <div className='h-4 w-4 animate-spin rounded-full border-2 border-red-400 border-t-transparent' />
-                                                        ) : (
-                                                            <X className='h-4 w-4' />
-                                                        )}
-                                                    </button>
-                                                </>
+                                            {t.status === 'PENDING' && t.bundleRole === 'MEMBER' ? (
+                                                <span className='pr-1 text-[11px] text-white/40'>
+                                                    -
+                                                </span>
+                                            ) : (
+                                                t.status === 'PENDING' && (
+                                                    <>
+                                                        <button
+                                                            disabled={
+                                                                actingId === t.id
+                                                            }
+                                                            onClick={() =>
+                                                                act(
+                                                                    t.id,
+                                                                    'confirm',
+                                                                )
+                                                            }
+                                                            className={`p-1.5 rounded transition-colors border ${
+                                                                actingId === t.id
+                                                                    ? 'bg-green-600/10 text-green-400/50 border-green-600/20 cursor-wait'
+                                                                    : 'bg-green-600/20 text-green-400 hover:bg-green-600/30 border-green-600/30'
+                                                            }`}
+                                                            title='Confirm'
+                                                        >
+                                                            {actingId ===
+                                                            t.id ? (
+                                                                <div className='h-4 w-4 animate-spin rounded-full border-2 border-green-400 border-t-transparent' />
+                                                            ) : (
+                                                                <Check className='h-4 w-4' />
+                                                            )}
+                                                        </button>
+                                                        <button
+                                                            disabled={
+                                                                actingId === t.id
+                                                            }
+                                                            onClick={() =>
+                                                                act(t.id, 'reject')
+                                                            }
+                                                            className={`p-1.5 rounded transition-colors border ${
+                                                                actingId === t.id
+                                                                    ? 'bg-red-600/10 text-red-400/50 border-red-600/20 cursor-wait'
+                                                                    : 'bg-red-600/20 text-red-400 hover:bg-red-600/30 border-red-600/30'
+                                                            }`}
+                                                            title='Reject'
+                                                        >
+                                                            {actingId === t.id ? (
+                                                                <div className='h-4 w-4 animate-spin rounded-full border-2 border-red-400 border-t-transparent' />
+                                                            ) : (
+                                                                <X className='h-4 w-4' />
+                                                            )}
+                                                        </button>
+                                                    </>
+                                                )
                                             )}
                                             <button
                                                 onClick={() =>

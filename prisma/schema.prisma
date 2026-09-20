@@ -54,6 +54,12 @@ model Ticket {
   joinedAt    DateTime?
   createdAt   DateTime     @default(now())
 
+  // bundling (Normal Price)
+  bundleGroupId String? @map("bundle_group_id")
+  bundleType    String  @default("SOLO") @map("bundle_type") // SOLO | DUO | FOUR
+  bundleRole    String  @default("PRIMARY") @map("bundle_role") // PRIMARY | MEMBER
+  totalAmount   Int?    @map("total_amount")
+
   qrCodeBase64 String? @db.Text
 }
 

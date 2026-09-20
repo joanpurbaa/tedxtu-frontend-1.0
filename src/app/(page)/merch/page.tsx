@@ -42,8 +42,14 @@ const products = [
         name: 'Notebook',
         price: 23000,
         variations: [
-            { label: 'Front', img: '/merch/notebook/Notebook Tampak Depan.webp' },
-            { label: 'Back', img: '/merch/notebook/Notebook Tampak Belakang.webp' },
+            {
+                label: 'Front',
+                img: '/merch/notebook/Notebook Tampak Depan.webp',
+            },
+            {
+                label: 'Back',
+                img: '/merch/notebook/Notebook Tampak Belakang.webp',
+            },
         ],
     },
     {
@@ -74,9 +80,18 @@ const products = [
         name: 'T-Shirt',
         price: 85000,
         variations: [
-            { label: 'Black', img: '/merch/Tshirt/Tshirt-Mockup-Black-Variant1.webp' },
-            { label: 'Maroon', img: '/merch/Tshirt/Tshirt-Mockup-Maroon-Variant1.webp' },
-            { label: 'White', img: '/merch/Tshirt/Tshirt-Mockup-White-Variant1.webp' },
+            {
+                label: 'Black',
+                img: '/merch/Tshirt/Tshirt-Mockup-Black-Variant1.webp',
+            },
+            {
+                label: 'Maroon',
+                img: '/merch/Tshirt/Tshirt-Mockup-Maroon-Variant1.webp',
+            },
+            {
+                label: 'White',
+                img: '/merch/Tshirt/Tshirt-Mockup-White-Variant1.webp',
+            },
             {
                 label: 'White Variant 2',
                 img: '/merch/Tshirt/Tshirt-Mockup-White-Variant2.webp',
@@ -235,7 +250,15 @@ export default function Merch() {
                         style={{ top: '20%', left: '15%' }}
                         initial={{ opacity: 0, scale: 0.7, rotate: -12 }}
                         animate={{ opacity: 1, scale: 1, rotate: [0, -5, 0] }}
-                        transition={{ opacity: { duration: 0.5 }, scale: { duration: 0.6 }, rotate: { duration: 4, repeat: Infinity, ease: 'easeInOut' } }}
+                        transition={{
+                            opacity: { duration: 0.5 },
+                            scale: { duration: 0.6 },
+                            rotate: {
+                                duration: 4,
+                                repeat: Infinity,
+                                ease: 'easeInOut',
+                            },
+                        }}
                     >
                         <Image
                             src='/about/mask.webp'
@@ -253,7 +276,15 @@ export default function Merch() {
                         style={{ top: '20%', right: '15%' }}
                         initial={{ opacity: 0, scale: 0.7, rotate: 12 }}
                         animate={{ opacity: 1, scale: 1, rotate: [0, 5, 0] }}
-                        transition={{ opacity: { duration: 0.5, delay: 0.1 }, scale: { duration: 0.6, delay: 0.1 }, rotate: { duration: 4.5, repeat: Infinity, ease: 'easeInOut' } }}
+                        transition={{
+                            opacity: { duration: 0.5, delay: 0.1 },
+                            scale: { duration: 0.6, delay: 0.1 },
+                            rotate: {
+                                duration: 4.5,
+                                repeat: Infinity,
+                                ease: 'easeInOut',
+                            },
+                        }}
                     >
                         <Image
                             src='/about/trumpet.webp'
@@ -270,8 +301,26 @@ export default function Merch() {
                         className='absolute z-10'
                         style={{ bottom: '20%', left: '15%' }}
                         initial={{ opacity: 0, scale: 0.7, rotate: -12 }}
-                        animate={{ opacity: 1, scale: 1, y: [0, -10, 0], rotate: [0, -8, 0] }}
-                        transition={{ opacity: { duration: 0.5, delay: 0.2 }, scale: { duration: 0.6, delay: 0.2 }, y: { duration: 3.8, repeat: Infinity, ease: 'easeInOut' }, rotate: { duration: 4, repeat: Infinity, ease: 'easeInOut' } }}
+                        animate={{
+                            opacity: 1,
+                            scale: 1,
+                            y: [0, -10, 0],
+                            rotate: [0, -8, 0],
+                        }}
+                        transition={{
+                            opacity: { duration: 0.5, delay: 0.2 },
+                            scale: { duration: 0.6, delay: 0.2 },
+                            y: {
+                                duration: 3.8,
+                                repeat: Infinity,
+                                ease: 'easeInOut',
+                            },
+                            rotate: {
+                                duration: 4,
+                                repeat: Infinity,
+                                ease: 'easeInOut',
+                            },
+                        }}
                     >
                         <Image
                             src='/about/gramophone.svg'
@@ -288,8 +337,26 @@ export default function Merch() {
                         className='absolute z-10'
                         style={{ bottom: '20%', right: '15%' }}
                         initial={{ opacity: 0, scale: 0.7, rotate: 12 }}
-                        animate={{ opacity: 1, scale: 1, y: [0, -8, 0], rotate: [20, 28, 20] }}
-                        transition={{ opacity: { duration: 0.5, delay: 0.3 }, scale: { duration: 0.6, delay: 0.3 }, y: { duration: 4.2, repeat: Infinity, ease: 'easeInOut' }, rotate: { duration: 4.5, repeat: Infinity, ease: 'easeInOut' } }}
+                        animate={{
+                            opacity: 1,
+                            scale: 1,
+                            y: [0, -8, 0],
+                            rotate: [20, 28, 20],
+                        }}
+                        transition={{
+                            opacity: { duration: 0.5, delay: 0.3 },
+                            scale: { duration: 0.6, delay: 0.3 },
+                            y: {
+                                duration: 4.2,
+                                repeat: Infinity,
+                                ease: 'easeInOut',
+                            },
+                            rotate: {
+                                duration: 4.5,
+                                repeat: Infinity,
+                                ease: 'easeInOut',
+                            },
+                        }}
                     >
                         <Image
                             src='/about/crown.webp'
@@ -307,13 +374,21 @@ export default function Merch() {
                         className='relative z-10 text-center w-full max-w-5xl mx-auto px-4'
                         initial={{ opacity: 0, y: 24 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.7, delay: 0.2, ease: 'easeOut' }}
+                        transition={{
+                            duration: 0.7,
+                            delay: 0.2,
+                            ease: 'easeOut',
+                        }}
                     >
                         <div className='flex flex-wrap items-center justify-center gap-2 sm:gap-3 md:gap-4'>
                             <motion.span
                                 className='font-westmeath text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white font-bold leading-tight'
                                 animate={{ y: [0, -4, 0] }}
-                                transition={{ duration: 2.8, repeat: Infinity, ease: 'easeInOut' }}
+                                transition={{
+                                    duration: 2.8,
+                                    repeat: Infinity,
+                                    ease: 'easeInOut',
+                                }}
                             >
                                 OUR
                             </motion.span>
@@ -330,7 +405,12 @@ export default function Merch() {
                             <motion.span
                                 className='font-westmeath text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white font-bold leading-tight'
                                 animate={{ y: [0, 4, 0] }}
-                                transition={{ duration: 3.2, repeat: Infinity, ease: 'easeInOut', delay: 0.2 }}
+                                transition={{
+                                    duration: 3.2,
+                                    repeat: Infinity,
+                                    ease: 'easeInOut',
+                                    delay: 0.2,
+                                }}
                             >
                                 MERCHANDISE
                             </motion.span>
@@ -352,10 +432,96 @@ export default function Merch() {
                                 className='w-4 sm:w-5 h-auto'
                             />
                             <p className='font-westmeath text-sm sm:text-base md:text-lg tracking-wide text-[#DCA23E]'>
-                                    BUY AT THE MAIN EVENT
-                                </p>
+                                BUY AT THE MAIN EVENT
+                            </p>
                         </div>
                     </motion.div>
+                </section>
+
+                <section className='relative z-10 w-full bg-transparent text-white px-4 sm:px-8 md:px-12 lg:px-16 pb-32 pt-8'>
+                    <div className='relative z-10 w-full max-w-6xl mx-auto'>
+                        <div className='mb-10'>
+                            <h2 className='font-westmeath text-3xl sm:text-4xl md:text-5xl text-white font-bold'>
+                                MERCH BUNDLING
+                            </h2>
+                            <p className='font-raleway text-sm sm:text-base text-white/70 mt-3 max-w-2xl'>
+                                Mix-and-match packs curated to fit every budget.
+                                Get your favorites together for less.
+                            </p>
+                        </div>
+
+                        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
+                            {bundling.map((item, index) => {
+                                const bundleItems = item.isi.split(' + ');
+                                const shownItems = bundleItems.slice(0, 4);
+                                const extraCount =
+                                    bundleItems.length - shownItems.length;
+                                return (
+                                    <motion.button
+                                        key={index}
+                                        initial={{ opacity: 0, y: 24 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        viewport={{ once: true, amount: 0.2 }}
+                                        transition={{
+                                            duration: 0.45,
+                                            delay: (index % 3) * 0.08,
+                                            ease: 'easeOut',
+                                        }}
+                                        whileHover={{ y: -6 }}
+                                        whileTap={{ scale: 0.98 }}
+                                        onClick={() => setSelectedBundle(item)}
+                                        className='flex flex-col gap-4 rounded-2xl border border-[#FFB41E]/40 bg-black/40 p-6 hover:border-[#FFB41E]/70 transition-all cursor-pointer text-left'
+                                    >
+                                        <h3 className='font-westmeath text-lg md:text-xl font-bold text-[#FFB41E]'>
+                                            {item.paket}
+                                        </h3>
+                                        <div className='flex items-center'>
+                                            {shownItems.map((itemName, i) => (
+                                                <div
+                                                    key={i}
+                                                    className='relative -ml-3 first:ml-0 flex h-14 w-14 sm:h-16 sm:w-16 shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-[#FFB41E]/50 bg-white p-1.5 shadow-[0_0_18px_rgba(255,180,30,0.2)]'
+                                                >
+                                                    {BUNDLE_ITEM_IMAGES[
+                                                        itemName
+                                                    ] ? (
+                                                        <Image
+                                                            src={
+                                                                BUNDLE_ITEM_IMAGES[
+                                                                    itemName
+                                                                ]
+                                                            }
+                                                            alt={itemName}
+                                                            width={44}
+                                                            height={44}
+                                                            className='h-full w-full object-contain'
+                                                        />
+                                                    ) : (
+                                                        <span className='font-westmeath text-sm font-bold text-[#DCA23E]'>
+                                                            {itemName[0]}
+                                                        </span>
+                                                    )}
+                                                </div>
+                                            ))}
+                                            {extraCount > 0 && (
+                                                <div className='relative -ml-3 flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-full border-2 border-[#FFB41E]/60 bg-[#FFB41E] font-westmeath text-xs font-bold text-black sm:text-sm'>
+                                                    +{extraCount}
+                                                </div>
+                                            )}
+                                            <span className='ml-4 font-raleway text-xs sm:text-sm text-white/50'>
+                                                {bundleItems.length} items
+                                            </span>
+                                        </div>
+                                        <p className='font-raleway text-sm md:text-base text-white/80 leading-relaxed flex-1'>
+                                            {item.isi}
+                                        </p>
+                                        <p className='font-westmeath text-xl md:text-2xl font-bold text-white'>
+                                            {item.harga}
+                                        </p>
+                                    </motion.button>
+                                );
+                            })}
+                        </div>
+                    </div>
                 </section>
 
                 <section className='relative z-10 w-full bg-transparent text-white px-4 sm:px-8 md:px-12 lg:px-16 pb-32 pt-4'>
@@ -388,8 +554,15 @@ export default function Merch() {
                                     initial={{ opacity: 0, y: 24, scale: 0.96 }}
                                     whileInView={{ opacity: 1, y: 0, scale: 1 }}
                                     viewport={{ once: true, amount: 0.2 }}
-                                    transition={{ duration: 0.45, delay: (index % 4) * 0.08, ease: 'easeOut' }}
-                                    whileHover={{ y: -8, rotate: index % 2 === 0 ? -1.5 : 1.5 }}
+                                    transition={{
+                                        duration: 0.45,
+                                        delay: (index % 4) * 0.08,
+                                        ease: 'easeOut',
+                                    }}
+                                    whileHover={{
+                                        y: -8,
+                                        rotate: index % 2 === 0 ? -1.5 : 1.5,
+                                    }}
                                     whileTap={{ scale: 0.97 }}
                                     className='w-full'
                                 >
@@ -404,7 +577,9 @@ export default function Merch() {
                                                 fill
                                                 quality={90}
                                                 className='object-contain object-center p-4 group-hover:scale-105 transition-transform duration-300'
-                                                style={{ mixBlendMode: 'multiply' }}
+                                                style={{
+                                                    mixBlendMode: 'multiply',
+                                                }}
                                             />
                                         </div>
 
@@ -420,51 +595,13 @@ export default function Merch() {
                                                 style={{ color: '#DCA23E' }}
                                             >
                                                 Rp
-                                                {item.price.toLocaleString('id-ID')}
+                                                {item.price.toLocaleString(
+                                                    'id-ID',
+                                                )}
                                             </p>
                                         </div>
                                     </button>
                                 </motion.div>
-                            ))}
-                        </div>
-                    </div>
-                </section>
-
-                <section className='relative z-10 w-full bg-transparent text-white px-4 sm:px-8 md:px-12 lg:px-16 pb-32 pt-8'>
-                    <div className='relative z-10 w-full max-w-6xl mx-auto'>
-                        <div className='mb-10'>
-                            <h2 className='font-westmeath text-3xl sm:text-4xl md:text-5xl text-white font-bold'>
-                                MERCH BUNDLING
-                            </h2>
-                            <p className='font-raleway text-sm sm:text-base text-white/70 mt-3 max-w-2xl'>
-                                Mix-and-match packs curated to fit every budget.
-                                Get your favorites together for less.
-                            </p>
-                        </div>
-
-                        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
-                            {bundling.map((item, index) => (
-                                <motion.button
-                                    key={index}
-                                    initial={{ opacity: 0, y: 24 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    viewport={{ once: true, amount: 0.2 }}
-                                    transition={{ duration: 0.45, delay: (index % 3) * 0.08, ease: 'easeOut' }}
-                                    whileHover={{ y: -6 }}
-                                    whileTap={{ scale: 0.98 }}
-                                    onClick={() => setSelectedBundle(item)}
-                                    className='flex flex-col gap-4 rounded-2xl border border-[#FFB41E]/40 bg-black/40 p-6 hover:border-[#FFB41E]/70 transition-all cursor-pointer text-left'
-                                >
-                                    <h3 className='font-westmeath text-lg md:text-xl font-bold text-[#FFB41E]'>
-                                        {item.paket}
-                                    </h3>
-                                    <p className='font-raleway text-sm md:text-base text-white/80 leading-relaxed flex-1'>
-                                        {item.isi}
-                                    </p>
-                                    <p className='font-westmeath text-xl md:text-2xl font-bold text-white'>
-                                        {item.harga}
-                                    </p>
-                                </motion.button>
                             ))}
                         </div>
                     </div>
@@ -486,7 +623,11 @@ export default function Merch() {
                             initial={{ scale: 0.9, y: 20 }}
                             animate={{ scale: 1, y: 0 }}
                             exit={{ scale: 0.9, y: 20 }}
-                            transition={{ type: 'spring', damping: 26, stiffness: 300 }}
+                            transition={{
+                                type: 'spring',
+                                damping: 26,
+                                stiffness: 300,
+                            }}
                             onClick={(event) => event.stopPropagation()}
                             className='relative w-full max-w-3xl rounded-2xl border border-[#FFB41E]/40 bg-[#2a0a08] overflow-hidden shadow-[0_0_40px_rgba(255,180,30,0.25)]'
                         >
@@ -541,7 +682,11 @@ export default function Merch() {
                             initial={{ scale: 0.9, y: 20 }}
                             animate={{ scale: 1, y: 0 }}
                             exit={{ scale: 0.9, y: 20 }}
-                            transition={{ type: 'spring', damping: 26, stiffness: 300 }}
+                            transition={{
+                                type: 'spring',
+                                damping: 26,
+                                stiffness: 300,
+                            }}
                             onClick={(event) => event.stopPropagation()}
                             className='relative w-full max-w-2xl rounded-2xl border border-[#FFB41E]/40 bg-[#2a0a08] overflow-hidden shadow-[0_0_40px_rgba(255,180,30,0.25)]'
                         >
@@ -609,9 +754,9 @@ export default function Merch() {
                                     </span>
                                     <span className='font-westmeath text-xl md:text-2xl font-bold text-[#FFB41E]'>
                                         Rp
-                                        {getBundleSavings(selectedBundle).toLocaleString(
-                                            'id-ID',
-                                        )}
+                                        {getBundleSavings(
+                                            selectedBundle,
+                                        ).toLocaleString('id-ID')}
                                     </span>
                                 </div>
                             </div>
