@@ -47,7 +47,7 @@ export const ticketsData: TicketTier[] = [
         tier: 'NORMAL PRICE',
         price: 'RP 84.900',
         remaining: '100 ticket remaining',
-        releaseDate: new Date('2026-09-01T17:00:00Z'),  // dibuka untuk testing
+        releaseDate: new Date('2026-09-21T17:00:00Z'),  // 00:00 WIB 22 Sep
         endDate: null,
         quantity: 100,
         features: SHARED_FEATURES,
