@@ -237,14 +237,7 @@ function TicketingFlow() {
         | 'consent';
     const allSteps: readonly StepName[] = isNormal
         ? isBundling
-            ? [
-                  'bundle',
-                  'identity',
-                  'persona',
-                  'party',
-                  'payment',
-                  'consent',
-              ]
+            ? ['bundle', 'identity', 'persona', 'party', 'payment', 'consent']
             : ['bundle', 'identity', 'persona', 'payment', 'consent']
         : [...baseSteps];
     type Step = StepName | 'success';
@@ -257,17 +250,18 @@ function TicketingFlow() {
     const [error, setError] = useState('');
 
     const initMembers = (bt: BundleType) =>
-        Array.from({ length: Math.max(0, BUNDLE_MEMBER_COUNT[bt] - 1) }, () => ({
-            name: '',
-            email: '',
-            phone: '',
-        }));
+        Array.from(
+            { length: Math.max(0, BUNDLE_MEMBER_COUNT[bt] - 1) },
+            () => ({
+                name: '',
+                email: '',
+                phone: '',
+            }),
+        );
 
     const setMember = (i: number, key: keyof BundleMember, value: string) =>
         setBundleMembers((prev) =>
-            prev.map((m, idx) =>
-                idx === i ? { ...m, [key]: value } : m,
-            ),
+            prev.map((m, idx) => (idx === i ? { ...m, [key]: value } : m)),
         );
 
     const stepLabels = isNormal
@@ -285,7 +279,9 @@ function TicketingFlow() {
         setForm((prev) => ({ ...prev, [key]: value }));
 
     const onText = (
-        e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
+        e: ChangeEvent<
+            HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+        >,
     ) => set(e.target.id as keyof FormData, e.target.value as never);
 
     const validateIdentity = () => {
@@ -339,7 +335,8 @@ function TicketingFlow() {
     };
 
     const validateBundle = () => {
-        if (!regType) return 'Choose your registration type (Individual or Bundling).';
+        if (!regType)
+            return 'Choose your registration type (Individual or Bundling).';
         if (regType === 'BUNDLING' && !bundleType)
             return 'Choose a bundle type (Duo or 4 People).';
         return '';
@@ -527,7 +524,9 @@ function TicketingFlow() {
                                         </p>
                                         <div className='flex flex-wrap gap-3'>
                                             <Chip
-                                                active={regType === 'INDIVIDUAL'}
+                                                active={
+                                                    regType === 'INDIVIDUAL'
+                                                }
                                                 label={`Individual — ${formatBundlePrice('SOLO')}`}
                                                 onClick={() =>
                                                     setRegType('INDIVIDUAL')
@@ -539,9 +538,7 @@ function TicketingFlow() {
                                                 onClick={() => {
                                                     setRegType('BUNDLING');
                                                     setBundleMembers(
-                                                        initMembers(
-                                                            bundleType,
-                                                        ),
+                                                        initMembers(bundleType),
                                                     );
                                                 }}
                                             />
@@ -554,7 +551,7 @@ function TicketingFlow() {
                                                 <p className='mb-2 font-title text-sm uppercase'>
                                                     Choose Your Bundle
                                                 </p>
-                                                <div className='flex flex-wrap gap-3'>
+                                                <div className='flex flex-wrap gap-3 mb-3'>
                                                     {(
                                                         [
                                                             ['DUO', 'Duo', 2],
@@ -596,10 +593,9 @@ function TicketingFlow() {
                                                     )}
                                                 </div>
                                                 <SubHeader>
-                                                    Belum tersedia paket untuk
-                                                    3 orang. Harga dihitung
-                                                    otomatis oleh sistem dan
-                                                    diverifikasi saat checkout.
+                                                    Prices are calculated
+                                                    automatically by the system
+                                                    and verified at checkout.
                                                 </SubHeader>
                                             </div>
                                         </>
@@ -699,8 +695,8 @@ function TicketingFlow() {
                                         </label>
                                         <SubHeader>
                                             If you are not from Telkom
-                                            University or not a student,
-                                            please fill &quot;Others&quot;
+                                            University or not a student, please
+                                            fill &quot;Others&quot;
                                         </SubHeader>
                                         <select
                                             id='faculty'
@@ -762,14 +758,13 @@ function TicketingFlow() {
 
                                     <div>
                                         <p className='mb-2 font-title text-sm uppercase'>
-                                            How familiar are you with
-                                            TED/TEDx?
+                                            How familiar are you with TED/TEDx?
                                         </p>
                                         <div className='flex flex-col gap-2'>
                                             {[
                                                 "I'm completely new to it",
                                                 "I've heard of it/watched a few talks before",
-                                                "I know the platform well/watch them regularly and a big fan of it",
+                                                'I know the platform well/watch them regularly and a big fan of it',
                                             ].map((o) => (
                                                 <Chip
                                                     key={o}
@@ -828,8 +823,8 @@ function TicketingFlow() {
                                             className='mb-2 block font-title text-sm uppercase'
                                         >
                                             On a scale of &apos;I would only
-                                            listen to music twice a day&apos;
-                                            to &apos;Music is my whole
+                                            listen to music twice a day&apos; to
+                                            &apos;Music is my whole
                                             personality&apos;. Where do you
                                             fall?
                                         </label>
@@ -851,10 +846,10 @@ function TicketingFlow() {
                                             className='mb-2 block font-title text-sm uppercase'
                                         >
                                             Speaking of psychology, do you
-                                            believe who you are today is
-                                            because of your own choices, or
-                                            is it shaped by the people and
-                                            environment around you?
+                                            believe who you are today is because
+                                            of your own choices, or is it shaped
+                                            by the people and environment around
+                                            you?
                                         </label>
                                         <textarea
                                             id='environmentShapes'
@@ -870,9 +865,8 @@ function TicketingFlow() {
                                             className='mb-2 block font-title text-sm uppercase'
                                         >
                                             When it comes to arts, music &
-                                            design, do you believe your
-                                            emotions can truly be expressed
-                                            through them?
+                                            design, do you believe your emotions
+                                            can truly be expressed through them?
                                         </label>
                                         <textarea
                                             id='artsExpression'
@@ -887,11 +881,11 @@ function TicketingFlow() {
                                             htmlFor='eventTakeaway'
                                             className='mb-2 block font-title text-sm uppercase'
                                         >
-                                            What is the single biggest
-                                            takeaway or feeling you hope to
-                                            bring home after experiencing the
-                                            TEDxTelkomUniversity Main Event
-                                            this year?
+                                            What is the single biggest takeaway
+                                            or feeling you hope to bring home
+                                            after experiencing the
+                                            TEDxTelkomUniversity Main Event this
+                                            year?
                                         </label>
                                         <textarea
                                             id='eventTakeaway'
@@ -905,9 +899,8 @@ function TicketingFlow() {
                                         <p className='mb-2 font-title text-sm uppercase'>
                                             When attending the
                                             TEDxTelkomUniversity Main Event,
-                                            which aspect of the experience
-                                            are you looking forward to the
-                                            most?
+                                            which aspect of the experience are
+                                            you looking forward to the most?
                                         </p>
                                         <div className='flex flex-wrap gap-2'>
                                             {aspectOptions.map((a) => (
@@ -949,15 +942,21 @@ function TicketingFlow() {
                                     <h2 className='text-center font-title text-3xl uppercase'>
                                         Party of Bundle
                                     </h2>
-                                    <p className='text-center font-raleway text-sm text-white/50'>
-                                        Lengkapi data anggota bundling lainnya.{" "}
+<p className='text-center font-raleway text-sm text-white/50'>
+                                        Fill in the details for the other
+                                        bundle member
+                                        {BUNDLE_MEMBER_COUNT[bundleType] - 1 >
+                                        1
+                                            ? 's'
+                                            : ''}
+                                        .{' '}
                                         {BUNDLE_MEMBER_COUNT[bundleType] - 1}{' '}
                                         member
                                         {BUNDLE_MEMBER_COUNT[bundleType] - 1 >
                                         1
                                             ? 's'
                                             : ''}{' '}
-                                        dibutuhkan — {bundleType === 'DUO'
+                                        needed — {bundleType === 'DUO'
                                             ? '2 People'
                                             : '4 People'}{' '}
                                         total.
@@ -970,8 +969,9 @@ function TicketingFlow() {
                                         >
                                             <p className='font-title text-sm uppercase'>
                                                 Member {i + 1} of{' '}
-                                                {BUNDLE_MEMBER_COUNT[bundleType] -
-                                                    1}
+                                                {BUNDLE_MEMBER_COUNT[
+                                                    bundleType
+                                                ] - 1}
                                             </p>
                                             <div>
                                                 <label
@@ -1051,9 +1051,9 @@ function TicketingFlow() {
                                     <div>
                                         <p className='mb-2 font-raleway text-white/90'>
                                             I hereby confirm that all
-                                            information submitted by me has
-                                            been double-checked and is true
-                                            and accurate.
+                                            information submitted by me has been
+                                            double-checked and is true and
+                                            accurate.
                                         </p>
                                         <YesNo
                                             value={form.consentAccurate}
@@ -1066,8 +1066,7 @@ function TicketingFlow() {
                                     <div>
                                         <p className='mb-2 font-raleway text-white/90'>
                                             Do you consent to your data being
-                                            processed by TEDx Telkom
-                                            University?
+                                            processed by TEDx Telkom University?
                                         </p>
                                         <YesNo
                                             value={form.consentDataProcessing}

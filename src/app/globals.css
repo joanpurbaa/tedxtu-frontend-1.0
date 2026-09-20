@@ -11,6 +11,16 @@ body {
     font-family: Arial, Helvetica, sans-serif;
 }
 
+/* Native select dropdown: paksa bg hitam + text putih biar tidak
+   tampil putih/putih di beberapa browser & device. */
+select {
+    color-scheme: dark;
+}
+select option {
+    background-color: #000;
+    color: #fff;
+}
+
 @layer base {
     :root {
         --background: 0 0% 100%;
