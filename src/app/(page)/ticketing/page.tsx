@@ -13,6 +13,7 @@ import StepProgress, {
 import { ticketsData } from '../../../components/sections/event/TicketSelection';
 import {
     BUNDLE_MEMBER_COUNT,
+    BUNDLE_PRICES,
     formatBundlePrice,
     type BundleType,
 } from '@/lib/ticketPricing';
@@ -469,6 +470,16 @@ function TicketingFlow() {
     }
 
     const stepIndex = allSteps.indexOf(step as (typeof allSteps)[number]);
+    const nextStepName = allSteps[stepIndex + 1];
+    const headerLabel = isNormal
+        ? isBundling && bundleType
+            ? `NORMAL PRICE — Bundling ${
+                  bundleType === 'DUO' ? 'Duo' : '4 People'
+              } — RP ${BUNDLE_PRICES[bundleType].toLocaleString('id-ID')}`
+            : `NORMAL PRICE — Individual — RP ${BUNDLE_PRICES.SOLO.toLocaleString(
+                  'id-ID',
+              )}`
+        : `${tier} — ${price}`;
 
     return (
         <>
@@ -500,7 +511,7 @@ function TicketingFlow() {
                             Checkout Ticket
                         </h1>
                         <p className='mt-3 font-raleway text-xl text-white/75'>
-                            {tier} — {price}
+                            {headerLabel}
                         </p>
                     </div>
 
@@ -1121,11 +1132,13 @@ function TicketingFlow() {
                                 type='submit'
                                 className='h-[52px] rounded-full bg-[#980B00] px-8 font-title text-sm uppercase text-white transition hover:brightness-110'
                             >
-                                {step === 'party' || step === 'persona'
-                                    ? 'Continue to Payment'
-                                    : step === 'consent'
-                                      ? 'Submit'
-                                      : 'Next'}
+                                {step === 'consent'
+                                    ? 'Submit'
+                                    : nextStepName === 'payment'
+                                      ? 'Continue to Payment'
+                                      : nextStepName === 'party'
+                                        ? 'Continue to Party'
+                                        : 'Next'}
                             </button>
                         </div>
                     </form>
