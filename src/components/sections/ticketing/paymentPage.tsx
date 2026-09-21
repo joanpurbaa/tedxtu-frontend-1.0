@@ -88,12 +88,28 @@ export default function PaymentPage({
         return () => clearInterval(interval);
     }, []);
 
+    // Helper normalisasi tipe file: andalkan MIME, fallback ke ekstensi
+    // karena sebagian device/OS mengirim file.type kosong atau non-standar.
+    const normalizeFileType = (file: File): string => {
+        const mime = file.type === 'image/jpg' ? 'image/jpeg' : file.type;
+        if (['image/jpeg', 'image/png'].includes(mime)) return mime;
+        const ext = file.name.split('.').pop()?.toLowerCase() ?? '';
+        if (ext === 'png') return 'image/png';
+        if (ext === 'jpg' || ext === 'jpeg') return 'image/jpeg';
+        return '';
+    };
+
     // Helper fungsi untuk validasi file terpusat
     const validateAndSetFile = (file: File) => {
-        const validTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+        const allowedMimes = ['image/png', 'image/jpeg', 'image/jpg'];
+        const ext = file.name.split('.').pop()?.toLowerCase() ?? '';
+        const allowedExts = ['png', 'jpg', 'jpeg'];
         const maxSizeInBytes = 4 * 1024 * 1024; // 4MB
 
-        if (!validTypes.includes(file.type)) {
+        if (
+            !allowedMimes.includes(file.type) &&
+            !allowedExts.includes(ext)
+        ) {
             setFileError('Format file harus PNG atau JPG.');
             setSelectedFile(null);
             return false;
@@ -167,6 +183,12 @@ export default function PaymentPage({
         const file = selectedFile;
         if (!file) return;
 
+        const uploadType = normalizeFileType(file);
+        if (!uploadType) {
+            setFileError('Format file harus PNG atau JPG.');
+            return;
+        }
+
         submittedRef.current = true;
         setUploading(true);
 
@@ -217,7 +239,7 @@ export default function PaymentPage({
                 body: JSON.stringify({
                     orderId: orderIdToUse,
                     fileName: file.name,
-                    fileType: file.type,
+                    fileType: uploadType,
                     fileSize: file.size,
                 }),
             });
@@ -235,7 +257,7 @@ export default function PaymentPage({
             // 2. Upload file langsung ke Vercel Blob
             const blobRes = await fetch(uploadUrlData.uploadUrl, {
                 method: 'PUT',
-                headers: { 'Content-Type': file.type },
+                headers: { 'Content-Type': uploadType },
                 body: file,
             });
 

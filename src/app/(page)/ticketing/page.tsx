@@ -255,11 +255,12 @@ function TicketingFlow() {
 
     const router = useRouter();
 
-    const goStep = (s: Step) => {
+    const goStep = (s: Step, order?: string) => {
         const params = new URLSearchParams();
         if (tier) params.set('tier', tier);
         if (price) params.set('price', price);
         params.set('step', s);
+        if (order) params.set('order', order);
         router.push(`/ticketing?${params.toString()}`, { scroll: false });
     };
 
@@ -427,7 +428,7 @@ function TicketingFlow() {
             return;
         }
 
-        goStep('success');
+        goStep('success', orderId ?? undefined);
     };
 
     if (tierHardSoldOut) {
@@ -477,9 +478,11 @@ function TicketingFlow() {
                 : isBundling && bundleType === 'FOUR'
                   ? 'Normal Price — Bundling 4 People'
                   : undefined;
+        const successOrderId =
+            searchParams.get('order') ?? orderId ?? undefined;
         return (
             <PaymentSuccessPage
-                orderId={orderId ?? undefined}
+                orderId={successOrderId}
                 tier={tier}
                 bundleLabel={successBundleLabel}
             />

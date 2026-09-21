@@ -24,7 +24,20 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Missing required fields: orderId, fileName" }, { status: 400 });
   }
 
-  if (!ALLOWED_MIME_TYPES.includes(fileType)) {
+  // Normalisasi MIME: andalkan header, fallback ke ekstensi file
+  // (beberapa device mengirim fileType kosong / image/jpg yang non-standar).
+  const mimeByExt: Record<string, string> = {
+    png: "image/png",
+    jpg: "image/jpeg",
+    jpeg: "image/jpeg",
+  };
+  let normalizedType = fileType;
+  if (!ALLOWED_MIME_TYPES.includes(normalizedType)) {
+    const ext = fileName.split(".").pop()?.toLowerCase() ?? "";
+    normalizedType = mimeByExt[ext] ?? "";
+  }
+
+  if (!ALLOWED_MIME_TYPES.includes(normalizedType)) {
     return NextResponse.json(
       { error: "Only JPG/JPEG or PNG files are allowed" },
       { status: 400 },
@@ -43,7 +56,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Order not found" }, { status: 404 });
   }
 
-  const pathname = proofPathname(orderId, fileType);
+  const pathname = proofPathname(orderId, normalizedType);
   if (!pathname) {
     return NextResponse.json(
       { error: "Unsupported file type" },
