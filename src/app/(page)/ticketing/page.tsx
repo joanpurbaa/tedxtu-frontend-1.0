@@ -3,7 +3,7 @@
 import Footer from '@/components/layout/Footer';
 import Navbar from '@/components/layout/Navbar';
 import Image from 'next/image';
-import { Suspense, useState, type ChangeEvent, type FormEvent } from 'react';
+import { Suspense, useCallback, useEffect, useState, type ChangeEvent, type FormEvent } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import PaymentPage from '../../../components/sections/ticketing/paymentPage';
 import PaymentSuccessPage from '../../../components/sections/ticketing/paymentSuccess';
@@ -77,6 +77,45 @@ const initial: FormData = {
     consentDataProcessing: '',
     consentUpdates: '',
 };
+
+// Data alur checkout disimpan di localStorage agar tidak hilang saat halaman
+// di-reload / tab dipulihkan (sering terjadi di HP saat berpindah ke
+// aplikasi transfer/WA). Sebelumnya, reload di step payment membuat form
+// kosong dan checkout membalas error 'Missing fields'.
+const FLOW_STORAGE_KEY = 'tedx:ticketing:flow';
+
+type StoredFlow = {
+    tier?: string;
+    form?: FormData;
+    regType?: 'INDIVIDUAL' | 'BUNDLING' | null;
+    bundleType?: BundleType;
+    bundleMembers?: BundleMember[];
+};
+
+function readStoredFlow(): StoredFlow | null {
+    try {
+        const raw = window.localStorage.getItem(FLOW_STORAGE_KEY);
+        return raw ? (JSON.parse(raw) as StoredFlow) : null;
+    } catch {
+        return null;
+    }
+}
+
+function writeStoredFlow(value: StoredFlow) {
+    try {
+        window.localStorage.setItem(FLOW_STORAGE_KEY, JSON.stringify(value));
+    } catch {
+        // Penyimpanan bisa saja penuh/nonaktif; persistensi bersifat best-effort.
+    }
+}
+
+function clearStoredFlow() {
+    try {
+        window.localStorage.removeItem(FLOW_STORAGE_KEY);
+    } catch {
+        // ignore
+    }
+}
 
 const facultyOptions = [
     'Fakultas Ekonomi dan Bisnis (FEB)',
@@ -255,18 +294,72 @@ function TicketingFlow() {
 
     const router = useRouter();
 
-    const goStep = (s: Step, order?: string) => {
-        const params = new URLSearchParams();
-        if (tier) params.set('tier', tier);
-        if (price) params.set('price', price);
-        params.set('step', s);
-        if (order) params.set('order', order);
-        router.push(`/ticketing?${params.toString()}`, { scroll: false });
-    };
+    const goStep = useCallback(
+        (s: Step, order?: string) => {
+            const params = new URLSearchParams();
+            if (tier) params.set('tier', tier);
+            if (price) params.set('price', price);
+            params.set('step', s);
+            if (order) params.set('order', order);
+            router.push(`/ticketing?${params.toString()}`, { scroll: false });
+        },
+        [tier, price, router],
+    );
 
     const [form, setForm] = useState<FormData>(initial);
     const [orderId, setOrderId] = useState<string | null>(null);
     const [error, setError] = useState('');
+    const [hydrated, setHydrated] = useState(false);
+
+    // Pulihkan data alur dari localStorage saat halaman dimuat ulang.
+    useEffect(() => {
+        const stored = readStoredFlow();
+        if (stored?.tier === tier && stored.form) {
+            setForm({ ...initial, ...stored.form });
+            if (stored.regType) setRegType(stored.regType);
+            if (stored.bundleType) setBundleType(stored.bundleType);
+            if (stored.bundleMembers) setBundleMembers(stored.bundleMembers);
+            if (
+                stored.regType === 'BUNDLING' &&
+                stored.bundleType &&
+                (stored.bundleMembers || []).length !==
+                    BUNDLE_MEMBER_COUNT[stored.bundleType] - 1
+            ) {
+                setBundleMembers(
+                    Array.from(
+                        { length: BUNDLE_MEMBER_COUNT[stored.bundleType] - 1 },
+                        () => ({ name: '', email: '', phone: '' }),
+                    ),
+                );
+            }
+        }
+        setHydrated(true);
+    }, [tier]);
+
+    // Simpan data alur terus-menerus agar reload di step mana pun tetap utuh.
+    useEffect(() => {
+        if (!hydrated) return;
+        writeStoredFlow({
+            tier,
+            form,
+            regType,
+            bundleType,
+            bundleMembers,
+        });
+    }, [hydrated, tier, form, regType, bundleType, bundleMembers, step]);
+
+    // Guard: jika form belum lengkap namun sudah berada di langkah yang
+    // membutuhkan data (payment/consent), kembalikan ke 'identity' agar
+    // user tidak pernah menerima error 'Missing fields'.
+    useEffect(() => {
+        if (!hydrated) return;
+        if (
+            (step === 'payment' || step === 'consent') &&
+            (!form.fullName.trim() || !form.email.trim())
+        ) {
+            goStep('identity');
+        }
+    }, [hydrated, step, form.fullName, form.email, goStep]);
 
     const initMembers = (bt: BundleType) =>
         Array.from(
@@ -429,6 +522,7 @@ function TicketingFlow() {
         }
 
         goStep('success', orderId ?? undefined);
+        clearStoredFlow();
     };
 
     if (tierHardSoldOut) {
