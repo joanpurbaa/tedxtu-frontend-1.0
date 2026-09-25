@@ -16,7 +16,7 @@ const products = [
         variations: [
             { label: 'Maroon', img: '/merch/cap/Cap Mockup-Maroon.webp' },
             { label: 'Black', img: '/merch/cap/Cap Mockup-Black.webp' },
-            { label: 'White', img: '/merch/cap/Cap Mockup-White.webp' },
+            // { label: 'White', img: '/merch/cap/Cap Mockup-White.webp' },
         ],
     },
     {
@@ -24,8 +24,13 @@ const products = [
         name: 'Keychain',
         price: 10000,
         variations: [
-            { label: 'TEDx Logo', img: '/merch/keychain/tedxlogo.webp' },
+            // { label: 'TEDx Logo', img: '/merch/keychain/tedxlogo.webp' },
             { label: 'X Design', img: '/merch/keychain/x1.webp' },
+            { label: 'Note Design', img: '/merch/keychain/note.webp' },
+            {
+                label: 'Turn Table Design',
+                img: '/merch/keychain/turn-table.webp',
+            },
         ],
     },
     {
@@ -33,6 +38,7 @@ const products = [
         name: 'Enamel Pin',
         price: 20000,
         variations: [
+            { label: 'X Design', img: '/merch/keychain/x1.webp' },
             { label: 'Design 1', img: '/merch/enamel/enamel1.webp' },
             { label: 'Design 2', img: '/merch/enamel/enamel2.webp' },
         ],
@@ -65,14 +71,14 @@ const products = [
                 label: 'Black Variant 2',
                 img: '/merch/totebag/Tote Bag Mockup-Black-Variant 2.webp',
             },
-            {
-                label: 'White Variant 1',
-                img: '/merch/totebag/Tote Bag Mockup-White-Variant 1.webp',
-            },
-            {
-                label: 'White Variant 2',
-                img: '/merch/totebag/Tote Bag Mockup-White-Variant 2.webp',
-            },
+            // {
+            //     label: 'White Variant 1',
+            //     img: '/merch/totebag/Tote Bag Mockup-White-Variant 1.webp',
+            // },
+            // {
+            //     label: 'White Variant 2',
+            //     img: '/merch/totebag/Tote Bag Mockup-White-Variant 2.webp',
+            // },
         ],
     },
     {
@@ -80,10 +86,10 @@ const products = [
         name: 'T-Shirt',
         price: 85000,
         variations: [
-            {
-                label: 'Black',
-                img: '/merch/Tshirt/Tshirt-Mockup-Black-Variant1.webp',
-            },
+            // {
+            //     label: 'Black',
+            //     img: '/merch/Tshirt/Tshirt-Mockup-Black-Variant1.webp',
+            // },
             {
                 label: 'Maroon',
                 img: '/merch/Tshirt/Tshirt-Mockup-Maroon-Variant1.webp',
@@ -92,22 +98,22 @@ const products = [
                 label: 'White',
                 img: '/merch/Tshirt/Tshirt-Mockup-White-Variant1.webp',
             },
-            {
-                label: 'White Variant 2',
-                img: '/merch/Tshirt/Tshirt-Mockup-White-Variant2.webp',
-            },
+            // {
+            //     label: 'White Variant 2',
+            //     img: '/merch/Tshirt/Tshirt-Mockup-White-Variant2.webp',
+            // },
             {
                 label: 'White Maroon Ringer',
                 img: '/merch/Tshirt/Tshirt-Mockup-White-Variant2-WithMaroonRinger.webp',
             },
-            {
-                label: "Men's Design 1",
-                img: '/merch/Tshirt/Men T-Shirt Mockup-alt 1.webp',
-            },
-            {
-                label: "Men's Design 2",
-                img: '/merch/Tshirt/Men T-Shirt Mockup-alt 2.webp',
-            },
+            // {
+            //     label: "Men's Design 1",
+            //     img: '/merch/Tshirt/Men T-Shirt Mockup-alt 1.webp',
+            // },
+            // {
+            //     label: "Men's Design 2",
+            //     img: '/merch/Tshirt/Men T-Shirt Mockup-alt 2.webp',
+            // },
         ],
     },
 ];
