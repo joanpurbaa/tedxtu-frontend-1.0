@@ -118,15 +118,6 @@ const Speakers = () => {
 	const displayedDescription = speaker.description;
 	const displayedTitle = speaker.title;
 
-	const thumbnails = hasImage
-		? [
-				speaker.supportingPhoto1,
-				speaker.supportingPhoto2,
-				speaker.supportingPhoto3,
-		  ].filter((src): src is string => !!src && isImageUrl(src))
-		: [];
-	const hasThumbnails = thumbnails.length > 0;
-
 	const progress = items.length > 0 ? ((index + 1) / items.length) * 100 : 0;
 
 	return (
@@ -262,41 +253,6 @@ const Speakers = () => {
 										</motion.div>
 									</AnimatePresence>
 								</div>
-
-								{hasThumbnails && (
-									<div className="relative mt-10 overflow-hidden">
-										<AnimatePresence mode="wait" custom={direction}>
-											<motion.div
-												key={index}
-												custom={direction}
-												initial={{ x: direction >= 0 ? 60 : -60, opacity: 0 }}
-												animate={{ x: 0, opacity: 1 }}
-												exit={{ x: direction >= 0 ? -60 : 60, opacity: 0 }}
-												transition={{ duration: 0.4, ease: 'easeInOut' }}
-												className="flex items-end gap-6"
-											>
-												{thumbnails.map((src) => (
-													<div key={src} className="w-1/3">
-														<div className="relative aspect-square w-full overflow-hidden">
-															{src.startsWith('data:') ? (
-																// eslint-disable-next-line @next/next/no-img-element
-																<img src={src} alt="" className="h-full w-full object-cover" />
-															) : (
-																<Image
-																	src={src}
-																	alt=""
-																	fill
-																	sizes="100px"
-																	className="object-cover"
-																/>
-															)}
-														</div>
-													</div>
-												))}
-											</motion.div>
-										</AnimatePresence>
-									</div>
-								)}
 							</>
 						)}
 					</div>

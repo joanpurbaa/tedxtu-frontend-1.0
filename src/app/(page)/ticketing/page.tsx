@@ -784,6 +784,7 @@ function TicketingFlow() {
                                                 'Student',
                                                 'Fresh Graduate',
                                                 'Professional',
+                                                'Partner',
                                             ].map((s) => (
                                                 <Chip
                                                     key={s}

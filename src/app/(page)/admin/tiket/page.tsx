@@ -121,8 +121,33 @@ export default function TiketPage() {
         setLoading(false);
     };
 
+    // Polling halus: perbarui data di belakang layar tanpa memicu spinner.
+    // Agar status hasil scan QR langsung muncul tanpa refresh manual.
+    const refresh = async () => {
+        try {
+            const res = await fetch('/api/orders');
+            if (res.ok) setTickets(await res.json());
+        } catch {
+            // Jaga data lama jika polling gagal, jangan kosongkan daftar.
+        }
+    };
+
     useEffect(() => {
         load();
+
+        const interval = setInterval(refresh, 3000);
+        const onFocus = () => refresh();
+        const onVisibilityChange = () => {
+            if (document.visibilityState === 'visible') refresh();
+        };
+        window.addEventListener('focus', onFocus);
+        document.addEventListener('visibilitychange', onVisibilityChange);
+
+        return () => {
+            clearInterval(interval);
+            window.removeEventListener('focus', onFocus);
+            document.removeEventListener('visibilitychange', onVisibilityChange);
+        };
     }, []);
 
     const act = async (
