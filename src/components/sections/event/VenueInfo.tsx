@@ -139,7 +139,7 @@ const VenueInfo = () => {
                                 <p className='font-semibold text-white'>
                                     Open Gate:
                                 </p>
-                                <p className='text-white/70'>12:00 WIB</p>
+                                <p className='text-white/70'>09:00 WIB</p>
                             </div>
                         </div>
 
