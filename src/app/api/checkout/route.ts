@@ -36,6 +36,13 @@ export async function POST(req: NextRequest) {
     const tier = body.tier ?? 'REGULAR';
     const rawBundleType = body.bundleType ?? 'SOLO';
 
+    if (tier === 'NORMAL PRICE') {
+        return NextResponse.json(
+            { error: 'Normal Price tickets are not available' },
+            { status: 410 },
+        );
+    }
+
     if (!isBundleType(rawBundleType)) {
         return NextResponse.json(
             { error: 'Invalid bundle type' },

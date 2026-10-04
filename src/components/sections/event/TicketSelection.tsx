@@ -46,10 +46,11 @@ export const ticketsData: TicketTier[] = [
     {
         tier: 'NORMAL PRICE',
         price: 'RP 84.900',
-        remaining: '100 ticket remaining',
+        remaining: 'Not available',
         releaseDate: new Date('2026-09-21T17:00:00Z'),  // 00:00 WIB 22 Sep
         endDate: null,
         quantity: 100,
+        soldOut: true,
         features: SHARED_FEATURES,
     },
 ];

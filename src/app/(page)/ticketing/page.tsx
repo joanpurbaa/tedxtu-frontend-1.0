@@ -294,6 +294,10 @@ function TicketingFlow() {
 
     const router = useRouter();
 
+    useEffect(() => {
+        if (isNormal) router.replace('/event#ticket');
+    }, [isNormal, router]);
+
     const goStep = useCallback(
         (s: Step, order?: string) => {
             const params = new URLSearchParams();
@@ -594,6 +598,14 @@ function TicketingFlow() {
                   'id-ID',
               )}`
         : `${tier} — ${price}`;
+
+    if (isNormal) {
+        return (
+            <main className='flex min-h-screen items-center justify-center bg-black px-6 text-center text-white'>
+                <p className='font-raleway text-white/70'>Normal Price tickets are not available.</p>
+            </main>
+        );
+    }
 
     return (
         <>
